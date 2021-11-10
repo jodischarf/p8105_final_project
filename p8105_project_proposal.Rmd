@@ -1,0 +1,28 @@
+---
+title: "P8105 Project Proposal"
+author: "jys2137"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Group Members
+* Tara Ahi (_ta2645_)
+* Gunnar Colleen (_jgc2157_)
+* Mandy Miles (_acm2268_)
+* Jodi Scharf (_jys2137_)
+* Jocelyn Sun (_jys2136_)
+
+## Tentative Project Title
+
+## Project Motivation
+
+## Intended final products
+
+## Anticipated data sources
+
+## Planned analyses / visualizations / coding challenges
+
+## Planned Timeline
