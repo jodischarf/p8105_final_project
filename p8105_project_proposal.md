@@ -68,10 +68,32 @@ these patterns over time.
 
 ## Planned Timeline
 
+-   **Week 0**: *(11/7-11/13)*
+    -   Project ideation
+    -   Data source retrival
+    -   Website cretaion
+-   **Week 1**: *(11/14-11/20)*
+    -   Data cleaning
+    -   Variable selection
+    -   All to website + update
+-   **Week 2**: *(11/21-11/27)*
+    -   Data cleaning (complete)
+    -   Website updates
+-   **Week 3**: *(11/28-12/4)*
+    -   Data analysis
+    -   Data visualization
+    -   All to website + update
+-   **Week 4**: *(12/5-12/11)*
+    -   Final edits to visualizations
+    -   Final tests of github, dashboard, website
+    -   Dissemination (discussion + screencast)
+
+### Planned Timeline Table (view in .md file)
+
 | Week | Dates              | Activity                                                                                                                         | Person                                                                                                                                            |
 |------|--------------------|----------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
 | W0   | 11/7 - <br> 11/13  | \- Project ideation <br> - Data source retrieval <br> - Website creation                                                         | All                                                                                                                                               |
-| W1   | 11/14 - <br> 11/20 | \- Data cleaning <br> - Variable selection <br> - Push to website + update                                                       | \- All: split preliminary data familiarization by database <br> - Gunnar: BRFSS <br> - Mandy & Jodi: EPA <br> - Tara: Asthma <br> - Jocelyn: NRDC |
+| W1   | 11/14 - <br> 11/20 | \- Data cleaning <br> - Variable selection <br> - All to website + update                                                        | \- All: split preliminary data familiarization by database <br> - Gunnar: BRFSS <br> - Mandy & Jodi: EPA <br> - Tara: Asthma <br> - Jocelyn: NRDC |
 | W2   | 11/21 - <br> 11/27 | \- Data cleaning (complete) <br> - Website updates                                                                               | All                                                                                                                                               |
-| W3   | 11/28 - <br> 12/4  | \- Data analysis <br> - Data visualization <br> - Push to website + update                                                       | \- Analysis: All <br> - Viz 1: Tara <br> - Viz 2: Gunnar <br> - Viz 3: Mandy <br> - Viz 4: Jodi <br> - Viz 5: Jocelyn                             |
+| W3   | 11/28 - <br> 12/4  | \- Data analysis <br> - Data visualization <br> - All to website + update                                                        | \- Analysis: All <br> - Viz 1: Tara <br> - Viz 2: Gunnar <br> - Viz 3: Mandy <br> - Viz 4: Jodi <br> - Viz 5: Jocelyn                             |
 | W4   | 12/5 - <br> 12/11  | \- Final edits to visualizations <br> - Final tests of github, dashboard, website <br> - Dissemination (discussion + screencast) | All                                                                                                                                               |
