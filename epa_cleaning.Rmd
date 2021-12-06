@@ -5,23 +5,16 @@ date: "11/30/2021"
 output: html_document
 ---
 
-```{r, libraries, include = FALSE}
+```{r, libraries}
 
 library(tidyverse)
-
-knitr::opts_chunk$set(
-  echo = TRUE,
-  message = FALSE,
-  warning = FALSE
-  )
-
 
 ```
 
 
-```{r, combined_epa}
+```{r, combined}
 
-#combined 2013 - 2020 EPA data
+# 2013 - 2020 EPA data
 
 epa_df = 
   tibble(path = list.files("./data", full.names = TRUE)) %>% 
@@ -52,12 +45,22 @@ epa_df =
              southdakota = 46, tennessee = 47, texas = 48, utah = 49, vermont = 50,
              virginia = 51, washington = 53, westvirginia = 54, wisconsin = 55, 
              wyoming = 56, puertorico = 72
-             )) %>%
+             ),
+         state_name = as.factor(state_name)) %>%
   na.omit(state_name)
 
+# checking missing values
 sapply(epa_df, function(x) sum(is.na(x)))
 
 ```
 
+New Jersey, Guam, the Virgin Islands, and the City of Mexico do not have codes associated in this [codebook](https://www.cdc.gov/brfss/annual_data/2019/pdf/codebook19_llcp-v2-508.HTML)
 
+```{r, median_aqi}
+
+epa_df %>%
+  group_by(state)
+
+
+```
 

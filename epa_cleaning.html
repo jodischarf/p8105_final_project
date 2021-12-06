@@ -172,7 +172,16 @@ pre code {
 </div>
 
 
-<pre class="r"><code>#combined 2013 - 2020 EPA data
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+## ✓ tibble  3.1.4     ✓ dplyr   1.0.7
+## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
+## ✓ readr   2.0.1     ✓ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code># 2013 - 2020 EPA data
 
 epa_df = 
   tibble(path = list.files(&quot;./data&quot;, full.names = TRUE)) %&gt;% 
@@ -203,14 +212,100 @@ epa_df =
              southdakota = 46, tennessee = 47, texas = 48, utah = 49, vermont = 50,
              virginia = 51, washington = 53, westvirginia = 54, wisconsin = 55, 
              wyoming = 56, puertorico = 72
-             )) %&gt;%
-  na.omit(state_name)
-
+             ),
+         state_name = as.factor(state_name)) %&gt;%
+  na.omit(state_name)</code></pre>
+<pre><code>## Rows: 1062 Columns: 19</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1054 Columns: 19</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1061 Columns: 19</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1054 Columns: 19</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1062 Columns: 19</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1056 Columns: 19</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1053 Columns: 19</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1040 Columns: 19</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Warning: Unreplaced values treated as NA as .x is not compatible. Please specify
+## replacements exhaustively or supply .default</code></pre>
+<pre class="r"><code># checking missing values
 sapply(epa_df, function(x) sum(is.na(x)))</code></pre>
 <pre><code>##      state     county       year median_aqi    days_co   days_no2 days_ozone 
 ##          0          0          0          0          0          0          0 
 ##   days_so2 days_pm2.5  days_pm10 state_name 
 ##          0          0          0          0</code></pre>
+<p>New Jersey, Guam, the Virgin Islands, and the City of Mexico do not have codes associated in this <a href="https://www.cdc.gov/brfss/annual_data/2019/pdf/codebook19_llcp-v2-508.HTML">codebook</a></p>
+<pre class="r"><code>epa_df %&gt;%
+  group_by(state)</code></pre>
+<pre><code>## # A tibble: 8,281 × 11
+## # Groups:   state [51]
+##    state   county     year median_aqi days_co days_no2 days_ozone days_so2 days_pm2.5
+##    &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
+##  1 Alabama Baldwin    2013         36       0        0        200        0         73
+##  2 Alabama Clay       2013         32       0        0          0        0        118
+##  3 Alabama Colbert    2013         38       0        0        202        0         83
+##  4 Alabama DeKalb     2013         38       0        0        305        0         55
+##  5 Alabama Elmore     2013         36       0        0        244        0          0
+##  6 Alabama Etowah     2013         37       0        0        197        0         84
+##  7 Alabama Houston    2013         36       0        0        206        0         79
+##  8 Alabama Jefferson  2013         50       0        1        106        3        254
+##  9 Alabama Lawrence   2013         27       0        0          0        0        109
+## 10 Alabama Madison    2013         40       0        0        220        0         63
+## # … with 8,271 more rows, and 2 more variables: days_pm10 &lt;dbl&gt;,
+## #   state_name &lt;fct&gt;</code></pre>
 
 
 
