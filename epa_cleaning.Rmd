@@ -63,6 +63,5 @@ epa_df %>%
   summarize(median = median(median_aqi)) %>%
   rename("median_aqi" = "median")
 
-
 ```
 
