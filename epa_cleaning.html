@@ -287,25 +287,25 @@ sapply(epa_df, function(x) sum(is.na(x)))</code></pre>
 ##          0          0          0          0          0          0          0 
 ##   days_so2 days_pm2.5  days_pm10 state_name 
 ##          0          0          0          0</code></pre>
-<p>New Jersey, Guam, the Virgin Islands, and the City of Mexico do not have codes associated in this <a href="https://www.cdc.gov/brfss/annual_data/2019/pdf/codebook19_llcp-v2-508.HTML">codebook</a></p>
+<p>New Jersey, Guam, the Virgin Islands, and the City of Mexico do not have codes associated in this <a href="https://www.cdc.gov/brfss/annual_data/2019/pdf/codebook19_llcp-v2-508.HTML">codebook</a>. They have been removed from the EPA dataset.</p>
 <pre class="r"><code>epa_df %&gt;%
-  group_by(state)</code></pre>
-<pre><code>## # A tibble: 8,281 × 11
-## # Groups:   state [51]
-##    state   county     year median_aqi days_co days_no2 days_ozone days_so2 days_pm2.5
-##    &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
-##  1 Alabama Baldwin    2013         36       0        0        200        0         73
-##  2 Alabama Clay       2013         32       0        0          0        0        118
-##  3 Alabama Colbert    2013         38       0        0        202        0         83
-##  4 Alabama DeKalb     2013         38       0        0        305        0         55
-##  5 Alabama Elmore     2013         36       0        0        244        0          0
-##  6 Alabama Etowah     2013         37       0        0        197        0         84
-##  7 Alabama Houston    2013         36       0        0        206        0         79
-##  8 Alabama Jefferson  2013         50       0        1        106        3        254
-##  9 Alabama Lawrence   2013         27       0        0          0        0        109
-## 10 Alabama Madison    2013         40       0        0        220        0         63
-## # … with 8,271 more rows, and 2 more variables: days_pm10 &lt;dbl&gt;,
-## #   state_name &lt;fct&gt;</code></pre>
+  group_by(state) %&gt;%
+  summarize(median = median(median_aqi)) %&gt;%
+  rename(&quot;median_aqi&quot; = &quot;median&quot;)</code></pre>
+<pre><code>## # A tibble: 51 × 2
+##    state                median_aqi
+##    &lt;chr&gt;                     &lt;dbl&gt;
+##  1 Alabama                    38  
+##  2 Alaska                     21.5
+##  3 Arizona                    44  
+##  4 Arkansas                   35  
+##  5 California                 44  
+##  6 Colorado                   44  
+##  7 Connecticut                40  
+##  8 Delaware                   41.5
+##  9 District Of Columbia       47  
+## 10 Florida                    36  
+## # … with 41 more rows</code></pre>
 
 
 

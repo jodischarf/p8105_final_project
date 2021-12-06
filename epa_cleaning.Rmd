@@ -54,12 +54,14 @@ sapply(epa_df, function(x) sum(is.na(x)))
 
 ```
 
-New Jersey, Guam, the Virgin Islands, and the City of Mexico do not have codes associated in this [codebook](https://www.cdc.gov/brfss/annual_data/2019/pdf/codebook19_llcp-v2-508.HTML)
+New Jersey, Guam, the Virgin Islands, and the City of Mexico do not have codes associated in this [codebook](https://www.cdc.gov/brfss/annual_data/2019/pdf/codebook19_llcp-v2-508.HTML). They have been removed from the EPA dataset.
 
 ```{r, median_aqi}
 
 epa_df %>%
-  group_by(state)
+  group_by(state) %>%
+  summarize(median = median(median_aqi)) %>%
+  rename("median_aqi" = "median")
 
 
 ```
