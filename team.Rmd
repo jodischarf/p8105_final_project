@@ -9,7 +9,7 @@ We are an interdisciplinary team formed during our second-year as candidates of 
 
 <br></br>
 
-# <a href=""><img class="cat_circle" src="image/tara.jpeg"></a><span style="padding-left:25px">Tara Ahi
+# <a href=""><img class="cat_circle" src="images/tara.jpeg"></a><span style="padding-left:25px">Tara Ahi
 
 I'm Tara Ahi.
 
@@ -17,7 +17,7 @@ You can learn more about me [here](https://taraahi.github.io/)
 
 <br></br>
 
-# <a href=""><img class="cat_circle" src="image/gunnar.jpeg"></a><span style="padding-left:25px"> Gunnar Colleen
+# <a href=""><img class="cat_circle" src="images/gunnar.jpeg"></a><span style="padding-left:25px"> Gunnar Colleen
 
 I'm Gunnar Colleen.
 
@@ -25,7 +25,7 @@ You can learn more about me [here](https://gcolleen.github.io/)
 
 <br></br>
 
-# <a href=""><img class="cat_circle" src="image/adobe.jpg"></a><span style="padding-left:25px">Amanda Miles
+# <a href=""><img class="cat_circle" src="images/mandy.png"></a><span style="padding-left:25px">Amanda Miles
 
 I'm Mandy Miles.
 
@@ -33,7 +33,7 @@ You can learn more about me [here](https://acm2268.github.io/)
 
 <br></br>
 
-# <a href=""><img class="cat_circle" src="image/gavin.jpg"></a><span style="padding-left:25px">Jodi Scharf
+# <a href=""><img class="cat_circle" src="images/jodi.png"></a><span style="padding-left:25px">Jodi Scharf
 
 I'm Jodi Scharf
 
@@ -41,7 +41,7 @@ You can learn more about me [here](https://jodischarf.github.io/)
 
 <br></br>
 
-# <a href=""><img class="cat_circle" src="image/jocelyn.jpeg"></a><span style="padding-left:25px">Jocelyn Sun
+# <a href=""><img class="cat_circle" src="images/jocelyn.jpeg"></a><span style="padding-left:25px">Jocelyn Sun
 
 I'm Jocelynn Sun.
 
