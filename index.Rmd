@@ -3,7 +3,7 @@ title: <center>The Project - P8105 Data Science I Project
 output: html_document
 ---
 
-<h2 style="text-align: center;" markdown="1">Exploring air and asmtha</h2>
+<h2 style="text-align: center;" markdown="1">Exploring air and asthma</h2>
 <h6 style="text-align: center;" markdown="1">By: Tara Ahi (ta2645)  |  Gunnar Colleen (jgc2157)  |  Mandy Miles (acm2268)  |  Jodi Scharf (jys2137)  |  Jocelyn Sun (jys2136)</h6>
 <center><a href=""><img src="image/city_image"></a></center>
 
