@@ -1,0 +1,35 @@
+name: "Global Settings"
+output_dir: "."
+navbar:
+  title: "<div><img src=\"image/title-icon.png\" height=\"22px\"><span style=\"padding-left:10px\">The Project</div>"
+  left:
+  - text: "About"
+    menu:
+    - text: "The Project"
+      href: proj_background.html
+    - text: "The Team"
+      href: team.html
+  right:
+  - text: "Project Report"
+    icon: fa-file-text-o fa-lg
+    href: report.html
+  - text: "Contact Us"
+    icon: fa-telegram fa-lg
+    menu:
+    - text: "Tara Ahi"
+      href: mailto:<ta2645@cumc.columbia.edu>
+    - text: "Gunnar Colleen"
+      href: mailto:<jgc2157@cumc.columbia.edu> 
+    - text: "Mandy Miles"
+      href: mailto:<acm2268@cumc.columbia.edu>
+    - text: "Jodi Scharf"
+      href: mailto:<jys2137@cumc.columbia.edu>
+    - text: "Jocelyn Sun"
+      href: mailto:<jys2136@cumc.columbia.edu>
+  - icon: fa-github fa-lg
+    href: https://github.com/jodischarf/P8105_final_project.github.io 
+output:
+  html_document:
+    css: simplex2-modded.min.css
+    includes:
+      after_body: _suffix.html

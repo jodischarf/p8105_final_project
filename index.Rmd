@@ -1,0 +1,43 @@
+---
+title: <center>The Project - P8105 Data Science I Project 
+output: html_document
+---
+
+<h2 style="text-align: center;" markdown="1">Exploring the fragility index and learning about clinical trials</h2>
+<h6 style="text-align: center;" markdown="1">By: Tara Ahi (ta2645)  |  Gunnar Colleen (jgc2157)  |  Mandy Miles (acm2268)  |  Jodi Scharf (jys2137)  |  Jocelyn Sun (jys2136)</h6>
+<center><a href=""><img src="image/city_image"></a></center>
+
+<br></br>
+
+<center>
+<iframe width="840" height="472" src="https://www.youtube.com/embed/3_IoGGijsu4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</center>
+
+# Introduction
+
+What we are looking at. More details regarding our motivation can be found [here](proj_background.html).
+
+# Dataset
+
+Things about our data.
+
+How we got our data.
+
+This project ended up merging two datasets:
+
+1. A dataset 1
+2. A dataset 2
+
+# Findings
+
+A quick summary of our findings include:     
+
+1.
+2.
+3.
+
+For detailed results, analysis and output, please refer to our [report](report.html).
+
+# Fun Facts about the project
+
+Things 

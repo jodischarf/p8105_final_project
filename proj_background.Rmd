@@ -1,0 +1,43 @@
+---
+title: "<div><img src=\"image/city_image.jpeg\" style=\"max-width:64px; max-height:64px;\"><span style=\"padding-left:20px\">The Project</div>"
+output: html_document
+---
+
+<br></br>
+
+# What is it?
+
+What are we looking at
+
+<br></br>
+
+# Project's Motivation
+
+Motivation motivation
+
+<br></br>
+
+# Initial Hypotheses
+
+Our main question of interest is 
+
+We hypothesize that there will be this this and this. We believe this to be true for two main reasons:
+
+* Reason 1 
+* Reason 2
+
+We have a few secondary questions of interest if time allows:
+
+* A question
+* Another one
+* And yet another
+
+# What did we do in this project?
+
+This project: 
+
+1. Explored data
+2. Made maps
+3. Created an interactive thing
+4. Created a graphical display 
+5. Recommends stuff
