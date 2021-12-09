@@ -112,13 +112,18 @@ head(brfss_factor_df)
 brfss_epa_df = 
   left_join(brfss_factor_df, state_epa_df, by = c("state_year" = "state_code_year"))
 
+brfss_epa_df = brfss_epa_df %>%
+  rename(epa_year = year) %>%
+  relocate(state_year, state, state_name, iyear, everything())
+
+
 ```
 
 brfss_epa_df is the file that merged EPA state-level AQI data by year with BRFSS individual level data 
 
 ```{r}
 
-head(brfss_factor_df)
+head(brfss_epa_df)
 
 ```
 
