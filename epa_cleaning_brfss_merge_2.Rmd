@@ -81,14 +81,20 @@ state_epa_df = state_epa_df %>%
   mutate(
     state_code_year = paste0(state_code, "_", year)
   ) %>%
-  relocate(state_code_year, everything())
+  relocate(state_code_year, everything()) %>%
+  select(-state_year)
 
-view(state_epa_df)
+head(state_epa_df)
 
 ```
 
 
 ## Merging EPA and BRFSS State-Level Data
+
+* Read in the BRFSS data
+* Made state a factor in the BRFSS DF
+* Created a new column in BRFSS which concatenates state and year for the merge
+* Merged EPA state-level data with BRFSS state-level data
 
 ```{r epa_brfss_merge}
 
@@ -97,23 +103,21 @@ brfss_df = read_csv(file = "./brfss_data/brfss_12072021.csv")
 brfss_factor_df = brfss_df %>%
   mutate(
     state = as.factor(as.character(state)),
-    state_year = paste0(state, "_", brfss_year)
+    state_year = paste0(state, "_", iyear)
   ) %>%
-  relocate(state_year, state, brfss_year, everything())
+  relocate(state_year, state, iyear, everything())
+
+head(brfss_factor_df)
+
+brfss_epa_df = 
+  left_join(brfss_factor_df, state_epa_df, by = c("state_year" = "state_code_year"))
 
 ```
+
 
 ```{r}
 
 head(brfss_factor_df)
-
-```
-
-
-```{r}
-
-brfss_epa_df = 
-  left_join(brfss_factor_df, state_epa_df, by = c("state" = "state_code"))
 
 ```
 
