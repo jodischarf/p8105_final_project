@@ -111,27 +111,9 @@ aqi_graph <- state_df %>%
 
 
 ##Creating a map of asthma prevalence by urban county by year in plotly
-#First load the brfss_cities dataset from local brfss library
-#Also load county level epa data
+#load the cleaned and combined county data + epa data
 ```{r}
-cities_df <- read_csv("brfss_data/brfss_cities.csv")
-#state abbreviations csv
-state_ab <- read_csv("brfss_data/csvData.csv") %>%
-  clean_names() %>%
-  select(state, code)
-
-epa_counties <- read_csv("brfss_data/epa.csv") %>%
-  rename(state = state_name) %>%
-  select(state, county, year, median_aqi)
-  
-epa_counties <- left_join(epa_counties, state_ab) %>%
-  select(-state)
-
-#join with county level data
-county_data <- left_join(cities_df, epa_counties, by = c("county" = "county", "state" = "code", "brfss_year" = "year"))
-
-county_data %>%
-  filter(state == "CA")
+county_data <- read_csv("brfss_data/county_data.csv")
 ```
 #create a prevalence variable for asthma_current and then make a hover label
 ```{r}
