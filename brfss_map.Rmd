@@ -6,9 +6,8 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE, echo=FALSE, message=FALSE, warning=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
-
 ```{r}
 library(tidyverse)
 library(janitor)
@@ -17,12 +16,12 @@ library(plotly)
 library(readr)
 library(rjson)
 ```
-##Creating state level brfss map of asthma prevalence
 ```{r}
+##Creating state level brfss map of asthma prevalence
+
 #Loading the main brfss data from local library
 state_df <- read_csv("brfss_data/brfss_epa.csv")
 ```
-
 ```{r}
 #Have to use state abbreviations to work with the plotly map
 state_df <- state_df %>%
@@ -70,11 +69,9 @@ asthma_graph <- state_df %>%
   animation_slider(
     currentvalue = list(prefix = "YEAR "))
 ```
-
+```{r}
 ##Creating a map of AQI by county by year in plotly
 #First load and clean the epa dataset from local git
-
-```{r}
 #reuse state_df
 
 #Creating the state level median aqi map in plotly
@@ -104,19 +101,14 @@ aqi_graph <- state_df %>%
   animation_slider(
     currentvalue = list(prefix = "YEAR "))
 ```
-
-
-
-
-
-
+```{r}
 ##Creating a map of asthma prevalence by urban county by year in plotly
 #load the cleaned and combined county data + epa data
-```{r}
 county_data <- read_csv("brfss_data/county_data.csv")
 ```
-#create a prevalence variable for asthma_current and then make a hover label
 ```{r}
+#create a prevalence variable for asthma_current and then make a hover label
+
 county_data <- county_data %>%
   group_by(fips, brfss_year, county, state, median_aqi) %>%
   count(asthma_current) %>%
@@ -128,7 +120,6 @@ county_data <- county_data %>%
   mutate(hover = paste0(county, ", ", state, " Asthma Prevalence: ", asthma_perc, "<br>", "Median AQI: ", median_aqi),
          nfips = sprintf("%05d", fips))
 ```
-
 ```{r}
 #Load county level map from the below link
 url <- 'https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json'
@@ -166,9 +157,9 @@ urban_asthma_map <- county_data %>%
     animation_slider(
     currentvalue = list(prefix = "YEAR "))
 ```
-
-#creating urban county-level AQI map reusing urban_data df
 ```{r}
+#creating urban county-level AQI map reusing urban_data df
+
 #Load county level map from the below link
 url <- 'https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json'
 
@@ -205,17 +196,19 @@ urban_aqi_map <- county_data %>%
     animation_slider(
     currentvalue = list(prefix = "YEAR "))
 ```
-
+# Asthma Prevalence and Air Quality Across the United States
 
 ## State Level Maps of Asthma Prevalence and AQI
 ```{r}
+
 aqi_graph
 
 asthma_graph
 ```
-
 ## County Level Maps of Asthma Prevalence and AQI
+
 ```{r}
+
 urban_aqi_map
 
 urban_asthma_map
