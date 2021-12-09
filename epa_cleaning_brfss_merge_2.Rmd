@@ -79,8 +79,9 @@ view(state_epa_df)
 
 state_epa_df = state_epa_df %>%
   mutate(
-    state_year = paste0(state_code, "_", year)
-  )
+    state_code_year = paste0(state_code, "_", year)
+  ) %>%
+  relocate(state_code_year, everything())
 
 view(state_epa_df)
 
@@ -93,18 +94,26 @@ view(state_epa_df)
 
 brfss_df = read_csv(file = "./brfss_data/brfss_12072021.csv")
 
-head(brfss_df)
-
 brfss_factor_df = brfss_df %>%
-  relocate(state, everything()) %>%
   mutate(
-    state = as.factor(as.character(state))
-  )
-           
+    state = as.factor(as.character(state)),
+    state_year = paste0(state, "_", brfss_year)
+  ) %>%
+  relocate(state_year, state, brfss_year, everything())
+
+```
+
+```{r}
+
+head(brfss_factor_df)
+
+```
+
+
+```{r}
+
 brfss_epa_df = 
   left_join(brfss_factor_df, state_epa_df, by = c("state" = "state_code"))
-
-
 
 ```
 
