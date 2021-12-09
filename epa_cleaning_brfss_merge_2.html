@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Amanda Miles" />
+
+
+<title>epa_cleaning_brfss_merge_2</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="simplex2-modded.min.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><div><img src="image/title-icon.png" height="22px"><span style="padding-left:10px">The Project</div></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    About
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="proj_background.html">The Project</a>
+    </li>
+    <li>
+      <a href="team.html">The Team</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="report.html">
+    <span class="fa fa-file-text-o fa-lg"></span>
+     
+    Project Report
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-telegram fa-lg"></span>
+     
+    Contact Us
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:&lt;ta2645@cumc.columbia.edu&gt;">Tara Ahi</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;jgc2157@cumc.columbia.edu&gt;">Gunnar Colleen</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;acm2268@cumc.columbia.edu&gt;">Mandy Miles</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;jys2137@cumc.columbia.edu&gt;">Jodi Scharf</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;jys2136@cumc.columbia.edu&gt;">Jocelyn Sun</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="https://github.com/jodischarf/P8105_final_project.github.io">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">epa_cleaning_brfss_merge_2</h1>
+<h4 class="author">Amanda Miles</h4>
+<h4 class="date">12/8/2021</h4>
+
+</div>
+
+
+<div id="reading-in-and-cleaning-epa-data" class="section level2">
+<h2>Reading in and Cleaning EPA Data</h2>
+<pre class="r"><code>epa_df = 
+  tibble(path = list.files(&quot;./data&quot;, full.names = TRUE)) %&gt;% 
+  mutate(data = purrr::map(.x = path, ~read_csv(.x))) %&gt;% 
+  janitor::clean_names() %&gt;%
+  unnest(data) %&gt;%
+  janitor::clean_names() %&gt;%
+  select(-c(&quot;path&quot;,
+            &quot;days_with_aqi&quot;,
+            &quot;max_aqi&quot;,
+            &quot;good_days&quot;:&quot;hazardous_days&quot;, 
+            &quot;x90th_percentile_aqi&quot;)) %&gt;%
+  rename(&quot;days_pm2.5&quot; = &quot;days_pm2_5&quot;, &quot;state_name&quot; = &quot;state&quot;) %&gt;%
+  mutate(state_code = state_name,
+         state_code = str_replace_all(state_code, &quot; &quot;, &quot;&quot;),
+         state_code = str_to_lower(state_code),
+         state_code =  
+           recode(state_code, 
+             alabama = 1, alaska = 2, arizona = 4, arkansas = 5, 
+             california = 6, colorado = 8, connecticut = 9, delaware = 10,
+             districtofcolumbia = 11, florida = 12, georgia = 13, hawaii = 15, 
+             idaho = 16, illinois = 17, indiana = 18, iowa = 19, kansas = 20, 
+             kentucky = 21, louisiana = 22, maine = 23, maryland = 24, massachusetts = 25, 
+             michigan = 26, minnesota = 27,mississippi = 28, missouri = 29, montana = 30, 
+             nebraska = 31, nevada = 32, newhampshire = 33, newmexico = 35,
+             newyork = 36, northcarolina = 37, northdakota = 38, ohio = 39, oklahoma = 40, 
+             oregon = 41, pennsylvania = 42 , rhodeisland = 44, southcarolina = 45, 
+             southdakota = 46, tennessee = 47, texas = 48, utah = 49, vermont = 50,
+             virginia = 51, washington = 53, westvirginia = 54, wisconsin = 55, 
+             wyoming = 56, puertorico = 72
+             ),
+         state_code = as.factor(state_code)) %&gt;%
+  na.omit(state_code) %&gt;%
+  relocate(state_code, state_name, everything())</code></pre>
+<pre><code>## Rows: 1062 Columns: 19</code></pre>
+<pre><code>## -- Column specification --------------------------------------------------------
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1054 Columns: 19</code></pre>
+<pre><code>## -- Column specification --------------------------------------------------------
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1061 Columns: 19</code></pre>
+<pre><code>## -- Column specification --------------------------------------------------------
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1054 Columns: 19</code></pre>
+<pre><code>## -- Column specification --------------------------------------------------------
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1062 Columns: 19</code></pre>
+<pre><code>## -- Column specification --------------------------------------------------------
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1056 Columns: 19</code></pre>
+<pre><code>## -- Column specification --------------------------------------------------------
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1053 Columns: 19</code></pre>
+<pre><code>## -- Column specification --------------------------------------------------------
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1040 Columns: 19</code></pre>
+<pre><code>## -- Column specification --------------------------------------------------------
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Warning: Unreplaced values treated as NA as .x is not compatible. Please specify
+## replacements exhaustively or supply .default</code></pre>
+<pre class="r"><code># checking missing values
+sapply(epa_df, function(x) sum(is.na(x)))</code></pre>
+<pre><code>## state_code state_name     county       year median_aqi    days_co   days_no2 
+##          0          0          0          0          0          0          0 
+## days_ozone   days_so2 days_pm2.5  days_pm10 
+##          0          0          0          0</code></pre>
+<pre class="r"><code>view(epa_df)</code></pre>
+<p>New Jersey, Guam, the Virgin Islands, and the City of Mexico do not have codes associated in this <a href="https://www.cdc.gov/brfss/annual_data/2019/pdf/codebook19_llcp-v2-508.HTML">codebook</a>. They have been removed from the EPA dataset.</p>
+</div>
+<div id="creating-an-epa-state-level-aqi-df" class="section level2">
+<h2>Creating an EPA State-Level AQI DF</h2>
+<pre class="r"><code>state_epa_df = epa_df %&gt;%
+  group_by(state_code, state_name, year) %&gt;%
+  summarize(median = median(median_aqi)) %&gt;%
+  rename(&quot;median_aqi&quot; = &quot;median&quot;) </code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;state_code&#39;, &#39;state_name&#39;. You can override using the `.groups` argument.</code></pre>
+<pre class="r"><code>view(state_epa_df)</code></pre>
+</div>
+<div id="adding-column-combining-state-code-and-year-for-the-merge" class="section level2">
+<h2>Adding Column Combining State Code and Year for the Merge</h2>
+<pre class="r"><code>state_epa_df = state_epa_df %&gt;%
+  mutate(
+    state_code_year = paste0(state_code, &quot;_&quot;, year)
+  ) %&gt;%
+  relocate(state_code_year, everything())
+
+head(state_epa_df)</code></pre>
+<pre><code>## # A tibble: 6 x 5
+## # Groups:   state_code, state_name [1]
+##   state_code_year state_code state_name  year median_aqi
+##   &lt;chr&gt;           &lt;fct&gt;      &lt;chr&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+## 1 1_2013          1          Alabama     2013       38  
+## 2 1_2014          1          Alabama     2014       38  
+## 3 1_2015          1          Alabama     2015       38.5
+## 4 1_2016          1          Alabama     2016       40  
+## 5 1_2017          1          Alabama     2017       37  
+## 6 1_2018          1          Alabama     2018       35</code></pre>
+</div>
+<div id="merging-epa-and-brfss-state-level-data" class="section level2">
+<h2>Merging EPA and BRFSS State-Level Data</h2>
+<ul>
+<li>Read in the BRFSS data</li>
+<li>Made state a factor in the BRFSS DF</li>
+<li>Created a new column in BRFSS which concatenates state and year for the merge</li>
+<li>Merged EPA state-level data with BRFSS individual-level data</li>
+</ul>
+<pre class="r"><code>brfss_df = read_csv(file = &quot;./brfss_data/brfss_12072021.csv&quot;)</code></pre>
+<pre><code>## Rows: 3591874 Columns: 14</code></pre>
+<pre><code>## -- Column specification --------------------------------------------------------
+## Delimiter: &quot;,&quot;
+## chr (8): imonth, iday, ageg5yr, sexvar, race, asthma_current, asthma_ever, copd
+## dbl (6): brfss_year, iyear, state, llcpwt, ststr, psu</code></pre>
+<pre><code>## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>brfss_factor_df = brfss_df %&gt;%
+  mutate(
+    state = as.factor(as.character(state)),
+    state_year = paste0(state, &quot;_&quot;, iyear)
+  ) %&gt;%
+  relocate(state_year, state, iyear, everything())
+
+head(brfss_factor_df)</code></pre>
+<pre><code>## # A tibble: 6 x 15
+##   state_year state iyear brfss_year imonth iday  ageg5yr sexvar race 
+##   &lt;chr&gt;      &lt;fct&gt; &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;
+## 1 1_2020     1      2020       2020 01     04    55-59   female white
+## 2 1_2020     1      2020       2020 02     07    65-69   female black
+## 3 1_2020     1      2020       2020 01     23    65-69   female black
+## 4 1_2020     1      2020       2020 01     09    80+     female white
+## 5 1_2020     1      2020       2020 01     04    80+     female white
+## 6 1_2020     1      2020       2020 01     09    65-69   male   white
+## # ... with 6 more variables: asthma_current &lt;chr&gt;, asthma_ever &lt;chr&gt;,
+## #   copd &lt;chr&gt;, llcpwt &lt;dbl&gt;, ststr &lt;dbl&gt;, psu &lt;dbl&gt;</code></pre>
+<pre class="r"><code>brfss_epa_df = 
+  left_join(brfss_factor_df, state_epa_df, by = c(&quot;state_year&quot; = &quot;state_code_year&quot;))
+
+brfss_epa_df = brfss_epa_df %&gt;%
+  rename(epa_year = year) %&gt;%
+  relocate(state_year, state, state_name, iyear, everything())</code></pre>
+<p>brfss_epa_df is the file that merged EPA state-level AQI data by year with BRFSS individual level data</p>
+<pre class="r"><code>head(brfss_epa_df)</code></pre>
+<pre><code>## # A tibble: 6 x 19
+##   state_year state state_name iyear brfss_year imonth iday  ageg5yr sexvar race 
+##   &lt;chr&gt;      &lt;fct&gt; &lt;chr&gt;      &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;
+## 1 1_2020     1     Alabama     2020       2020 01     04    55-59   female white
+## 2 1_2020     1     Alabama     2020       2020 02     07    65-69   female black
+## 3 1_2020     1     Alabama     2020       2020 01     23    65-69   female black
+## 4 1_2020     1     Alabama     2020       2020 01     09    80+     female white
+## 5 1_2020     1     Alabama     2020       2020 01     04    80+     female white
+## 6 1_2020     1     Alabama     2020       2020 01     09    65-69   male   white
+## # ... with 9 more variables: asthma_current &lt;chr&gt;, asthma_ever &lt;chr&gt;,
+## #   copd &lt;chr&gt;, llcpwt &lt;dbl&gt;, ststr &lt;dbl&gt;, psu &lt;dbl&gt;, state_code &lt;fct&gt;,
+## #   epa_year &lt;dbl&gt;, median_aqi &lt;dbl&gt;</code></pre>
+</div>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+ 
+<hr />
+<p style="text-align: center;">
+A work by <a href="https://github.com/taraahi">Tara Ahi</a>, <a href="https://github.com/gcolleen">Gunnar Colleen</a>, <a href="https://github.com/acm2268">Mandy Miles</a>, <a href="https://github.com/jodischarf">Jodi scharf</a>, and <a href="https://github.com/jocelyynsun >Jocelyn Sun</a>
+</p>
+<p style="text-align: center;">
+© Copyright 2021 The Project Team, All Rights Reserved | Powered by Github.io
+</p>
+
+<p> </p>
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

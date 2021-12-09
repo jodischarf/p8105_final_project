@@ -81,8 +81,7 @@ state_epa_df = state_epa_df %>%
   mutate(
     state_code_year = paste0(state_code, "_", year)
   ) %>%
-  relocate(state_code_year, everything()) %>%
-  select(-state_year)
+  relocate(state_code_year, everything())
 
 head(state_epa_df)
 
