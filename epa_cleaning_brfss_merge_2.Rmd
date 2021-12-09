@@ -94,7 +94,7 @@ head(state_epa_df)
 * Read in the BRFSS data
 * Made state a factor in the BRFSS DF
 * Created a new column in BRFSS which concatenates state and year for the merge
-* Merged EPA state-level data with BRFSS state-level data
+* Merged EPA state-level data with BRFSS individual-level data
 
 ```{r epa_brfss_merge}
 
@@ -114,6 +114,7 @@ brfss_epa_df =
 
 ```
 
+brfss_epa_df is the file that merged EPA state-level AQI data by year with BRFSS individual level data 
 
 ```{r}
 
