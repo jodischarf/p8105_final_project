@@ -73,6 +73,20 @@ view(state_epa_df)
 
 ```
 
+## Adding Column Combining State Code and Year for the Merge
+
+```{r epa_state_year_code}
+
+state_epa_df = state_epa_df %>%
+  mutate(
+    state_year = paste0(state_code, "_", year)
+  )
+
+view(state_epa_df)
+
+```
+
+
 ## Merging EPA and BRFSS State-Level Data
 
 ```{r epa_brfss_merge}
