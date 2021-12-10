@@ -1,25 +1,30 @@
 ---
 title: "<div><img src=\"image/city_image.jpeg\" style=\"max-width:64px; max-height:64px;\"><span style=\"padding-left:20px\">The Project</div>"
-output: html_document
+output:   
+  html_document:
+    toc: true
+    toc_float: true
 ---
 
 <br></br>
 
 # What is it?
 
-What are we looking at
+**Do we need to keep this section here?**
 
 <br></br>
 
 # Project's Motivation
 
-Motivation motivation
+Out initial motivation was linked with the recurring episodes and increased frequency of wildfire outbreaks in the United States, specifically Pacific Northwest, caused by the rise in global temperature. The air quality resulting in these fires are not only concentrated in the Pacific Northwest, but also travel across the country by wind patterns.  
+
+This interest grew to embody a curiosity of air quality across the nation that is not restricted to the events of wildfires. The complex nature of air quality cannot be subject to one type of event only. Air quality is highly linked with the incidence of asthma, especially young children. It is a major noncommunicable disease that can be self-managed given the proper tools and information. This includes information on air quality. 
 
 <br></br>
 
 # Initial Hypotheses
 
-Our main question of interest is 
+**How has air quality impacted asthma over time (2013-2020) in the United States?**
 
 We hypothesize that there will be this this and this. We believe this to be true for two main reasons:
 

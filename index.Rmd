@@ -1,6 +1,9 @@
 ---
 title: <center>The Project - P8105 Data Science I Project 
-output: html_document
+output:   
+  html_document:
+    toc: true
+    toc_float: true
 ---
 
 <h2 style="text-align: center;" markdown="1">Exploring air and asthma</h2>
@@ -13,20 +16,37 @@ output: html_document
 <iframe width="840" height="472" src="https://www.youtube.com/embed/3_IoGGijsu4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </center>
 
-# Introduction
+## Background 
 
-What we are looking at. More details regarding our motivation can be found [here](proj_background.html).
+The relationship between air quality and asthma has long been established. But it is complex. Asthma triggers can vary based on pollutants, how long an individual has been exposed to these pollutants, and lifestyle. Air quality is unique to geographical location down to the local level, which adds to the difficulty of asthma management.  
+
+In the United States, the air quality index (AQI) is the standard air quality measurement and based on the [EPA's air quality index](https://www.airnow.gov/aqi/aqi-basics/). The index is calculated on a daily basis and based on concentrations of the following major pollutants:  
+
+1. Ground-level ozone  
+2. Particulate matter (PM2.5 & PM10)
+3. Carbon monoxide  
+4. Sulfur dioxide  
+5. Nitrogen dioxide    
+
+AQI values can range from 0 to 500, with lower numbers representing better air quality and higher numbers representing worse air quality. The index also details the range of values associated with categories of air quality: good, moderate, unhealthy for sensitive groups, unhealthy, very unhealthy, and hazardous.  
+
+Individuals with asthma are considered to be a sensitive group. Location-specific AQI may be helpful for individuals to self-manage their asthma. Cities with historically higher AQI can also supplement warning days to protect the health of the public. 
+
+More details regarding our motivation can be found [here](proj_background.html).
 
 # Dataset
 
-Things about our data.
+The data used for the project was obtained from the EPA and the CDC, ranging from the years 2013 - 2020.
 
-How we got our data.
+Data from the EPA:  
+Air quality data is publicly available on the EPA website. We utilized the annual data sets that provided aggregated AQI information based on state. 
 
-This project ended up merging two datasets:
+**Data from the CDC:**  
+Asthma information was collected from BRFFS, the CDC's Behavioral Risk Factor Surveillance System.   
+**Please provide more info here**
 
-1. A dataset 1
-2. A dataset 2
+
+We merged the data from these two sources to provide potential for analysis and depiction of the relationship of asthma and AQI. 
 
 # Findings
 
