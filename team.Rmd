@@ -43,7 +43,7 @@ You can learn more about me [here](https://jodischarf.github.io/)
 
 # <a href=""><img class="cat_circle" src="images/jocelyn.jpeg"></a><span style="padding-left:25px">Jocelyn Sun
 
-I'm Jocelynn Sun.
+My name's Jocelyn and I'm a 2nd year Biostatistics MPH candidate with a certificate in Advanced Epidemiology. My research interests include oncology, maternal & child health, and global inequity in women's health care. When I am not chained to my desk, you'll find me on the hunt for the perfect soup dumplings and petting every dog I pass by in NYC (yes. I am _that_ person).
 
 You can learn more about me [here](https://jocelyynsun.github.io/)
 
