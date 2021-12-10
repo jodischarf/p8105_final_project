@@ -170,7 +170,7 @@ asthma_prev_df %>%
     mode = "markers", 
     color = ~state, 
     text = ~text_label,
-    alpha = 0.5
+    alpha = 4
     ) %>%
   layout(
     xaxis = list(title = 'Median AQI'),
@@ -180,7 +180,9 @@ asthma_prev_df %>%
   
 ```
 
-```{r}
+# Spearman Correlation Calculations
+
+```{r spearman}
 
 
 
