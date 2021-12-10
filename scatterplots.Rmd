@@ -72,9 +72,6 @@ epa_df =
   na.omit(state_code) %>%
   relocate(state_code, state_name, everything())
 
-# checking missing values
-sapply(epa_df, function(x) sum(is.na(x)))
-
 view(epa_df)
 
 ```
@@ -141,9 +138,99 @@ brfss_epa_df = brfss_epa_df %>%
 
 ```{r asthma_prev}
 
+brfss_epa_df = brfss_epa_df %>%
+  mutate(state = ifelse(state == 66, NA, state)) %>%
+  drop_na() %>%
+  mutate(state = factor(state, labels = c("AL", 'AK', "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY')))
+
+asthma_prev_df = brfss_epa_df %>%
+  group_by(state_year, state, iyear, median_aqi) %>%
+  count(asthma_current) %>%
+  mutate(asthma_perc = (n/sum(n) * 100), asthma_perc = round(asthma_perc, 2)) %>%
+  filter(asthma_current == "yes")
+ 
+head(asthma_prev_df)
+
+```
+
+# Scatterplot of Asthma Prevalence and State Median AQI
+
+```{r scatterplot}
+
+asthma_prev_df %>%
+  mutate(
+    text_label = str_c("Year", iyear),
+    state = fct_reorder(state, asthma_perc)) %>% 
+  plot_ly(
+  frame = ~iyear) %>%
+  add_trace(
+    type = "scatter",
+    x = ~median_aqi,
+    y = ~asthma_perc, 
+    mode = "markers", 
+    color = ~state, 
+    text = ~text_label,
+    alpha = 0.5
+    ) %>%
+  layout(
+    xaxis = list(title = 'Median AQI'),
+    yaxis = list(title = 'Asthma Prevalence (%)'),
+    title = "Asthma Prevalence vs State Median AQI by Year"
+  )
+  
+```
+
+```{r}
+
 
 
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
