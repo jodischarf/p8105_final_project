@@ -1,0 +1,157 @@
+---
+title: "scatterplots"
+author: "Amanda Miles"
+date: "12/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(dplyr)
+library(plotly)
+library(flexdashboard)
+library(viridis)
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_color_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+```
+
+# Code that Merges EPA & BRFSS
+
+## Reading in and Cleaning EPA Data
+
+```{r epa_cleaning}
+
+epa_df = 
+  tibble(path = list.files("./data", full.names = TRUE)) %>% 
+  mutate(data = purrr::map(.x = path, ~read_csv(.x))) %>% 
+  janitor::clean_names() %>%
+  unnest(data) %>%
+  janitor::clean_names() %>%
+  select(-c("path",
+            "days_with_aqi",
+            "max_aqi",
+            "good_days":"hazardous_days", 
+            "x90th_percentile_aqi")) %>%
+  rename("days_pm2.5" = "days_pm2_5", "state_name" = "state") %>%
+  mutate(state_code = state_name,
+         state_code = str_replace_all(state_code, " ", ""),
+         state_code = str_to_lower(state_code),
+         state_code =  
+           recode(state_code, 
+             alabama = 1, alaska = 2, arizona = 4, arkansas = 5, 
+             california = 6, colorado = 8, connecticut = 9, delaware = 10,
+             districtofcolumbia = 11, florida = 12, georgia = 13, hawaii = 15, 
+             idaho = 16, illinois = 17, indiana = 18, iowa = 19, kansas = 20, 
+             kentucky = 21, louisiana = 22, maine = 23, maryland = 24, massachusetts = 25, 
+             michigan = 26, minnesota = 27,mississippi = 28, missouri = 29, montana = 30, 
+             nebraska = 31, nevada = 32, newhampshire = 33, newmexico = 35,
+             newyork = 36, northcarolina = 37, northdakota = 38, ohio = 39, oklahoma = 40, 
+             oregon = 41, pennsylvania = 42 , rhodeisland = 44, southcarolina = 45, 
+             southdakota = 46, tennessee = 47, texas = 48, utah = 49, vermont = 50,
+             virginia = 51, washington = 53, westvirginia = 54, wisconsin = 55, 
+             wyoming = 56, puertorico = 72
+             ),
+         state_code = as.factor(state_code)) %>%
+  na.omit(state_code) %>%
+  relocate(state_code, state_name, everything())
+
+# checking missing values
+sapply(epa_df, function(x) sum(is.na(x)))
+
+view(epa_df)
+
+```
+
+New Jersey, Guam, the Virgin Islands, and the City of Mexico do not have codes associated in this [codebook](https://www.cdc.gov/brfss/annual_data/2019/pdf/codebook19_llcp-v2-508.HTML). They have been removed from the EPA dataset.
+
+## Creating an EPA State-Level AQI DF
+
+```{r epa_state_level}
+
+state_epa_df = epa_df %>%
+  group_by(state_code, state_name, year) %>%
+  summarize(median = median(median_aqi)) %>%
+  rename("median_aqi" = "median") 
+
+view(state_epa_df)
+
+```
+
+## Adding Column Combining State Code and Year for the Merge
+
+```{r epa_state_year_code}
+
+state_epa_df = state_epa_df %>%
+  mutate(
+    state_code_year = paste0(state_code, "_", year)
+  ) %>%
+  relocate(state_code_year, everything())
+
+head(state_epa_df)
+
+```
+
+## Merging EPA and BRFSS State-Level Data
+
+* Read in the BRFSS data
+* Made state a factor in the BRFSS DF
+* Created a new column in BRFSS which concatenates state and year for the merge
+* Merged EPA state-level data with BRFSS individual-level data
+
+```{r epa_brfss_merge}
+
+brfss_df = read_csv(file = "./brfss_data/brfss_12072021.csv")
+
+brfss_factor_df = brfss_df %>%
+  mutate(
+    state = as.factor(as.character(state)),
+    state_year = paste0(state, "_", iyear)
+  ) %>%
+  relocate(state_year, state, iyear, everything())
+
+head(brfss_factor_df)
+
+brfss_epa_df = 
+  left_join(brfss_factor_df, state_epa_df, by = c("state_year" = "state_code_year"))
+
+brfss_epa_df = brfss_epa_df %>%
+  rename(epa_year = year) %>%
+  relocate(state_year, state, state_name, iyear, everything())
+
+```
+
+# Calculating Asthma Prevalence by State & Year
+
+```{r asthma_prev}
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
