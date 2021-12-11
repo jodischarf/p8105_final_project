@@ -85,11 +85,10 @@ state_aqi_df %>%
             mode = 'lines+markers',
             x = ~year, 
             y = ~median_aqi, 
-            color = ~state_name, 
+            color = ~state, 
             colors = 'viridis') %>%
   layout(xaxis = list(title = "Year"),
-         yaxis = list(range = list(13, 53), 
-                      title = "Median AQI"),
+         yaxis = list(title = "Median AQI"),
          title = "Change in median AQI over time by state (2013 - 2020)")
   
 
