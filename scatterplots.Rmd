@@ -249,9 +249,35 @@ knitr::kable(corr_results,
              digits = 2,
              caption = "*Spearman Correlation Estimates: Asthma Prevalence and State Median AQI, 2013-2020*")
 
-
 ```
 
+# Two-Sample Test of Proportions: AZ vs WV
+
+```{r prop_test}
+
+az_wv_df = brfss_epa_df %>%
+  filter(state %in% c("AZ", "WV")) %>%
+  group_by(state) %>%
+  mutate(
+    asthma_current = as.factor(asthma_current)
+  ) %>%
+  summarize(
+    current_asthma = sum(asthma_current == "yes"),
+    n = sum(asthma_current == "yes") + sum(asthma_current == "no")
+  )
+
+prop_results = prop.test(x = az_wv_df$current_asthma, 
+          n = az_wv_df$n, 
+          alternative = "two.sided") %>%
+          broom::tidy() %>%
+          janitor::clean_names() %>%
+          select(-parameter, -method, -alternative)
+
+knitr::kable(prop_results, 
+             digits = 2,
+             caption = "*Two-Sample Test of Proportions: AZ vs WV*")
+
+```
 
 
 
