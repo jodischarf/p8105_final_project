@@ -255,7 +255,6 @@ merged_summary_df = merged_df %>%
     ) %>%
   arrange(desc(median_aqi))
 
-
 min_max_aqi = merged_summary_df[c(1, 2, 51), ]
   
 knitr::kable(min_max_aqi,
