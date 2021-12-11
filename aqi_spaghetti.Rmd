@@ -14,7 +14,6 @@ library(dplyr)
 library(plotly)
 library(flexdashboard)
 library(viridis)
-library(reticulate)
 
 knitr::opts_chunk$set(
   fig.width = 6,
