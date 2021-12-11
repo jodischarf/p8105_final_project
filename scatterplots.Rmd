@@ -181,7 +181,7 @@ asthma_prev_df %>%
   
 ```
 
-# Spearman Correlation Calculations
+# Spearman Correlation Estimates: Asthma Prevalence and State Median AQI by Year
 
 ```{r spearman}
 
@@ -221,21 +221,33 @@ spearman_nest =
 
 knitr::kable(spearman_nest, 
              digits = 2,
-             caption = "*Spearman Correlation Estimates: Asthma Prevalence and State Median AQI*")
+             caption = "*Spearman Correlation Estimates: Asthma Prevalence and State Median AQI by Year*")
   
 
 ```
-
+# Spearman Correlation Estimates: Asthma Prevalence and State Median AQI from 2013-2020
 
 ```{r}
 
-res2 <-cor.test(my_data$wt, my_data$mpg,  method = "spearman")
-res2
 
-cor.test(x, y,
-         alternative = c("two.sided", "less", "greater"),
-         method = c("pearson", "kendall", "spearman"),
-         exact = NULL, conf.level = 0.95, continuity = FALSE, …)
+corr_results = cor.test(spearman_df$median_aqi, spearman_df$asthma_perc, method = "spearman")
+
+corr_results = corr_results %>%
+  broom::tidy() %>%
+  janitor::clean_names() %>%
+  mutate(
+    estimate = round(estimate, digits = 3),
+    statistic = round(statistic, digits = 3),
+    p_value = round(p_value, digits = 3)
+  ) %>%
+  select(-method, -alternative) %>%
+  rename(test_statistic = statistic)
+
+view(corr_results)
+
+knitr::kable(corr_results, 
+             digits = 2,
+             caption = "*Spearman Correlation Estimates: Asthma Prevalence and State Median AQI, 2013-2020*")
 
 
 ```
