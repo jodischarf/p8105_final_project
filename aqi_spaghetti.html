@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Jocelyn Sun" />
+
+<meta name="date" content="2021-12-10" />
+
+<title>spaghetti_plots</title>
+
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="simplex2-modded.min.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><div><img src="images/breath_icon.jpeg" height="22px"><span style="padding-left:10px">A Breath of Fresh Air</div></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    About
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="background.html">What We Are Looking At</a>
+    </li>
+    <li>
+      <a href="team.html">Who We Are</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="report.html">
+    <span class="fa fa-file-text-o"></span>
+     
+    Project Report
+  </a>
+</li>
+<li>
+  <a href="viz.html">
+    <span class="fas fa-image"></span>
+     
+    Summary Visualizations
+  </a>
+</li>
+<li>
+  <a href="stats.html">
+    <span class="fas fa-chart-line"></span>
+     
+    Statistical Analysis
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-telegram"></span>
+     
+    Contact Us
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:&lt;ta2645@cumc.columbia.edu&gt;">Tara Ahi</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;jgc2157@cumc.columbia.edu&gt;">Gunnar Colleen</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;acm2268@cumc.columbia.edu&gt;">Mandy Miles</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;jys2137@cumc.columbia.edu&gt;">Jodi Scharf</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;jys2136@cumc.columbia.edu&gt;">Jocelyn Sun</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="https://github.com/jodischarf/P8105_final_project.github.io">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">spaghetti_plots</h1>
+<h4 class="author">Jocelyn Sun</h4>
+<h4 class="date">12/10/2021</h4>
+
+</div>
+
+
+<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+## ✓ tibble  3.1.4     ✓ dplyr   1.0.7
+## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
+## ✓ readr   2.0.1     ✓ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(dplyr)
+library(plotly)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;plotly&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     last_plot</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     filter</code></pre>
+<pre><code>## The following object is masked from &#39;package:graphics&#39;:
+## 
+##     layout</code></pre>
+<pre class="r"><code>library(flexdashboard)
+library(viridis)</code></pre>
+<pre><code>## Loading required package: viridisLite</code></pre>
+<pre class="r"><code>library(reticulate)
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = &quot;90%&quot;
+)
+
+theme_set(theme_minimal() + theme(legend.position = &quot;bottom&quot;))
+
+options(
+  ggplot2.continuous.colour = &quot;viridis&quot;,
+  ggplot2.continuous.fill = &quot;viridis&quot;
+)
+
+scale_colour_discrete = scale_color_viridis_d
+scale_fill_discrete = scale_fill_viridis_d</code></pre>
+<pre class="r"><code>epa_df = 
+  tibble(path = list.files(&quot;./data&quot;, full.names = TRUE)) %&gt;% 
+  mutate(data = purrr::map(.x = path, ~read_csv(.x))) %&gt;% 
+  janitor::clean_names() %&gt;%
+  unnest(data) %&gt;%
+  janitor::clean_names() %&gt;%
+  select(-c(&quot;path&quot;,
+            &quot;days_with_aqi&quot;,
+            &quot;max_aqi&quot;,
+            &quot;good_days&quot;:&quot;hazardous_days&quot;, 
+            &quot;x90th_percentile_aqi&quot;)) %&gt;%
+  rename(&quot;days_pm2.5&quot; = &quot;days_pm2_5&quot;) %&gt;%
+  mutate(state_name = state,
+         state_name = str_replace_all(state_name, &quot; &quot;, &quot;&quot;),
+         state_name = str_to_lower(state_name),
+         state_name =  
+           recode(state_name, 
+             alabama = 1, alaska = 2, arizona = 3, arkansas = 5, 
+             california = 6, colorado = 8, connecticut = 9, delaware = 10,
+             districtofcolumbia = 11, florida = 12, georgia = 13, hawaii = 15, 
+             idaho = 16, illinois = 17, indiana = 18, iowa = 19, kansas = 20, 
+             kentucky = 21, louisiana = 22, maine = 23, maryland = 24, massachusetts = 25, 
+             michigan = 26, minnesota = 27,mississippi = 28, missouri = 29, montana = 30, 
+             nebraska = 31, nevada = 32, newhampshire = 33, newmexico = 35,
+             newyork = 36, northcarolina = 37, northdakota = 38, ohio = 39, oklahoma = 40, 
+             oregon = 41, pennsylvania = 42 , rhodeisland = 44, southcarolina = 45, 
+             southdakota = 46, tennessee = 47, texas = 48, utah = 49, vermont = 50,
+             virginia = 51, washington = 53, westvirginia = 54, wisconsin = 55, 
+             wyoming = 56, puertorico = 72
+             ),
+         state_name = as.factor(state_name)) %&gt;%
+  na.omit(state_name) %&gt;%
+  relocate(state_name, state, everything())</code></pre>
+<pre><code>## Rows: 1062 Columns: 19</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1054 Columns: 19</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1061 Columns: 19</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1054 Columns: 19</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1062 Columns: 19</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1056 Columns: 19</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1053 Columns: 19</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Rows: 1040 Columns: 19</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (2): State, County
+## dbl (17): Year, Days with AQI, Good Days, Moderate Days, Unhealthy for Sensi...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...1</code></pre>
+<pre><code>## Rows: 0 Columns: 6</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (6): ...1, state_name, state, year, median_aqi, region</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Warning: Unreplaced values treated as NA as .x is not compatible. Please specify
+## replacements exhaustively or supply .default</code></pre>
+<pre class="r"><code>state_aqi_df = epa_df %&gt;%
+  group_by(state_name, state, year) %&gt;%
+  summarize(median = median(median_aqi)) %&gt;%
+  rename(&quot;median_aqi&quot; = &quot;median&quot;) </code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;state_name&#39;, &#39;state&#39;. You can override using the `.groups` argument.</code></pre>
+<pre class="r"><code>state_aqi_df %&gt;%
+  group_by(state_name) %&gt;%
+  plot_ly() %&gt;% 
+  add_trace(type = &#39;scatter&#39;, 
+            mode = &#39;lines+markers&#39;,
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = &#39;viridis&#39;) %&gt;%
+  layout(xaxis = list(title = &quot;Year&quot;),
+         yaxis = list(range = list(13, 53), 
+                      title = &quot;Median AQI&quot;),
+         title = &quot;Change in median AQI over time by state (2013 - 2020)&quot;)</code></pre>
+<div id="htmlwidget-30ac3a391f8a720972e5" style="width:90%;height:345.6px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-30ac3a391f8a720972e5">{"x":{"visdat":{"2eb52dd029cd":["function () ","plotlyVisDat"]},"cur_data":"2eb52dd029cd","attrs":{"2eb52dd029cd":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","mode":"lines+markers","x":{},"y":{},"color":{},"colors":"viridis","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"Year"},"yaxis":{"domain":[0,1],"automargin":true,"range":[13,53],"title":"Median AQI"},"title":"Change in median AQI over time by state (2013 - 2020)","hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"type":"scatter","mode":"lines+markers","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>region_df = 
+  state_aqi_df %&gt;%
+  mutate(region = state,
+         region = as.character(region),
+         #New England
+         region = ifelse(region %in% c(&quot;Connecticut&quot;, &quot;Maine&quot;,
+                           &quot;Massachusetts&quot;, &quot;New Hampshire&quot;,
+                           &quot;Rhode Island&quot;, &quot;Vermont&quot;), 
+                         &quot;New England&quot;, region),
+         #Middle Atlantic
+         region = ifelse(region %in% c(&quot;New York&quot;, &quot;Pennsylvania&quot;), 
+                         &quot;Middle Atlantic&quot;, region),
+         #East North Central
+          region = ifelse(region %in% c(&quot;Indiana&quot;, &quot;Illinois&quot;, &quot;Michigan&quot;,
+                           &quot;Ohio&quot;, &quot;Wisconsin&quot;), 
+                         &quot;East North Central&quot;, region),
+         #West North Central
+         region = ifelse(region %in% c(&quot;Iowa&quot;, &quot;Kansas&quot;,&quot;Minnesota&quot;, &quot;Missouri&quot;,
+                                       &quot;Nebraska&quot;, &quot;North Dakota&quot;, &quot;South Dakota&quot;), 
+                         &quot;West North Central&quot;, region),
+         #South Atlantic
+         region = ifelse(region %in%  c(&quot;Delaware&quot;, &quot;District Of Columbia&quot;, &quot;Florida&quot;, 
+                                        &quot;Georgia&quot;, &quot;Maryland&quot;,&quot;North Carolina&quot;, &quot;South Carolina&quot;, 
+                                        &quot;Virginia&quot;, &quot;West Virginia&quot;, &quot;Puerto Rico&quot;), 
+                         &quot;South Atlantic &amp; Puerto Rico&quot;, region),
+         #East South Central
+         region = ifelse(region %in% c(&quot;Alabama&quot;, &quot;Kentucky&quot;,&quot;Mississippi&quot;, &quot;Tennessee&quot;), 
+                         &quot;East South Central&quot;, region),
+         #West South Central
+         region = ifelse(region %in% c(&quot;Arkansas&quot;, &quot;Louisiana&quot;, &quot;Oklahoma&quot;, &quot;Texas&quot;), 
+                         &quot;West South Central&quot;, region),
+         #Mountain
+         region = ifelse(region %in% c(&quot;Arizona&quot;, &quot;Colorado&quot;, &quot;Idaho&quot;, &quot;New Mexico&quot;,
+                                       &quot;Montana&quot;, &quot;Utah&quot;, &quot;Nevada&quot;, &quot;Wyoming&quot;),
+                         &quot;Mountain&quot;, region),
+         #Pacific
+         region = ifelse(region %in% c(&quot;Alaska&quot;, &quot;California&quot;, &quot;Hawaii&quot;, &quot;Oregon&quot;, &quot;Washington&quot;),
+                         &quot;Pacific&quot;, region)
+         )
+  
+# checking missing values
+sapply(region_df, function(x) sum(is.na(x)))</code></pre>
+<pre><code>## state_name      state       year median_aqi     region 
+##          0          0          0          0          0</code></pre>
+<pre class="r"><code>write.csv(region_df,&quot;./data/region.csv&quot;, row.names = TRUE)</code></pre>
+<pre class="r"><code>p1 = 
+  region_df %&gt;%
+  group_by(state_name) %&gt;%
+  filter(region == &quot;New England&quot;) %&gt;%
+  plot_ly() %&gt;% 
+  add_trace(type = &#39;scatter&#39;, 
+            mode = &#39;lines+markers&#39;,
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = &#39;viridis&#39;) %&gt;%
+  layout(xaxis = list(title = &quot;Year&quot;),
+         yaxis = list(title = &quot;Median AQI&quot;))</code></pre>
+<pre class="r"><code>p2 =
+  region_df %&gt;%
+  group_by(state_name) %&gt;%
+  filter(region == &quot;Middle Atlantic&quot;) %&gt;%
+  plot_ly() %&gt;% 
+  add_trace(type = &#39;scatter&#39;, 
+            mode = &#39;lines+markers&#39;,
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = &#39;viridis&#39;) %&gt;%
+  layout(xaxis = list(title = &quot;Year&quot;),
+         yaxis = list(title = &quot;Median AQI&quot;))</code></pre>
+<pre class="r"><code>p3 =
+  region_df %&gt;%
+  group_by(state_name) %&gt;%
+  filter(region == &quot;East North Central&quot;) %&gt;%
+  plot_ly() %&gt;% 
+  add_trace(type = &#39;scatter&#39;, 
+            mode = &#39;lines+markers&#39;,
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = &#39;viridis&#39;) %&gt;%
+  layout(xaxis = list(title = &quot;Year&quot;),
+         yaxis = list(title = &quot;Median AQI&quot;))</code></pre>
+<pre class="r"><code>p4 = 
+  region_df %&gt;%
+  group_by(state_name) %&gt;%
+  filter(region == &quot;West North Central&quot;) %&gt;%
+  plot_ly() %&gt;% 
+  add_trace(type = &#39;scatter&#39;, 
+            mode = &#39;lines+markers&#39;,
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = &#39;viridis&#39;) %&gt;%
+  layout(xaxis = list(title = &quot;Year&quot;),
+         yaxis = list(title = &quot;Median AQI&quot;))</code></pre>
+<pre class="r"><code>p5 = 
+  region_df %&gt;%
+  group_by(state_name) %&gt;%
+  filter(region == &quot;South Atlantic &amp; Puerto Rico&quot;) %&gt;%
+  plot_ly() %&gt;% 
+  add_trace(type = &#39;scatter&#39;, 
+            mode = &#39;lines+markers&#39;,
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = &#39;viridis&#39;) %&gt;%
+  layout(xaxis = list(title = &quot;Year&quot;),
+         yaxis = list(title = &quot;Median AQI&quot;))</code></pre>
+<pre class="r"><code>p6 = 
+  region_df %&gt;%
+  group_by(state_name) %&gt;%
+  filter(region == &quot;East South Central&quot;) %&gt;%
+  plot_ly() %&gt;% 
+  add_trace(type = &#39;scatter&#39;, 
+            mode = &#39;lines+markers&#39;,
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = &#39;viridis&#39;) %&gt;%
+  layout(xaxis = list(title = &quot;Year&quot;),
+         yaxis = list(title = &quot;Median AQI&quot;))</code></pre>
+<pre class="r"><code>p7 = 
+  region_df %&gt;%
+  group_by(state_name) %&gt;%
+  filter(region == &quot;West South Central&quot;) %&gt;%
+  plot_ly() %&gt;% 
+  add_trace(type = &#39;scatter&#39;, 
+            mode = &#39;lines+markers&#39;,
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = &#39;viridis&#39;) %&gt;%
+  layout(xaxis = list(title = &quot;Year&quot;),
+         yaxis = list(title = &quot;Median AQI&quot;))</code></pre>
+<pre class="r"><code>p8 =
+  region_df %&gt;%
+  group_by(state_name) %&gt;%
+  filter(region == &quot;Mountain&quot;) %&gt;%
+  plot_ly() %&gt;% 
+  add_trace(type = &#39;scatter&#39;, 
+            mode = &#39;lines+markers&#39;,
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = &#39;viridis&#39;) %&gt;%
+  layout(xaxis = list(title = &quot;Year&quot;),
+         yaxis = list(title = &quot;Median AQI&quot;))</code></pre>
+<pre class="r"><code>p9 = 
+  region_df %&gt;%
+  group_by(state_name) %&gt;%
+  filter(region == &quot;Pacific&quot;) %&gt;%
+  plot_ly() %&gt;% 
+  add_trace(type = &#39;scatter&#39;, 
+            mode = &#39;lines+markers&#39;,
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = &#39;viridis&#39;) %&gt;%
+  layout(xaxis = list(title = &quot;Year&quot;),
+         yaxis = list(title = &quot;Median AQI&quot;))</code></pre>
+<pre class="r"><code>#region_df %&gt;%
+#  group_by(region) %&gt;%
+#  do(p = plot_ly( ., 
+#            x = ~year, 
+#            y = ~median_aqi,
+#            color = ~state_name, 
+#            #colors = &#39;viridis&#39;,
+#            type = &#39;scatter&#39;, 
+#            mode = &#39;lines+markers&#39;)) %&gt;%
+#  subplot(nrows = 4, shareX = FALSE, shareY = TRUE) %&gt;%
+#  layout(xaxis = list(title = &quot;Year&quot;),
+#         yaxis = list(type = &quot;Median AQI&quot;),
+#         title = &quot;Change in median AQI over time by region (2013 - 2020)&quot;)</code></pre>
+<pre class="r"><code>plot = 
+  subplot(p1, p2, p3, p4, p5, p6, p7, p8, p9,
+        nrows = 3,
+        shareY = T,
+        shareX = T) %&gt;%
+  layout(title = &quot;Median AQI by U.S. state region (2013 - 2020)&quot;)
+        
+
+annotations = list( 
+  list( 
+    x = 0.15,  
+    y = 0.99,  
+    text = &quot;New England&quot;,  
+    xref = &quot;paper&quot;,  
+    yref = &quot;paper&quot;,  
+    xanchor = &quot;center&quot;,  
+    yanchor = &quot;bottom&quot;,  
+    showarrow = FALSE 
+  ),  
+  list( 
+    x = 0.50,  
+    y = 0.99,  
+    text = &quot;Middle Atlantic&quot;,  
+    xref = &quot;paper&quot;,  
+    yref = &quot;paper&quot;,  
+    xanchor = &quot;center&quot;,  
+    yanchor = &quot;bottom&quot;,  
+    showarrow = FALSE 
+  ),  
+  list( 
+    x = 0.85,  
+    y = 0.99,  
+    text = &quot;East North Central&quot;,  
+    xref = &quot;paper&quot;,  
+    yref = &quot;paper&quot;,  
+    xanchor = &quot;center&quot;,  
+    yanchor = &quot;bottom&quot;,  
+    showarrow = FALSE 
+  ),
+  list( 
+    x = 0.15,  
+    y = 0.63,  
+    text = &quot;West North Central&quot;,  
+    xref = &quot;paper&quot;,  
+    yref = &quot;paper&quot;,  
+    xanchor = &quot;center&quot;,  
+    yanchor = &quot;bottom&quot;,  
+    showarrow = FALSE 
+  ),
+  list( 
+    x = 0.50,  
+    y = 0.63,  
+    text = &quot;South Atlantic &amp; Puerto Rico&quot;,  
+    xref = &quot;paper&quot;,  
+    yref = &quot;paper&quot;,  
+    xanchor = &quot;center&quot;,  
+    yanchor = &quot;bottom&quot;,  
+    showarrow = FALSE 
+  ),
+  list( 
+    x = 0.85,  
+    y = 0.63,  
+    text = &quot;East South Central&quot;,  
+    xref = &quot;paper&quot;,  
+    yref = &quot;paper&quot;,  
+    xanchor = &quot;center&quot;,  
+    yanchor = &quot;bottom&quot;,  
+    showarrow = FALSE 
+  ),
+  list( 
+    x = 0.15,  
+    y = 0.30,  
+    text = &quot;West South Central&quot;,  
+    xref = &quot;paper&quot;,  
+    yref = &quot;paper&quot;,  
+    xanchor = &quot;center&quot;,  
+    yanchor = &quot;bottom&quot;,  
+    showarrow = FALSE 
+  ),
+  list( 
+    x = 0.50,  
+    y = 0.30,  
+    text = &quot;Mountain&quot;,  
+    xref = &quot;paper&quot;,  
+    yref = &quot;paper&quot;,  
+    xanchor = &quot;center&quot;,  
+    yanchor = &quot;bottom&quot;,  
+    showarrow = FALSE 
+  ),
+  list( 
+    x = 0.85,  
+    y = 0.30,  
+    text = &quot;West South Central&quot;,  
+    xref = &quot;paper&quot;,  
+    yref = &quot;paper&quot;,  
+    xanchor = &quot;center&quot;,  
+    yanchor = &quot;bottom&quot;,  
+    showarrow = FALSE 
+  ))
+
+plot &lt;- plot %&gt;% 
+  layout(annotations = annotations) 
+
+plot</code></pre>
+<div id="htmlwidget-7ab8651d898189270bdf" style="width:90%;height:345.6px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7ab8651d898189270bdf">{"x":{"data":[{"type":"scatter","mode":"lines+markers","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"type":"scatter","mode":"lines+markers","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"xaxis":"x2","yaxis":"y","frame":null},{"type":"scatter","mode":"lines+markers","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"xaxis":"x3","yaxis":"y","frame":null},{"type":"scatter","mode":"lines+markers","marker":{"color":"rgba(214,39,40,1)","line":{"color":"rgba(214,39,40,1)"}},"error_y":{"color":"rgba(214,39,40,1)"},"error_x":{"color":"rgba(214,39,40,1)"},"line":{"color":"rgba(214,39,40,1)"},"xaxis":"x","yaxis":"y2","frame":null},{"type":"scatter","mode":"lines+markers","marker":{"color":"rgba(148,103,189,1)","line":{"color":"rgba(148,103,189,1)"}},"error_y":{"color":"rgba(148,103,189,1)"},"error_x":{"color":"rgba(148,103,189,1)"},"line":{"color":"rgba(148,103,189,1)"},"xaxis":"x2","yaxis":"y2","frame":null},{"type":"scatter","mode":"lines+markers","marker":{"color":"rgba(140,86,75,1)","line":{"color":"rgba(140,86,75,1)"}},"error_y":{"color":"rgba(140,86,75,1)"},"error_x":{"color":"rgba(140,86,75,1)"},"line":{"color":"rgba(140,86,75,1)"},"xaxis":"x3","yaxis":"y2","frame":null},{"type":"scatter","mode":"lines+markers","marker":{"color":"rgba(227,119,194,1)","line":{"color":"rgba(227,119,194,1)"}},"error_y":{"color":"rgba(227,119,194,1)"},"error_x":{"color":"rgba(227,119,194,1)"},"line":{"color":"rgba(227,119,194,1)"},"xaxis":"x","yaxis":"y3","frame":null},{"type":"scatter","mode":"lines+markers","marker":{"color":"rgba(127,127,127,1)","line":{"color":"rgba(127,127,127,1)"}},"error_y":{"color":"rgba(127,127,127,1)"},"error_x":{"color":"rgba(127,127,127,1)"},"line":{"color":"rgba(127,127,127,1)"},"xaxis":"x2","yaxis":"y3","frame":null},{"type":"scatter","mode":"lines+markers","marker":{"color":"rgba(188,189,34,1)","line":{"color":"rgba(188,189,34,1)"}},"error_y":{"color":"rgba(188,189,34,1)"},"error_x":{"color":"rgba(188,189,34,1)"},"line":{"color":"rgba(188,189,34,1)"},"xaxis":"x3","yaxis":"y3","frame":null}],"layout":{"xaxis":{"domain":[0,0.313333333333333],"automargin":true,"title":"Year","anchor":"y3"},"xaxis2":{"domain":[0.353333333333333,0.646666666666667],"automargin":true,"title":"Year","anchor":"y3"},"xaxis3":{"domain":[0.686666666666667,1],"automargin":true,"title":"Year","anchor":"y3"},"yaxis3":{"domain":[0,0.313333333333333],"automargin":true,"title":"Median AQI","anchor":"x"},"yaxis2":{"domain":[0.353333333333333,0.646666666666667],"automargin":true,"title":"Median AQI","anchor":"x"},"yaxis":{"domain":[0.686666666666667,1],"automargin":true,"title":"Median AQI","anchor":"x"},"annotations":[{"x":0.15,"y":0.99,"text":"New England","xref":"paper","yref":"paper","xanchor":"center","yanchor":"bottom","showarrow":false},{"x":0.5,"y":0.99,"text":"Middle Atlantic","xref":"paper","yref":"paper","xanchor":"center","yanchor":"bottom","showarrow":false},{"x":0.85,"y":0.99,"text":"East North Central","xref":"paper","yref":"paper","xanchor":"center","yanchor":"bottom","showarrow":false},{"x":0.15,"y":0.63,"text":"West North Central","xref":"paper","yref":"paper","xanchor":"center","yanchor":"bottom","showarrow":false},{"x":0.5,"y":0.63,"text":"South Atlantic & Puerto Rico","xref":"paper","yref":"paper","xanchor":"center","yanchor":"bottom","showarrow":false},{"x":0.85,"y":0.63,"text":"East South Central","xref":"paper","yref":"paper","xanchor":"center","yanchor":"bottom","showarrow":false},{"x":0.15,"y":0.3,"text":"West South Central","xref":"paper","yref":"paper","xanchor":"center","yanchor":"bottom","showarrow":false},{"x":0.5,"y":0.3,"text":"Mountain","xref":"paper","yref":"paper","xanchor":"center","yanchor":"bottom","showarrow":false},{"x":0.85,"y":0.3,"text":"West South Central","xref":"paper","yref":"paper","xanchor":"center","yanchor":"bottom","showarrow":false}],"shapes":[],"images":[],"margin":{"b":40,"l":60,"t":25,"r":10},"hovermode":"closest","showlegend":true,"title":"Median AQI by U.S. state region (2013 - 2020)"},"attrs":{"2eb515b20798":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","mode":"lines+markers","x":{},"y":{},"color":{},"colors":"viridis","inherit":true},"2eb51e3c26ad":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","mode":"lines+markers","x":{},"y":{},"color":{},"colors":"viridis","inherit":true},"2eb53ffbba2f":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","mode":"lines+markers","x":{},"y":{},"color":{},"colors":"viridis","inherit":true},"2eb55fdd79d6":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","mode":"lines+markers","x":{},"y":{},"color":{},"colors":"viridis","inherit":true},"2eb5329a501d":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","mode":"lines+markers","x":{},"y":{},"color":{},"colors":"viridis","inherit":true},"2eb56851f89b":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","mode":"lines+markers","x":{},"y":{},"color":{},"colors":"viridis","inherit":true},"2eb556c90013":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","mode":"lines+markers","x":{},"y":{},"color":{},"colors":"viridis","inherit":true},"2eb5889bfe8":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","mode":"lines+markers","x":{},"y":{},"color":{},"colors":"viridis","inherit":true},"2eb52c37bba0":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","mode":"lines+markers","x":{},"y":{},"color":{},"colors":"viridis","inherit":true}},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"subplot":true,"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+ 
+<hr />
+<p style="text-align: center;">
+A work by <a href="https://github.com/taraahi">Tara Ahi</a>, <a href="https://github.com/gcolleen">Gunnar Colleen</a>, <a href="https://github.com/acm2268">Mandy Miles</a>, <a href="https://github.com/jodischarf">Jodi Scharf</a>, and <a href="https://github.com/jocelyynsun >Jocelyn Sun</a>
+</p>
+<p style="text-align: center;">
+© Copyright 2021 The Breathing Team, All Rights Reserved | Powered by Github.io
+</p>
+
+<p> </p>
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -15,8 +15,8 @@
 
 <title>Final_EPA</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -335,9 +335,9 @@ $(document).ready(function () {
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-## ✓ tibble  3.1.6     ✓ dplyr   1.0.7
-## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
-## ✓ readr   2.1.1     ✓ forcats 0.5.1</code></pre>
+## ✓ tibble  3.1.4     ✓ dplyr   1.0.7
+## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
+## ✓ readr   2.0.1     ✓ forcats 0.5.1</code></pre>
 <pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
@@ -440,21 +440,32 @@ epa_df =
 <pre><code>## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...1</code></pre>
+<pre><code>## Rows: 0 Columns: 6</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (6): ...1, state_name, state, year, median_aqi, region</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre><code>## Warning: Unreplaced values treated as NA as .x is not compatible. Please specify
 ## replacements exhaustively or supply .default</code></pre>
 <pre class="r"><code># checking missing values
 sapply(epa_df, function(x) sum(is.na(x)))</code></pre>
-<pre><code>## state_name      state     county       year median_aqi    days_co   days_no2 
-##          0          0          0          0          0          0          0 
-## days_ozone   days_so2 days_pm2.5  days_pm10 
-##          0          0          0          0</code></pre>
+<pre><code>##   state_name        state       county         year   median_aqi      days_co 
+##            0            0            0            0            0            0 
+##     days_no2   days_ozone     days_so2   days_pm2.5    days_pm10           x1 
+##            0            0            0            0            0            0 
+##      state_2       year_2 median_aqi_2       region 
+##            0            0            0            0</code></pre>
 <pre class="r"><code>view(epa_df)</code></pre>
 <p>New Jersey, Guam, the Virgin Islands, and the City of Mexico do not have codes associated in this <a href="https://www.cdc.gov/brfss/annual_data/2019/pdf/codebook19_llcp-v2-508.HTML">codebook</a>. They have been removed from the EPA dataset.</p>
 <pre class="r"><code>state_aqi_df = epa_df %&gt;%
-  group_by(state_name, state) %&gt;%
+  group_by(state_name, state, year) %&gt;%
   summarize(median = median(median_aqi)) %&gt;%
   rename(&quot;median_aqi&quot; = &quot;median&quot;) </code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;state_name&#39;. You can override using the `.groups` argument.</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;state_name&#39;, &#39;state&#39;. You can override using the `.groups` argument.</code></pre>
 <pre class="r"><code>view(state_aqi_df)</code></pre>
 
 <!DOCTYPE html>

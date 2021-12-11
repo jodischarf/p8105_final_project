@@ -1,0 +1,444 @@
+---
+title: "spaghetti_plots"
+author: "Jocelyn Sun"
+date: "12/10/2021"
+output: html_document
+---
+
+```{r setup}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(dplyr)
+library(plotly)
+library(flexdashboard)
+library(viridis)
+library(reticulate)
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_color_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+```
+
+```{r, can_merge}
+
+epa_df = 
+  tibble(path = list.files("./data", full.names = TRUE)) %>% 
+  mutate(data = purrr::map(.x = path, ~read_csv(.x))) %>% 
+  janitor::clean_names() %>%
+  unnest(data) %>%
+  janitor::clean_names() %>%
+  select(-c("path",
+            "days_with_aqi",
+            "max_aqi",
+            "good_days":"hazardous_days", 
+            "x90th_percentile_aqi")) %>%
+  rename("days_pm2.5" = "days_pm2_5") %>%
+  mutate(state_name = state,
+         state_name = str_replace_all(state_name, " ", ""),
+         state_name = str_to_lower(state_name),
+         state_name =  
+           recode(state_name, 
+             alabama = 1, alaska = 2, arizona = 3, arkansas = 5, 
+             california = 6, colorado = 8, connecticut = 9, delaware = 10,
+             districtofcolumbia = 11, florida = 12, georgia = 13, hawaii = 15, 
+             idaho = 16, illinois = 17, indiana = 18, iowa = 19, kansas = 20, 
+             kentucky = 21, louisiana = 22, maine = 23, maryland = 24, massachusetts = 25, 
+             michigan = 26, minnesota = 27,mississippi = 28, missouri = 29, montana = 30, 
+             nebraska = 31, nevada = 32, newhampshire = 33, newmexico = 35,
+             newyork = 36, northcarolina = 37, northdakota = 38, ohio = 39, oklahoma = 40, 
+             oregon = 41, pennsylvania = 42 , rhodeisland = 44, southcarolina = 45, 
+             southdakota = 46, tennessee = 47, texas = 48, utah = 49, vermont = 50,
+             virginia = 51, washington = 53, westvirginia = 54, wisconsin = 55, 
+             wyoming = 56, puertorico = 72
+             ),
+         state_name = as.factor(state_name)) %>%
+  na.omit(state_name) %>%
+  relocate(state_name, state, everything())
+
+state_aqi_df = epa_df %>%
+  group_by(state_name, state, year) %>%
+  summarize(median = median(median_aqi)) %>%
+  rename("median_aqi" = "median") 
+
+```
+
+```{r, all}
+
+state_aqi_df %>%
+  group_by(state_name) %>%
+  plot_ly() %>% 
+  add_trace(type = 'scatter', 
+            mode = 'lines+markers',
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = 'viridis') %>%
+  layout(xaxis = list(title = "Year"),
+         yaxis = list(range = list(13, 53), 
+                      title = "Median AQI"),
+         title = "Change in median AQI over time by state (2013 - 2020)")
+  
+
+```
+
+```{r, regions}
+
+region_df = 
+  state_aqi_df %>%
+  mutate(region = state,
+         region = as.character(region),
+         #New England
+         region = ifelse(region %in% c("Connecticut", "Maine",
+                           "Massachusetts", "New Hampshire",
+                           "Rhode Island", "Vermont"), 
+                         "New England", region),
+         #Middle Atlantic
+         region = ifelse(region %in% c("New York", "Pennsylvania"), 
+                         "Middle Atlantic", region),
+         #East North Central
+          region = ifelse(region %in% c("Indiana", "Illinois", "Michigan",
+                           "Ohio", "Wisconsin"), 
+                         "East North Central", region),
+         #West North Central
+         region = ifelse(region %in% c("Iowa", "Kansas","Minnesota", "Missouri",
+                                       "Nebraska", "North Dakota", "South Dakota"), 
+                         "West North Central", region),
+         #South Atlantic
+         region = ifelse(region %in%  c("Delaware", "District Of Columbia", "Florida", 
+                                        "Georgia", "Maryland","North Carolina", "South Carolina", 
+                                        "Virginia", "West Virginia", "Puerto Rico"), 
+                         "South Atlantic & Puerto Rico", region),
+         #East South Central
+         region = ifelse(region %in% c("Alabama", "Kentucky","Mississippi", "Tennessee"), 
+                         "East South Central", region),
+         #West South Central
+         region = ifelse(region %in% c("Arkansas", "Louisiana", "Oklahoma", "Texas"), 
+                         "West South Central", region),
+         #Mountain
+         region = ifelse(region %in% c("Arizona", "Colorado", "Idaho", "New Mexico",
+                                       "Montana", "Utah", "Nevada", "Wyoming"),
+                         "Mountain", region),
+         #Pacific
+         region = ifelse(region %in% c("Alaska", "California", "Hawaii", "Oregon", "Washington"),
+                         "Pacific", region)
+         )
+  
+# checking missing values
+sapply(region_df, function(x) sum(is.na(x)))
+
+write.csv(region_df,"./data/region.csv", row.names = TRUE)
+
+```
+
+```{r, new_england}
+
+p1 = 
+  region_df %>%
+  group_by(state_name) %>%
+  filter(region == "New England") %>%
+  plot_ly() %>% 
+  add_trace(type = 'scatter', 
+            mode = 'lines+markers',
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = 'viridis') %>%
+  layout(xaxis = list(title = "Year"),
+         yaxis = list(title = "Median AQI"))
+
+```
+
+```{r, middle_atlantic}
+
+p2 =
+  region_df %>%
+  group_by(state_name) %>%
+  filter(region == "Middle Atlantic") %>%
+  plot_ly() %>% 
+  add_trace(type = 'scatter', 
+            mode = 'lines+markers',
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = 'viridis') %>%
+  layout(xaxis = list(title = "Year"),
+         yaxis = list(title = "Median AQI"))
+
+
+```
+
+```{r, east_north_central}
+
+p3 =
+  region_df %>%
+  group_by(state_name) %>%
+  filter(region == "East North Central") %>%
+  plot_ly() %>% 
+  add_trace(type = 'scatter', 
+            mode = 'lines+markers',
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = 'viridis') %>%
+  layout(xaxis = list(title = "Year"),
+         yaxis = list(title = "Median AQI"))
+
+
+```
+
+```{r, west_north_central}
+
+p4 = 
+  region_df %>%
+  group_by(state_name) %>%
+  filter(region == "West North Central") %>%
+  plot_ly() %>% 
+  add_trace(type = 'scatter', 
+            mode = 'lines+markers',
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = 'viridis') %>%
+  layout(xaxis = list(title = "Year"),
+         yaxis = list(title = "Median AQI"))
+
+```
+
+```{r, south_atlantic_puerto}
+
+p5 = 
+  region_df %>%
+  group_by(state_name) %>%
+  filter(region == "South Atlantic & Puerto Rico") %>%
+  plot_ly() %>% 
+  add_trace(type = 'scatter', 
+            mode = 'lines+markers',
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = 'viridis') %>%
+  layout(xaxis = list(title = "Year"),
+         yaxis = list(title = "Median AQI"))
+
+```
+
+```{r, east_south_central}
+
+p6 = 
+  region_df %>%
+  group_by(state_name) %>%
+  filter(region == "East South Central") %>%
+  plot_ly() %>% 
+  add_trace(type = 'scatter', 
+            mode = 'lines+markers',
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = 'viridis') %>%
+  layout(xaxis = list(title = "Year"),
+         yaxis = list(title = "Median AQI"))
+
+```
+
+```{r, west_south_central}
+
+p7 = 
+  region_df %>%
+  group_by(state_name) %>%
+  filter(region == "West South Central") %>%
+  plot_ly() %>% 
+  add_trace(type = 'scatter', 
+            mode = 'lines+markers',
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = 'viridis') %>%
+  layout(xaxis = list(title = "Year"),
+         yaxis = list(title = "Median AQI"))
+
+```
+
+```{r, mountain}
+
+p8 =
+  region_df %>%
+  group_by(state_name) %>%
+  filter(region == "Mountain") %>%
+  plot_ly() %>% 
+  add_trace(type = 'scatter', 
+            mode = 'lines+markers',
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = 'viridis') %>%
+  layout(xaxis = list(title = "Year"),
+         yaxis = list(title = "Median AQI"))
+
+```
+
+```{r, pacific}
+
+p9 = 
+  region_df %>%
+  group_by(state_name) %>%
+  filter(region == "Pacific") %>%
+  plot_ly() %>% 
+  add_trace(type = 'scatter', 
+            mode = 'lines+markers',
+            x = ~year, 
+            y = ~median_aqi, 
+            color = ~state_name, 
+            colors = 'viridis') %>%
+  layout(xaxis = list(title = "Year"),
+         yaxis = list(title = "Median AQI"))
+
+
+```
+
+```{r, subplots_1}
+
+#region_df %>%
+#  group_by(region) %>%
+#  do(p = plot_ly( ., 
+#            x = ~year, 
+#            y = ~median_aqi,
+#            color = ~state_name, 
+#            #colors = 'viridis',
+#            type = 'scatter', 
+#            mode = 'lines+markers')) %>%
+#  subplot(nrows = 4, shareX = FALSE, shareY = TRUE) %>%
+#  layout(xaxis = list(title = "Year"),
+#         yaxis = list(type = "Median AQI"),
+#         title = "Change in median AQI over time by region (2013 - 2020)")
+
+```
+
+```{r, subplots_2}
+
+plot = 
+  subplot(p1, p2, p3, p4, p5, p6, p7, p8, p9,
+        nrows = 3,
+        shareY = T,
+        shareX = T) %>%
+  layout(title = "Median AQI by U.S. state region (2013 - 2020)")
+        
+
+annotations = list( 
+  list( 
+    x = 0.15,  
+    y = 0.99,  
+    text = "New England",  
+    xref = "paper",  
+    yref = "paper",  
+    xanchor = "center",  
+    yanchor = "bottom",  
+    showarrow = FALSE 
+  ),  
+  list( 
+    x = 0.50,  
+    y = 0.99,  
+    text = "Middle Atlantic",  
+    xref = "paper",  
+    yref = "paper",  
+    xanchor = "center",  
+    yanchor = "bottom",  
+    showarrow = FALSE 
+  ),  
+  list( 
+    x = 0.85,  
+    y = 0.99,  
+    text = "East North Central",  
+    xref = "paper",  
+    yref = "paper",  
+    xanchor = "center",  
+    yanchor = "bottom",  
+    showarrow = FALSE 
+  ),
+  list( 
+    x = 0.15,  
+    y = 0.63,  
+    text = "West North Central",  
+    xref = "paper",  
+    yref = "paper",  
+    xanchor = "center",  
+    yanchor = "bottom",  
+    showarrow = FALSE 
+  ),
+  list( 
+    x = 0.50,  
+    y = 0.63,  
+    text = "South Atlantic & Puerto Rico",  
+    xref = "paper",  
+    yref = "paper",  
+    xanchor = "center",  
+    yanchor = "bottom",  
+    showarrow = FALSE 
+  ),
+  list( 
+    x = 0.85,  
+    y = 0.63,  
+    text = "East South Central",  
+    xref = "paper",  
+    yref = "paper",  
+    xanchor = "center",  
+    yanchor = "bottom",  
+    showarrow = FALSE 
+  ),
+  list( 
+    x = 0.15,  
+    y = 0.30,  
+    text = "West South Central",  
+    xref = "paper",  
+    yref = "paper",  
+    xanchor = "center",  
+    yanchor = "bottom",  
+    showarrow = FALSE 
+  ),
+  list( 
+    x = 0.50,  
+    y = 0.30,  
+    text = "Mountain",  
+    xref = "paper",  
+    yref = "paper",  
+    xanchor = "center",  
+    yanchor = "bottom",  
+    showarrow = FALSE 
+  ),
+  list( 
+    x = 0.85,  
+    y = 0.30,  
+    text = "West South Central",  
+    xref = "paper",  
+    yref = "paper",  
+    xanchor = "center",  
+    yanchor = "bottom",  
+    showarrow = FALSE 
+  ))
+
+plot <- plot %>% 
+  layout(annotations = annotations) 
+
+plot
+
+```
+
+
+
+
+
+
