@@ -1,7 +1,4 @@
 ---
-title: "asthma_map"
-author: "Gunnar"
-date: "12/8/2021"
 output: github_document
 ---
 
@@ -56,12 +53,12 @@ asthma_graph <- state_df %>%
     frame = ~iyear) %>%
   add_trace(locations = ~state,
             z = ~asthma_perc,
-            zmin = 0,
+            zmin = min(state_df$asthma_perc),
             zmax = 15,
             text = ~hover,
             hoverinfo = 'text',
             color = ~asthma_perc,
-            colorscale = "Viridis") %>%
+            colorscale = "Cividis") %>%
   layout(geo = geo_properties,
          font = "DM Sans",
          title = "Asthma Prevalence in the United State, 2013-2021") %>%
@@ -88,12 +85,12 @@ aqi_graph <- state_df %>%
     frame = ~iyear) %>%
   add_trace(locations = ~state,
             z = ~median_aqi,
-            zmin = 0,
+            zmin = min(state_df$median_aqi),
             zmax = max(state_df$median_aqi),
             text = ~hover,
             hoverinfo = 'text',
             color = ~median_aqi,
-            colorscale = "Viridis") %>%
+            colorscale = "Cividis") %>%
   layout(geo = geo_properties,
          font = "DM Sans",
          title = "Median AQI in the United State, 2013-2021") %>%
@@ -143,8 +140,8 @@ urban_asthma_map <- county_data %>%
     geojson=counties,
     locations = county_data$nfips,
     z = county_data$asthma_perc,
-    colorscale="Viridis",
-    zmin=0,
+    colorscale="Cividis",
+    zmin=min(county_data$asthma_perc),
     zmax=15,
     text = ~hover,
     hoverinfo = "text",
@@ -182,8 +179,8 @@ urban_aqi_map <- county_data %>%
     geojson=counties,
     locations = county_data$nfips,
     z = county_data$median_aqi,
-    colorscale="Viridis",
-    zmin=0,
+    colorscale="Cividis",
+    zmin=min(county_data$median_aqi),
     zmax=max(county_data$median_aqi),
     text = ~hover,
     hoverinfo = "text",
