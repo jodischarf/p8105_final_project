@@ -6,7 +6,7 @@ output:
 ---
 <br></br>
 
-<center><a href=""><img src= "https://media.giphy.com/media/h542VAc7DgZdX62cLa/giphy.gif" width="150" height="100" />
+<center><a href=""><img src= "https://media.giphy.com/media/h542VAc7DgZdX62cLa/giphy.gif" width="240" />
 </a></center>
 
 <br></br>

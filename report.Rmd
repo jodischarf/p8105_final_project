@@ -1,7 +1,8 @@
 ---
-title: "<div><img src=\"images/city_image.jpeg\" style=\"max-width:64px; max-height:64px;\"><span style=\"padding-left:20px\">The Project</div>"
+title: "<div><img src=\"images/city_image.jpeg\" style=\"max-width:64px; max-height:64px;\"><span style=\"padding-left:20px\">Project Report</div>"
 output:   
   html_document:
+    code_folding: hide
     toc: true
     toc_float: true
 ---
@@ -10,7 +11,7 @@ output:
 
 # Our Motivation
 
-Out initial motivation was linked with the recurring episodes and increased frequency of wildfire outbreaks in the United States, specifically Pacific Northwest, caused by the rise in global temperature. The air quality resulting in these fires are not only concentrated in the Pacific Northwest, but also travel across the country by wind patterns.  
+Out motivation was linked with the recurring episodes and increased frequency of wildfire outbreaks in the United States, specifically Pacific Northwest, caused by the rise in global temperature. The air quality resulting in these fires are not only concentrated in the Pacific Northwest, but also travel across the country by wind patterns.  
 
 This interest grew to embody a curiosity of air quality across the nation that is not restricted to the events of wildfires. The complex nature of air quality cannot be subject to one type of event only. Air quality is highly linked with the incidence of asthma, especially young children. It is a major noncommunicable disease that can be self-managed given the proper tools and information. This includes information on air quality. 
 
@@ -19,32 +20,102 @@ This interest grew to embody a curiosity of air quality across the nation that i
 # Related Work
 
 Anything that inspired you, such as a paper, a web site, or something we discussed in class.
-**Initial questions:**
 
-* What questions are you trying to answer? 
-* How did these questions evolve over the course of the project?
-* What new questions did you consider in the course of your analysis?
+The inception for this work came from: **INSERT TARA'S INPUT**
+
+### EPA 2020 Air Trends Report
+
+Accordingly, we conducted a search for research on air quality and came across the [EPA's 2020 Trends Report](https://gispub.epa.gov/air/trendsreport/2021/) which summarized how air quality trends show clean air progress. 
+
+<center><iframe width="420" height="236" src="https://gispub.epa.gov/air/trendsreport/2021/video/MP4/airpollution_animation_4x3.mp4" frameborder="0" allow="accelerometer; autoplay"allowfullscreen></iframe></center>
+
+Through this report, we also came across the striking video above, showing the variety of pathways in which human health and the environment is impacted by air pollution, consisting of gas and particle contaminants that are present in the atmosphere. As illustrated by the video, some pollutants are released directly into the atmosphere while other pollutants are formed in the air from chemical reactions. Ground-level ozone forms when emissions of NOx and VOCs react in the presence of sunlight. 
+
+### Trends in Air Pollution and Quality
+
+From there, we were intrigued to see whether there have been decreases in air pollution in the U.S. 
+
+#### Air Pollutant Emissions Decreasing
+
+We found that since 1990, emissions of key air pollutants (primarily from stationary fuel combustion, industrial processes, highway vehicles, and non-road mobile vehicles) have continued to decline. These reductions have been driven by federal and state implementation of stationary and mobile source regulations. 
+
+<center><a href=""><img src= "images/pollutants_decreasing.png" width="500"/></a></center>
+_**Source:** U.S. Environmental Protection Agency_
+
+According to the EPA, it was actually the implementation of the Clean Air Act in 1970 and subsequent technological advances from American innovators that dramatically improved emissions in the U.S.  
+
+#### Air Quality Trends Show Clean Air Progress
+
+Furthermore, the [EPA](hhttps://gispub.epa.gov/air/trendsreport/2021) has reported that air quality has improved in the past decade. 
+
+<center><a href=""><img src="images/naaqs_averages.png"></a></center>
+_Source: U.S. EPA Air Quality System_
+
+<center><a href=""><img src= "images/epa_airdays.png" width="500"/></a></center>
+ 
+_Source: U.S. Environmental Protection Agency_
+_**Note:** Sensitive groups for ozone and PM2.5 include people with heart or lung disease, older adults, children and teenagers, and people who are active outdoors._
+
+While some pollutants continue to pose serious air quality problems in areas of the U.S., the EPA's 2020 report claims that nationally, concentrations of air pollutants have dropped significantly since 1990:
+
+* Carbon Monoxide (CO) 8-Hour, <i class="fas fa-arrow-down"></i> 73%
+* Lead (Pb) 3-Month Average, <i class="fas fa-arrow-down"></i> 86% (from 2010)
+* Nitrogen Dioxide (NO2) Annual, <i class="fas fa-arrow-down"></i> 61%
+* Nitrogen Dioxide (NO2) 1-Hour, <i class="fas fa-arrow-down"></i> 54%
+* Ozone (O3) 8-Hour, <i class="fas fa-arrow-down"></i> 25%
+* Particulate Matter 10 microns (PM10) 24-Hour, <i class="fas fa-arrow-down"></i> 26%
+* Particulate Matter 2.5 microns (PM2.5) Annual, <i class="fas fa-arrow-down"></i> 41% (from 2000)
+* Particulate Matter 2.5 microns (PM2.5) 24-Hour, <i class="fas fa-arrow-down"></i> 30% (from 2000)
+* Sulfur Dioxide (SO2) 1-Hour, <i class="fas fa-arrow-down"></i> 91%
+
+Note that these major air pollutants are represented in the Air Quality Index (AQI), which is what we decided to focus on for conciseness (rather than trying to gather data on each individual pollutant). We have written in-depth details regarding the AQI, which can be found [here](background.html).
+
+Our team found it interesting that the report concluded that despite the increases in air concentrations of pollutants associated with fires, carbon monoxide and particle pollution, national average air quality concentrations remain below the current, national standards. It was great to see taht air quality trends currently indicate clean air progress in the U.S.
+
+However, this made us wonder: **if there were improvements in air quality in the U.S., would there be decreases in asthma prevalence over time as well**?
+
+<br></br>
+
+# Initial Questions and Hypotheses
+
+Consequently, our main question of interest is as follows:
+
+**How has air quality impacted asthma over time in the United States?**
+
+Specifically, we want to test the changes in air quality index (AQI) and self-reported asthma from 2013-2020.
+
+### Correlation between AQI and Asthma
+
+We hypothesize that as the AQI increases in value, indicating a greater level of air pollution, the prevalence of asthma will increase. So, between the air quality index (AQI) and  We believe this to be true for two main reasons:
+
+* The higher the AQI value, the greater the level of air pollution, and in turn the greater the health concern. Therefore, there should be a positive relationship between AQI and asthma prevalence
+* REASON 2
+
+We will conduct exploratory analyses to assess state-by-state and county-by-county differences in air quality and asthma over time, and then run statistical analyses to address our question of whether the United States is seeing a correlation between air quality and asthma between 2013-2020. 
 
 <br></br>
 
 # Data
 Data: Source, scraping method, cleaning, etc.
 
+### Data Sources
+
+#### EPA Data
+
+#### Behavioral Risk Factor Surveillance System (BRFSS) Data
+
+Information on asthma was collected from the Behavioral Risk Factor Surveillance System (BRFSS) years 2013-2020. The BRFSS is a phone-conducted health survey of households administered by states and is available at the state level and at the level of metropolitan statistical areas through the SMART BRFSS. For data available in the SMART BRFSS addition, county-level asthma estimates reflect data aggregated at the metropolitan statistical area level. BRFSS data is representative at the state level and can be compared from year to year. As BRFSS is conducted via telephone, certain subpopulations such as American Indians and Alaska Natives are underrepresented in the data. Additionally, due to the COVID-19 pandemic, BRFSS data for 2020 was partially incomplete
+
+### Scraping Method
+
+
+### Data Cleaning
+
 <br></br>
 
 
 <br></br>
 
-
-<br></br>
-# Initial Hypotheses
-
-**How has air quality impacted asthma over time (2013-2020) in the United States?**
-
-We hypothesize that there will be this this and this. We believe this to be true for two main reasons:
-
-* Reason 1 
-* Reason 2
 
 <br></br>
 

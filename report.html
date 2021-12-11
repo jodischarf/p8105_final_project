@@ -33,6 +33,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -221,6 +222,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -397,10 +401,18 @@ div.tocify {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore"><div>
-<img src="images/city_image.jpeg" style="max-width:64px; max-height:64px;"><span style="padding-left:20px">The Project
+<img src="images/city_image.jpeg" style="max-width:64px; max-height:64px;"><span style="padding-left:20px">Project Report
 </div></h1>
 
 </div>
@@ -409,33 +421,103 @@ div.tocify {
 <p><br></br></p>
 <div id="our-motivation" class="section level1">
 <h1>Our Motivation</h1>
-<p>Out initial motivation was linked with the recurring episodes and increased frequency of wildfire outbreaks in the United States, specifically Pacific Northwest, caused by the rise in global temperature. The air quality resulting in these fires are not only concentrated in the Pacific Northwest, but also travel across the country by wind patterns.</p>
+<p>Out motivation was linked with the recurring episodes and increased frequency of wildfire outbreaks in the United States, specifically Pacific Northwest, caused by the rise in global temperature. The air quality resulting in these fires are not only concentrated in the Pacific Northwest, but also travel across the country by wind patterns.</p>
 <p>This interest grew to embody a curiosity of air quality across the nation that is not restricted to the events of wildfires. The complex nature of air quality cannot be subject to one type of event only. Air quality is highly linked with the incidence of asthma, especially young children. It is a major noncommunicable disease that can be self-managed given the proper tools and information. This includes information on air quality.</p>
 <p><br></br></p>
 </div>
 <div id="related-work" class="section level1">
 <h1>Related Work</h1>
-<p>Anything that inspired you, such as a paper, a web site, or something we discussed in class. <strong>Initial questions:</strong></p>
+<p>Anything that inspired you, such as a paper, a web site, or something we discussed in class.</p>
+<p>The inception for this work came from: <strong>INSERT TARA’S INPUT</strong></p>
+<div id="epa-2020-air-trends-report" class="section level3">
+<h3>EPA 2020 Air Trends Report</h3>
+<p>Accordingly, we conducted a search for research on air quality and came across the <a href="https://gispub.epa.gov/air/trendsreport/2021/">EPA’s 2020 Trends Report</a> which summarized how air quality trends show clean air progress.</p>
+<center>
+<iframe width="420" height="236" src="https://gispub.epa.gov/air/trendsreport/2021/video/MP4/airpollution_animation_4x3.mp4" frameborder="0" allow="accelerometer; autoplay" allowfullscreen>
+</iframe>
+</center>
+<p>Through this report, we also came across the striking video above, showing the variety of pathways in which human health and the environment is impacted by air pollution, consisting of gas and particle contaminants that are present in the atmosphere. As illustrated by the video, some pollutants are released directly into the atmosphere while other pollutants are formed in the air from chemical reactions. Ground-level ozone forms when emissions of NOx and VOCs react in the presence of sunlight.</p>
+</div>
+<div id="trends-in-air-pollution-and-quality" class="section level3">
+<h3>Trends in Air Pollution and Quality</h3>
+<p>From there, we were intrigued to see whether there have been decreases in air pollution in the U.S.</p>
+<div id="air-pollutant-emissions-decreasing" class="section level4">
+<h4>Air Pollutant Emissions Decreasing</h4>
+<p>We found that since 1990, emissions of key air pollutants (primarily from stationary fuel combustion, industrial processes, highway vehicles, and non-road mobile vehicles) have continued to decline. These reductions have been driven by federal and state implementation of stationary and mobile source regulations.</p>
+<center>
+<a href=""><img src= "images/pollutants_decreasing.png" width="500"/></a>
+</center>
+<p><em><strong>Source:</strong> U.S. Environmental Protection Agency</em></p>
+<p>According to the EPA, it was actually the implementation of the Clean Air Act in 1970 and subsequent technological advances from American innovators that dramatically improved emissions in the U.S.</p>
+</div>
+<div id="air-quality-trends-show-clean-air-progress" class="section level4">
+<h4>Air Quality Trends Show Clean Air Progress</h4>
+<p>Furthermore, the <a href="hhttps://gispub.epa.gov/air/trendsreport/2021">EPA</a> has reported that air quality has improved in the past decade.</p>
+<center>
+<a href=""><img src="images/naaqs_averages.png"></a>
+</center>
+<p><em>Source: U.S. EPA Air Quality System</em></p>
+<center>
+<a href=""><img src= "images/epa_airdays.png" width="500"/></a>
+</center>
+<p><em>Source: U.S. Environmental Protection Agency</em> <em><strong>Note:</strong> Sensitive groups for ozone and PM2.5 include people with heart or lung disease, older adults, children and teenagers, and people who are active outdoors.</em></p>
+<p>While some pollutants continue to pose serious air quality problems in areas of the U.S., the EPA’s 2020 report claims that nationally, concentrations of air pollutants have dropped significantly since 1990:</p>
 <ul>
-<li>What questions are you trying to answer?</li>
-<li>How did these questions evolve over the course of the project?</li>
-<li>What new questions did you consider in the course of your analysis?</li>
+<li>Carbon Monoxide (CO) 8-Hour, <i class="fas fa-arrow-down"></i> 73%</li>
+<li>Lead (Pb) 3-Month Average, <i class="fas fa-arrow-down"></i> 86% (from 2010)</li>
+<li>Nitrogen Dioxide (NO2) Annual, <i class="fas fa-arrow-down"></i> 61%</li>
+<li>Nitrogen Dioxide (NO2) 1-Hour, <i class="fas fa-arrow-down"></i> 54%</li>
+<li>Ozone (O3) 8-Hour, <i class="fas fa-arrow-down"></i> 25%</li>
+<li>Particulate Matter 10 microns (PM10) 24-Hour, <i class="fas fa-arrow-down"></i> 26%</li>
+<li>Particulate Matter 2.5 microns (PM2.5) Annual, <i class="fas fa-arrow-down"></i> 41% (from 2000)</li>
+<li>Particulate Matter 2.5 microns (PM2.5) 24-Hour, <i class="fas fa-arrow-down"></i> 30% (from 2000)</li>
+<li>Sulfur Dioxide (SO2) 1-Hour, <i class="fas fa-arrow-down"></i> 91%</li>
 </ul>
+<p>Note that these major air pollutants are represented in the Air Quality Index (AQI), which is what we decided to focus on for conciseness (rather than trying to gather data on each individual pollutant). We have written in-depth details regarding the AQI, which can be found <a href="background.html">here</a>.</p>
+<p>Our team found it interesting that the report concluded that despite the increases in air concentrations of pollutants associated with fires, carbon monoxide and particle pollution, national average air quality concentrations remain below the current, national standards. It was great to see taht air quality trends currently indicate clean air progress in the U.S.</p>
+<p>However, this made us wonder: <strong>if there were improvements in air quality in the U.S., would there be decreases in asthma prevalence over time as well</strong>?</p>
 <p><br></br></p>
+</div>
+</div>
+</div>
+<div id="initial-questions-and-hypotheses" class="section level1">
+<h1>Initial Questions and Hypotheses</h1>
+<p>Consequently, our main question of interest is as follows:</p>
+<p><strong>How has air quality impacted asthma over time in the United States?</strong></p>
+<p>Specifically, we want to test the changes in air quality index (AQI) and self-reported asthma from 2013-2020.</p>
+<div id="correlation-between-aqi-and-asthma" class="section level3">
+<h3>Correlation between AQI and Asthma</h3>
+<p>We hypothesize that as the AQI increases in value, indicating a greater level of air pollution, the prevalence of asthma will increase. So, between the air quality index (AQI) and We believe this to be true for two main reasons:</p>
+<ul>
+<li>The higher the AQI value, the greater the level of air pollution, and in turn the greater the health concern. Therefore, there should be a positive relationship between AQI and asthma prevalence</li>
+<li>REASON 2</li>
+</ul>
+<p>We will conduct exploratory analyses to assess state-by-state and county-by-county differences in air quality and asthma over time, and then run statistical analyses to address our question of whether the United States is seeing a correlation between air quality and asthma between 2013-2020.</p>
+<p><br></br></p>
+</div>
 </div>
 <div id="data" class="section level1">
 <h1>Data</h1>
 <p>Data: Source, scraping method, cleaning, etc.</p>
+<div id="data-sources" class="section level3">
+<h3>Data Sources</h3>
+<div id="epa-data" class="section level4">
+<h4>EPA Data</h4>
+</div>
+<div id="behavioral-risk-factor-surveillance-system-brfss-data" class="section level4">
+<h4>Behavioral Risk Factor Surveillance System (BRFSS) Data</h4>
+<p>Information on asthma was collected from the Behavioral Risk Factor Surveillance System (BRFSS) years 2013-2020. The BRFSS is a phone-conducted health survey of households administered by states and is available at the state level and at the level of metropolitan statistical areas through the SMART BRFSS. For data available in the SMART BRFSS addition, county-level asthma estimates reflect data aggregated at the metropolitan statistical area level. BRFSS data is representative at the state level and can be compared from year to year. As BRFSS is conducted via telephone, certain subpopulations such as American Indians and Alaska Natives are underrepresented in the data. Additionally, due to the COVID-19 pandemic, BRFSS data for 2020 was partially incomplete</p>
+</div>
+</div>
+<div id="scraping-method" class="section level3">
+<h3>Scraping Method</h3>
+</div>
+<div id="data-cleaning" class="section level3">
+<h3>Data Cleaning</h3>
 <p><br></br></p>
 <p><br></br></p>
-<p><br></br> # Initial Hypotheses</p>
-<p><strong>How has air quality impacted asthma over time (2013-2020) in the United States?</strong></p>
-<p>We hypothesize that there will be this this and this. We believe this to be true for two main reasons:</p>
-<ul>
-<li>Reason 1</li>
-<li>Reason 2</li>
-</ul>
 <p><br></br></p>
+</div>
 </div>
 <div id="exploratory-analysis" class="section level1">
 <h1>Exploratory analysis</h1>
@@ -538,6 +620,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {

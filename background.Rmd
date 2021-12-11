@@ -9,11 +9,11 @@ output: html_document
 
 In the United States, the air quality index (AQI) is the standard air quality measurement and based on the [EPA's air quality index](https://www.airnow.gov/aqi/aqi-basics/). The index is calculated on a daily basis and based on concentrations of the following major pollutants:  
 
-1. Ground-level ozone  
+1. Ground-level ozone (O3)
 2. Particulate matter (PM2.5 & PM10)
-3. Carbon monoxide  
-4. Sulfur dioxide  
-5. Nitrogen dioxide    
+3. Carbon monoxide (CO) 
+4. Sulfur dioxide (SO2)
+5. Nitrogen dioxide (NO2)   
 
 AQI values can range from 0 to 500, with lower numbers representing better air quality and higher numbers representing worse air quality. The index also details the range of values associated with categories of air quality: good, moderate, unhealthy for sensitive groups, unhealthy, very unhealthy, and hazardous.  
 
@@ -21,6 +21,38 @@ AQI values can range from 0 to 500, with lower numbers representing better air q
 
 <center><a href=""><img src= "images/aqi_chart.png" width="500"/>
 </a></center>
+
+<br></br>
+
+## Air Pollutants Represented by the AQI {.tabset}
+
+### Ground-level Ozone (O3)
+**Health Effects:** Ozone exposure reduces lung function and causes respiratory symptoms, such as coughing and shortness of breath. Ozone exposure also aggravates asthma and lung diseases such as emphysema leading to increased medication use, hospital admissions, and emergency department visits. Exposure to ozone may also increase the risk of premature mortality from respiratory causes. Short-term exposure to ozone is also associated with increased total non-accidental mortality, which includes deaths from respiratory causes.
+
+**Environmental Effects:** Ozone damages vegetation by injuring leaves, reducing photosynthesis, impairing reproduction and growth and decreasing crop yields. Ozone damage to plants may alter ecosystem structure, reduce biodiversity and decrease plant uptake of CO2. Ozone is also a greenhouse gas that contributes to the warming of the atmosphere.
+
+### Particulate Matter (PM) 
+
+**Health Effects:** Exposures to PM, particularly fine particles referred to as PM2.5, can cause harmful effects on the cardiovascular system including heart attacks and strokes. These effects can result in emergency department visits, hospitalizations and, in some cases, premature death. PM exposures are also linked to harmful respiratory effects, including asthma attacks.
+
+**Environmental Effects:** Fine particles (PM2.5) are the main cause of reduced visibility (haze) in parts of the U.S., including many national parks and wilderness areas. PM can also be carried over long distances by wind and settle on soils or surface waters. The effects of settling include: making lakes and streams acidic; changing the nutrient balance in coastal waters and large river basins; depleting the nutrients in soil; damaging sensitive forests and farm crops; and affecting the diversity of ecosystems. PM can stain and damage stone and other materials, including culturally important objects such as statues and monuments.
+
+### Carbon Monoxide (CO)
+**Health Effects:** Breathing elevated levels of CO reduces the amount of oxygen reaching the body’s organs and tissues. For those with heart disease, this can result in chest pain and other symptoms leading to hospital admissions and emergency department visits.
+
+**Environmental Effects:** Emissions of CO contribute to the formation of CO2 and ozone, greenhouse gases that warm the atmosphere.
+
+### Sulfur Dioxide (SO2)
+**Health Effects:** Among the species of SOx, SO2 is the most commonly occurring in the atmosphere and the one most clearly associated with human health effects. Short-term exposures to SO2 are linked with respiratory effects including difficulty breathing and increased asthma symptoms. These effects are particularly problematic for asthmatics while breathing deeply such as when exercising or playing. Short-term exposures to SO2 have also been connected to increased emergency department visits and hospital admissions for respiratory illnesses, particularly for at-risk populations including children, older adults and those with asthma. SO2 contributes to particle formation with associated health effects.
+
+**Environmental Effects:** Sulfur oxides react with ammonia and other compounds to form particle pollution resulting in associated environmental effects. Deposition of sulfur oxides contributes to the acidification of soils and surface waters and mercury methylation in wetland areas. At certain concentrations, sulfur oxides can also cause injury to vegetation and species loss in aquatic and terrestrial systems.
+
+### Nitrogen Dioxide (NO2)
+**Health Effects:** Oxides of nitrogen are a group of highly reactive gases, for which nitrogen dioxide (NO2) is the gas of greatest health concern. Short-term exposures to NO2 can aggravate respiratory diseases, particularly asthma, leading to respiratory symptoms, hospital admissions and emergency department visits. Long-term exposures to NO2 may contribute to asthma development and potentially increase susceptibility to respiratory infections.
+
+**Environmental Effects:** Oxides of nitrogen react with volatile organic compounds to form ozone and react with ammonia and other compounds to form particle pollution resulting in associated environmental effects. Deposition of oxides of nitrogen contribute to the acidification and nutrient enrichment (eutrophication, nitrogen saturation) of soils and surface waters, ozone formation, as well to the direct and indirect effects on vegetation, soils, and animals.
+
+## 
 
 <br></br>
 
