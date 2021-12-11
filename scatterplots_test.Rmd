@@ -1,0 +1,339 @@
+---
+title: "scatterplots"
+author: "Amanda Miles"
+date: "12/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(dplyr)
+library(plotly)
+library(flexdashboard)
+library(viridis)
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_color_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+```
+
+# Code that Merges EPA & BRFSS
+
+## Reading in and Cleaning EPA Data
+
+```{r epa_cleaning}
+
+epa_df = 
+  tibble(path = list.files("./data", full.names = TRUE)) %>% 
+  mutate(data = purrr::map(.x = path, ~read_csv(.x))) %>% 
+  janitor::clean_names() %>%
+  unnest(data) %>%
+  janitor::clean_names() %>%
+  select(-c("path",
+            "days_with_aqi",
+            "max_aqi",
+            "good_days":"hazardous_days", 
+            "x90th_percentile_aqi")) %>%
+  rename("days_pm2.5" = "days_pm2_5", "state_name" = "state") %>%
+  mutate(state_code = state_name,
+         state_code = str_replace_all(state_code, " ", ""),
+         state_code = str_to_lower(state_code),
+         state_code =  
+           recode(state_code, 
+             alabama = 1, alaska = 2, arizona = 4, arkansas = 5, 
+             california = 6, colorado = 8, connecticut = 9, delaware = 10,
+             districtofcolumbia = 11, florida = 12, georgia = 13, hawaii = 15, 
+             idaho = 16, illinois = 17, indiana = 18, iowa = 19, kansas = 20, 
+             kentucky = 21, louisiana = 22, maine = 23, maryland = 24, massachusetts = 25, 
+             michigan = 26, minnesota = 27,mississippi = 28, missouri = 29, montana = 30, 
+             nebraska = 31, nevada = 32, newhampshire = 33, newmexico = 35,
+             newyork = 36, northcarolina = 37, northdakota = 38, ohio = 39, oklahoma = 40, 
+             oregon = 41, pennsylvania = 42 , rhodeisland = 44, southcarolina = 45, 
+             southdakota = 46, tennessee = 47, texas = 48, utah = 49, vermont = 50,
+             virginia = 51, washington = 53, westvirginia = 54, wisconsin = 55, 
+             wyoming = 56, puertorico = 72
+             ),
+         state_code = as.factor(state_code)) %>%
+  na.omit(state_code) %>%
+  relocate(state_code, state_name, everything())
+
+```
+
+New Jersey, Guam, the Virgin Islands, and the City of Mexico do not have codes associated in this [codebook](https://www.cdc.gov/brfss/annual_data/2019/pdf/codebook19_llcp-v2-508.HTML). They have been removed from the EPA dataset.
+
+## Creating an EPA State-Level AQI DF
+
+```{r epa_state_level}
+
+state_epa_df = epa_df %>%
+  group_by(state_code, state_name, year) %>%
+  summarize(median = median(median_aqi)) %>%
+  rename("median_aqi" = "median") %>% view()
+
+```
+
+## Adding Column Combining State Code and Year for the Merge
+
+```{r epa_state_year_code}
+
+state_epa_df = state_epa_df %>%
+  mutate(
+    state_code_year = paste0(state_code, "_", year)
+  ) %>%
+  relocate(state_code_year, everything())
+
+```
+
+## Merging EPA and BRFSS State-Level Data
+
+* Read in the BRFSS data
+* Made state a factor in the BRFSS DF
+* Created a new column in BRFSS which concatenates state and year for the merge
+* Merged EPA state-level data with BRFSS individual-level data
+
+```{r epa_brfss_merge}
+
+brfss_df = read_csv(file = "./brfss_data/brfss_12072021.csv")
+
+brfss_factor_df = brfss_df %>%
+  mutate(
+    state = as.factor(as.character(state)),
+    state_year = paste0(state, "_", iyear)
+  ) %>%
+  relocate(state_year, state, iyear, everything())
+
+head(brfss_factor_df)
+
+brfss_epa_df = 
+  left_join(brfss_factor_df, state_epa_df, by = c("state_year" = "state_code_year"))
+
+brfss_epa_df = brfss_epa_df %>%
+  rename(epa_year = year) %>%
+  relocate(state_year, state, state_name, iyear, everything())
+
+```
+
+
+# Calculating Asthma Prevalence by State & Year
+
+## Import & Clean Merged DF
+
+```{r import_merged}
+
+merged_df <- read_csv("brfss_data/brfss_epa.csv")
+
+merged_df <- merged_df %>%
+  mutate(state = ifelse(state == 66, NA, state)) %>%
+  drop_na() %>%
+  mutate(state = factor(state, labels = c("AL", 'AK', "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY')))
+
+```
+
+## Calculate Asthma Prevalence
+
+```{r asthma_prev}
+
+asthma_prev_df = merged_df %>%
+  group_by(state_year, state, state_name, iyear, median_aqi) %>%
+  count(asthma_current) %>%
+  mutate(asthma_perc = (n/sum(n) * 100), asthma_perc = round(asthma_perc, 2)) %>%
+  filter(asthma_current == "yes")
+ 
+head(asthma_prev_df)
+
+```
+# Scatterplot of Asthma Prevalence and State Median AQI
+
+```{r scatterplot}
+
+asthma_prev_df %>%
+  mutate(
+    text_label = str_c("Year", iyear),
+    state = fct_reorder(state, asthma_perc)) %>% 
+  plot_ly(
+  frame = ~iyear) %>%
+  add_trace(
+    type = "scatter",
+    x = ~median_aqi,
+    y = ~asthma_perc, 
+    mode = "markers", 
+    color = ~state, 
+    colors = "viridis",
+    text = ~text_label,
+    alpha = 2
+    ) %>%
+  layout(
+    xaxis = list(title = 'Median AQI'),
+    yaxis = list(title = 'Asthma Prevalence (%)'),
+    title = "Asthma Prevalence vs State Median AQI by Year"
+  )
+  
+```
+
+# Spearman Correlation Estimates: Asthma Prevalence and State Median AQI by Year
+
+```{r spearman}
+
+spearman_df = asthma_prev_df %>%
+  relocate(iyear, everything())
+
+spearman_nest = 
+  nest(spearman_df, data = state_year:asthma_perc)
+
+spearman_nest = 
+  spearman_nest %>% 
+  mutate(
+    correlation = map(.x = data, ~cor.test(.x$median_aqi, .x$asthma_perc, method = "spearman")),
+    results = map(correlation, broom::tidy)) %>% 
+  select(-data, -correlation) %>%
+  unnest(results) %>%
+  janitor::clean_names() %>%
+  mutate(
+    estimate = round(estimate, digits = 3),
+    statistic = round(statistic, digits = 3),
+    p_value = round(p_value, digits = 3)
+  ) %>%
+  select(-method, -alternative) %>%
+  rename(year = iyear, test_statistic = statistic)
+
+knitr::kable(spearman_nest, 
+             digits = 2,
+             caption = "*Spearman Correlation Estimates: Asthma Prevalence and State Median AQI by Year*")
+  
+
+```
+# Spearman Correlation Estimates: Asthma Prevalence and State Median AQI from 2013-2020
+
+```{r spearman_overall}
+
+corr_results = cor.test(spearman_df$median_aqi, spearman_df$asthma_perc, method = "spearman")
+
+corr_results = corr_results %>%
+  broom::tidy() %>%
+  janitor::clean_names() %>%
+  mutate(
+    estimate = round(estimate, digits = 3),
+    statistic = round(statistic, digits = 3),
+    p_value = round(p_value, digits = 3)
+  ) %>%
+  select(-method, -alternative) %>%
+  rename(test_statistic = statistic)
+
+view(corr_results)
+
+knitr::kable(corr_results, 
+             digits = 2,
+             caption = "*Spearman Correlation Estimates: Asthma Prevalence and State Median AQI, 2013-2020*")
+
+```
+
+```{r}
+
+merged_df_2 = merged_df %>%
+  group_by(state) %>%
+  summarize(
+    median_aqi = median(median_aqi)
+  )
+
+view(merged_df_2)
+
+```
+
+
+# Two-Sample Test of Proportions: AZ vs WV
+
+```{r prop_test}
+
+az_wv_df = merged_df %>%
+  filter(state %in% c("AZ", "WV")) %>%
+  group_by(state) %>%
+  mutate(
+    asthma_current = as.factor(asthma_current)
+  ) %>%
+  summarize(
+    current_asthma = sum(asthma_current == "yes"),
+    n = sum(asthma_current == "yes") + sum(asthma_current == "no")
+  )
+
+prop_results = prop.test(x = az_wv_df$current_asthma, 
+          n = az_wv_df$n, 
+          alternative = "two.sided") %>%
+          broom::tidy() %>%
+          janitor::clean_names() %>%
+          select(-parameter, -method, -alternative)
+
+knitr::kable(prop_results, 
+             digits = 2,
+             caption = "*Two-Sample Test of Proportions: AZ vs WV*")
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
