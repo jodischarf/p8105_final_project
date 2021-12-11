@@ -67,9 +67,9 @@ For detailed results, analysis and output, please refer to our [report](report.h
 
 [Project Report](report.html): A complete overview of project goals, data cleaning, analyses, discussion.
 
-[Summary Visualizations](viz.html): Various plots and graphs to visualize trends in climate indicators and natural disasters.
+[Summary Visualizations](viz.html): Various plots and graphs to visualize trends in API and asthma prevalence in the U.S.
 
-[Statistical Analysis](stats.html): Association between natural disasters and climate change indicators using Poisson regression.
+[Statistical Analysis](stats.html): Association between API and asthma 
 
 [Screencast](background.html): Want a quick 2-minute summary of our website? Check it out!
 
