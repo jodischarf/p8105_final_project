@@ -242,18 +242,29 @@ knitr::kable(corr_results,
 
 ```
 
+# Two-Sample Test of Proportions
+
+## Identifying States with the Highest and Lowest Median AQI, 2013-2020
+
 ```{r}
 
-merged_df_2 = merged_df %>%
+merged_summary_df = merged_df %>%
   group_by(state) %>%
   summarize(
     median_aqi = median(median_aqi)
-  )
+  ) %>%
+  arrange(desc(median_aqi))
 
-view(merged_df_2)
+
+min_max_aqi = merged_summary_df[c(1, 2, 51), ]
+  
+knitr::kable(min_max_aqi,
+             digits = 2,
+             caption = "*States with the Maximum and Minimum AQI, 2013-2020*")
 
 ```
 
+Since Washington, D.C. is not officially a state, I will proceed with the two-sample test of proportions comparing California and Wyoming. 
 
 # Two-Sample Test of Proportions: AZ vs WV
 
