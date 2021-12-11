@@ -62,7 +62,7 @@ New Jersey, Guam, the Virgin Islands, and the City of Mexico do not have codes a
 ```{r, median_aqi}
 
 state_aqi_df = epa_df %>%
-  group_by(state_name, state) %>%
+  group_by(state_name, state, year) %>%
   summarize(median = median(median_aqi)) %>%
   rename("median_aqi" = "median") 
 
