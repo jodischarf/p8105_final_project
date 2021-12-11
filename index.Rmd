@@ -1,38 +1,28 @@
 ---
-title: <center>The Project - P8105 Data Science I Project 
+title: <center>A Breath of Fresh Air
 output:   
   html_document:
     toc: true
     toc_float: true
 ---
 
-<h2 style="text-align: center;" markdown="1">Exploring air and asthma</h2>
-<h6 style="text-align: center;" markdown="1">By: Tara Ahi (ta2645)  |  Gunnar Colleen (jgc2157)  |  Mandy Miles (acm2268)  |  Jodi Scharf (jys2137)  |  Jocelyn Sun (jys2136)</h6>
-<center><a href=""><img src="image/city_image"></a></center>
+<h2 style="text-align: center;" markdown="1">Assessing Asthma Prevalence and Air Quality</h2>
+<h6 style="text-align: center;" markdown="1">Authors: Tara Ahi (ta2645)  |  Gunnar Colleen (jgc2157)  |  Mandy Miles (acm2268)  |  Jodi Scharf (jys2137)  |  Jocelyn Sun (jys2136)</h6>
+<center><a href=""><img src="images/city_image.jpeg"></a></center>
 
 <br></br>
 
 <center>
-<iframe width="840" height="472" src="https://www.youtube.com/embed/3_IoGGijsu4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="420" height="236" src="https://www.youtube.com/embed/3_IoGGijsu4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </center>
 
-## Background 
+<br></br>
 
-The relationship between air quality and asthma has long been established. But it is complex. Asthma triggers can vary based on pollutants, how long an individual has been exposed to these pollutants, and lifestyle. Air quality is unique to geographical location down to the local level, which adds to the difficulty of asthma management.  
+The relationship between air quality and asthma has long been established. But it is complex. Asthma triggers can vary based on pollutants, how long an individual has been exposed to these pollutants, and lifestyle. Air quality is unique to geographical location down to the local level, which adds to the difficulty of asthma management.
 
-In the United States, the air quality index (AQI) is the standard air quality measurement and based on the [EPA's air quality index](https://www.airnow.gov/aqi/aqi-basics/). The index is calculated on a daily basis and based on concentrations of the following major pollutants:  
+More details regarding our motivation can be found [here](report.html#ourmotivation).
 
-1. Ground-level ozone  
-2. Particulate matter (PM2.5 & PM10)
-3. Carbon monoxide  
-4. Sulfur dioxide  
-5. Nitrogen dioxide    
-
-AQI values can range from 0 to 500, with lower numbers representing better air quality and higher numbers representing worse air quality. The index also details the range of values associated with categories of air quality: good, moderate, unhealthy for sensitive groups, unhealthy, very unhealthy, and hazardous.  
-
-Individuals with asthma are considered to be a sensitive group. Location-specific AQI may be helpful for individuals to self-manage their asthma. Cities with historically higher AQI can also supplement warning days to protect the health of the public. 
-
-More details regarding our motivation can be found [here](proj_background.html).
+<br></br>
 
 # Dataset
 
@@ -45,12 +35,13 @@ Air quality data is publicly available on the EPA website. We utilized the annua
 Asthma information was collected from BRFFS, the CDC's Behavioral Risk Factor Surveillance System.   
 **Please provide more info here**
 
+We merged the data from these two sources to provide potential for analysis and depiction of the relationship of asthma and AQI.
 
-We merged the data from these two sources to provide potential for analysis and depiction of the relationship of asthma and AQI. 
+More details regarding our use of the datasets can be found [here](report.html#data).
 
-# Findings
+<br></br>
 
-A quick summary of our findings include:     
+# A Quick Summary of Our Findings
 
 1.
 2.
@@ -58,6 +49,29 @@ A quick summary of our findings include:
 
 For detailed results, analysis and output, please refer to our [report](report.html).
 
-# Fun Facts about the project
+<br></br>
 
-Things 
+# Fun Facts About Our Project
+
+1.
+2.
+3.
+
+<br></br>
+
+# Website Overview
+
+[What We are Looking At](background.html): Information about the Air Quality Index (AQI)
+
+[Who We Are](team.html): Want know who worked on this project? Take a look at our lovely team members!
+
+[Project Report](report.html): A complete overview of project goals, data cleaning, analyses, discussion.
+
+[Summary Visualizations](viz.html): Various plots and graphs to visualize trends in climate indicators and natural disasters.
+
+[Statistical Analysis](stats.html): Association between natural disasters and climate change indicators using Poisson regression.
+
+[Screencast](background.html): Want a quick 2-minute summary of our website? Check it out!
+
+
+

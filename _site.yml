@@ -1,20 +1,26 @@
 name: "Global Settings"
 output_dir: "."
 navbar:
-  title: "<div><img src=\"image/title-icon.png\" height=\"22px\"><span style=\"padding-left:10px\">The Project</div>"
+  title: "<div><img src=\"images/breath_icon.jpeg\" height=\"22px\"><span style=\"padding-left:10px\">A Breath of Fresh Air</div>"
   left:
   - text: "About"
     menu:
-    - text: "The Project"
-      href: proj_background.html
-    - text: "The Team"
+    - text: "What We Are Looking At"
+      href: background.html
+    - text: "Who We Are"
       href: team.html
   right:
   - text: "Project Report"
-    icon: fa-file-text-o fa-lg
+    icon: fa-file-text-o
     href: report.html
+  - text: "Summary Visualizations"
+    icon: fas fa-image 
+    href: viz.html
+  - text: "Statistical Analysis"
+    icon: fas fa-chart-line
+    href: stats.html
   - text: "Contact Us"
-    icon: fa-telegram fa-lg
+    icon: fa-telegram 
     menu:
     - text: "Tara Ahi"
       href: mailto:<ta2645@cumc.columbia.edu>

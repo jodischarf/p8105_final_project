@@ -35,7 +35,7 @@ You can learn more about me [here](https://acm2268.github.io/)
 
 # <a href=""><img class="cat_circle" src="images/jodi.png"></a><span style="padding-left:25px">Jodi Scharf
 
-I'm Jodi Scharf
+I'm Jodi Scharf, a 2nd year MPH candidate in the Population and Family Health department with a certificate in Public Health Research Methods. I am deeply interested in (1) mixed-methods research around mental & psychosocial health, (2) design, implementation and evaluation of school- and community-based interventions, and (3) interdisciplinary collaboration. Outside of troubleshooting github commits, I am a [taiko drummer](https://www.youtube.com/watch?v=6h6rxmpigLY&ab_channel=JoshuaYoon), trombonist, and keyboardist!
 
 You can learn more about me [here](https://jodischarf.github.io/)
 

@@ -13,8 +13,8 @@
 
 <title>index.knit</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -316,7 +316,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html"><div><img src="image/title-icon.png" height="22px"><span style="padding-left:10px">The Project</div></a>
+      <a class="navbar-brand" href="index.html"><div><img src="images/breath_icon.jpeg" height="22px"><span style="padding-left:10px">A Breath of Fresh Air</div></a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -328,10 +328,10 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="proj_background.html">The Project</a>
+      <a href="background.html">What We Are Looking At</a>
     </li>
     <li>
-      <a href="team.html">The Team</a>
+      <a href="team.html">Who We Are</a>
     </li>
   </ul>
 </li>
@@ -339,14 +339,28 @@ div.tocify {
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="report.html">
-    <span class="fa fa-file-text-o fa-lg"></span>
+    <span class="fa fa-file-text-o"></span>
      
     Project Report
   </a>
 </li>
+<li>
+  <a href="viz.html">
+    <span class="fas fa-image"></span>
+     
+    Summary Visualizations
+  </a>
+</li>
+<li>
+  <a href="stats.html">
+    <span class="fas fa-chart-line"></span>
+     
+    Statistical Analysis
+  </a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-telegram fa-lg"></span>
+    <span class="fa fa-telegram"></span>
      
     Contact Us
      
@@ -386,43 +400,29 @@ div.tocify {
 
 
 <h1 class="title toc-ignore"><center>
-The Project - P8105 Data Science I Project</h1>
+A Breath of Fresh Air</h1>
 
 </div>
 
 
 <h2 style="text-align: center;">
-Exploring air and asthma
+Assessing Asthma Prevalence and Air Quality
 </h2>
 <h6 style="text-align: center;">
-By: Tara Ahi (ta2645) | Gunnar Colleen (jgc2157) | Mandy Miles (acm2268) | Jodi Scharf (jys2137) | Jocelyn Sun (jys2136)
+Authors: Tara Ahi (ta2645) | Gunnar Colleen (jgc2157) | Mandy Miles (acm2268) | Jodi Scharf (jys2137) | Jocelyn Sun (jys2136)
 </h6>
 <center>
-<a href=""><img src="image/city_image"></a>
+<a href=""><img src="images/city_image.jpeg"></a>
 </center>
 <p><br></br></p>
 <center>
-<iframe width="840" height="472" src="https://www.youtube.com/embed/3_IoGGijsu4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+<iframe width="420" height="236" src="https://www.youtube.com/embed/3_IoGGijsu4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 </iframe>
 </center>
-<div id="background" class="section level2">
-<h2>Background</h2>
+<p><br></br></p>
 <p>The relationship between air quality and asthma has long been established. But it is complex. Asthma triggers can vary based on pollutants, how long an individual has been exposed to these pollutants, and lifestyle. Air quality is unique to geographical location down to the local level, which adds to the difficulty of asthma management.</p>
-<p>In the United States, the air quality index (AQI) is the standard air quality measurement and based on the <a href="https://www.airnow.gov/aqi/aqi-basics/">EPA’s air quality index</a>. The index is calculated on a daily basis and based on concentrations of the following major pollutants:</p>
-<ol style="list-style-type: decimal">
-<li>Ground-level ozone<br />
-</li>
-<li>Particulate matter (PM2.5 &amp; PM10)</li>
-<li>Carbon monoxide<br />
-</li>
-<li>Sulfur dioxide<br />
-</li>
-<li>Nitrogen dioxide</li>
-</ol>
-<p>AQI values can range from 0 to 500, with lower numbers representing better air quality and higher numbers representing worse air quality. The index also details the range of values associated with categories of air quality: good, moderate, unhealthy for sensitive groups, unhealthy, very unhealthy, and hazardous.</p>
-<p>Individuals with asthma are considered to be a sensitive group. Location-specific AQI may be helpful for individuals to self-manage their asthma. Cities with historically higher AQI can also supplement warning days to protect the health of the public.</p>
-<p>More details regarding our motivation can be found <a href="proj_background.html">here</a>.</p>
-</div>
+<p>More details regarding our motivation can be found <a href="report.html#ourmotivation">here</a>.</p>
+<p><br></br></p>
 <div id="dataset" class="section level1">
 <h1>Dataset</h1>
 <p>The data used for the project was obtained from the EPA and the CDC, ranging from the years 2013 - 2020.</p>
@@ -432,20 +432,36 @@ Air quality data is publicly available on the EPA website. We utilized the annua
 Asthma information was collected from BRFFS, the CDC’s Behavioral Risk Factor Surveillance System.<br />
 <strong>Please provide more info here</strong></p>
 <p>We merged the data from these two sources to provide potential for analysis and depiction of the relationship of asthma and AQI.</p>
+<p>More details regarding our use of the datasets can be found <a href="report.html#data">here</a>.</p>
+<p><br></br></p>
 </div>
-<div id="findings" class="section level1">
-<h1>Findings</h1>
-<p>A quick summary of our findings include:</p>
+<div id="a-quick-summary-of-our-findings" class="section level1">
+<h1>A Quick Summary of Our Findings</h1>
 <ol style="list-style-type: decimal">
 <li></li>
 <li></li>
 <li></li>
 </ol>
 <p>For detailed results, analysis and output, please refer to our <a href="report.html">report</a>.</p>
+<p><br></br></p>
 </div>
-<div id="fun-facts-about-the-project" class="section level1">
-<h1>Fun Facts about the project</h1>
-<p>Things</p>
+<div id="fun-facts-about-our-project" class="section level1">
+<h1>Fun Facts About Our Project</h1>
+<ol style="list-style-type: decimal">
+<li></li>
+<li></li>
+<li></li>
+</ol>
+<p><br></br></p>
+</div>
+<div id="website-overview" class="section level1">
+<h1>Website Overview</h1>
+<p><a href="background.html">What We are Looking At</a>: Information about the Air Quality Index (AQI)</p>
+<p><a href="team.html">Who We Are</a>: Want know who worked on this project? Take a look at our lovely team members!</p>
+<p><a href="report.html">Project Report</a>: A complete overview of project goals, data cleaning, analyses, discussion.</p>
+<p><a href="viz.html">Summary Visualizations</a>: Various plots and graphs to visualize trends in climate indicators and natural disasters.</p>
+<p><a href="stats.html">Statistical Analysis</a>: Association between natural disasters and climate change indicators using Poisson regression.</p>
+<p><a href="background.html">Screencast</a>: Want a quick 2-minute summary of our website? Check it out!</p>
 </div>
 
 <!DOCTYPE html>
@@ -455,10 +471,10 @@ Asthma information was collected from BRFFS, the CDC’s Behavioral Risk Factor 
  
 <hr />
 <p style="text-align: center;">
-A work by <a href="https://github.com/taraahi">Tara Ahi</a>, <a href="https://github.com/gcolleen">Gunnar Colleen</a>, <a href="https://github.com/acm2268">Mandy Miles</a>, <a href="https://github.com/jodischarf">Jodi scharf</a>, and <a href="https://github.com/jocelyynsun >Jocelyn Sun</a>
+A work by <a href="https://github.com/taraahi">Tara Ahi</a>, <a href="https://github.com/gcolleen">Gunnar Colleen</a>, <a href="https://github.com/acm2268">Mandy Miles</a>, <a href="https://github.com/jodischarf">Jodi Scharf</a>, and <a href="https://github.com/jocelyynsun >Jocelyn Sun</a>
 </p>
 <p style="text-align: center;">
-© Copyright 2021 The Project Team, All Rights Reserved | Powered by Github.io
+© Copyright 2021 The Breathing Team, All Rights Reserved | Powered by Github.io
 </p>
 
 <p> </p>
