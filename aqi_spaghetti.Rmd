@@ -33,7 +33,7 @@ scale_fill_discrete = scale_fill_viridis_d
 
 ```
 
-```{r, can_merge}
+```{r, can_merge, echo = FALSE}
 
 epa_df = 
   tibble(path = list.files("./data", full.names = TRUE)) %>% 
@@ -76,10 +76,10 @@ state_aqi_df = epa_df %>%
 
 ```
 
-```{r, all}
+```{r, all, echo = FALSE}
 
 state_aqi_df %>%
-  group_by(state_name) %>%
+  group_by(state) %>%
   plot_ly() %>% 
   add_trace(type = 'scatter', 
             mode = 'lines+markers',
@@ -95,7 +95,7 @@ state_aqi_df %>%
 
 ```
 
-```{r, regions}
+```{r, regions, echo = FALSE}
 
 region_df = 
   state_aqi_df %>%
@@ -140,40 +140,40 @@ region_df =
 # checking missing values
 sapply(region_df, function(x) sum(is.na(x)))
 
-write.csv(region_df,"./data/region.csv", row.names = TRUE)
+write.csv(region_df, "region.csv", row.names = TRUE)
 
 ```
 
-```{r, new_england}
+```{r, new_england, echo = FALSE}
 
 p1 = 
   region_df %>%
-  group_by(state_name) %>%
+  group_by(state) %>%
   filter(region == "New England") %>%
   plot_ly() %>% 
   add_trace(type = 'scatter', 
             mode = 'lines+markers',
             x = ~year, 
             y = ~median_aqi, 
-            color = ~state_name, 
+            color = ~state, 
             colors = 'viridis') %>%
   layout(xaxis = list(title = "Year"),
          yaxis = list(title = "Median AQI"))
 
 ```
 
-```{r, middle_atlantic}
+```{r, middle_atlantic, echo = FALSE}
 
 p2 =
   region_df %>%
-  group_by(state_name) %>%
+  group_by(state) %>%
   filter(region == "Middle Atlantic") %>%
   plot_ly() %>% 
   add_trace(type = 'scatter', 
             mode = 'lines+markers',
             x = ~year, 
             y = ~median_aqi, 
-            color = ~state_name, 
+            color = ~state, 
             colors = 'viridis') %>%
   layout(xaxis = list(title = "Year"),
          yaxis = list(title = "Median AQI"))
@@ -181,18 +181,18 @@ p2 =
 
 ```
 
-```{r, east_north_central}
+```{r, east_north_central, echo = FALSE}
 
 p3 =
   region_df %>%
-  group_by(state_name) %>%
+  group_by(state) %>%
   filter(region == "East North Central") %>%
   plot_ly() %>% 
   add_trace(type = 'scatter', 
             mode = 'lines+markers',
             x = ~year, 
             y = ~median_aqi, 
-            color = ~state_name, 
+            color = ~state, 
             colors = 'viridis') %>%
   layout(xaxis = list(title = "Year"),
          yaxis = list(title = "Median AQI"))
@@ -200,108 +200,108 @@ p3 =
 
 ```
 
-```{r, west_north_central}
+```{r, west_north_central, echo = FALSE}
 
 p4 = 
   region_df %>%
-  group_by(state_name) %>%
+  group_by(state) %>%
   filter(region == "West North Central") %>%
   plot_ly() %>% 
   add_trace(type = 'scatter', 
             mode = 'lines+markers',
             x = ~year, 
             y = ~median_aqi, 
-            color = ~state_name, 
+            color = ~state, 
             colors = 'viridis') %>%
   layout(xaxis = list(title = "Year"),
          yaxis = list(title = "Median AQI"))
 
 ```
 
-```{r, south_atlantic_puerto}
+```{r, south_atlantic_puerto, echo = FALSE}
 
 p5 = 
   region_df %>%
-  group_by(state_name) %>%
+  group_by(state) %>%
   filter(region == "South Atlantic & Puerto Rico") %>%
   plot_ly() %>% 
   add_trace(type = 'scatter', 
             mode = 'lines+markers',
             x = ~year, 
             y = ~median_aqi, 
-            color = ~state_name, 
+            color = ~state, 
             colors = 'viridis') %>%
   layout(xaxis = list(title = "Year"),
          yaxis = list(title = "Median AQI"))
 
 ```
 
-```{r, east_south_central}
+```{r, east_south_central, echo = FALSE}
 
 p6 = 
   region_df %>%
-  group_by(state_name) %>%
+  group_by(state) %>%
   filter(region == "East South Central") %>%
   plot_ly() %>% 
   add_trace(type = 'scatter', 
             mode = 'lines+markers',
             x = ~year, 
             y = ~median_aqi, 
-            color = ~state_name, 
+            color = ~state, 
             colors = 'viridis') %>%
   layout(xaxis = list(title = "Year"),
          yaxis = list(title = "Median AQI"))
 
 ```
 
-```{r, west_south_central}
+```{r, west_south_central, echo = FALSE}
 
 p7 = 
   region_df %>%
-  group_by(state_name) %>%
+  group_by(state) %>%
   filter(region == "West South Central") %>%
   plot_ly() %>% 
   add_trace(type = 'scatter', 
             mode = 'lines+markers',
             x = ~year, 
             y = ~median_aqi, 
-            color = ~state_name, 
+            color = ~state, 
             colors = 'viridis') %>%
   layout(xaxis = list(title = "Year"),
          yaxis = list(title = "Median AQI"))
 
 ```
 
-```{r, mountain}
+```{r, mountain, echo = FALSE}
 
 p8 =
   region_df %>%
-  group_by(state_name) %>%
+  group_by(state) %>%
   filter(region == "Mountain") %>%
   plot_ly() %>% 
   add_trace(type = 'scatter', 
             mode = 'lines+markers',
             x = ~year, 
             y = ~median_aqi, 
-            color = ~state_name, 
+            color = ~state, 
             colors = 'viridis') %>%
   layout(xaxis = list(title = "Year"),
          yaxis = list(title = "Median AQI"))
 
 ```
 
-```{r, pacific}
+```{r, pacific, echo = FALSE}
 
 p9 = 
   region_df %>%
-  group_by(state_name) %>%
+  group_by(state) %>%
   filter(region == "Pacific") %>%
   plot_ly() %>% 
   add_trace(type = 'scatter', 
             mode = 'lines+markers',
             x = ~year, 
             y = ~median_aqi, 
-            color = ~state_name, 
+            color = ~state, 
             colors = 'viridis') %>%
   layout(xaxis = list(title = "Year"),
          yaxis = list(title = "Median AQI"))
@@ -309,14 +309,14 @@ p9 =
 
 ```
 
-```{r, subplots_1}
+```{r, subplots_1, echo = FALSE}
 
 #region_df %>%
 #  group_by(region) %>%
 #  do(p = plot_ly( ., 
 #            x = ~year, 
 #            y = ~median_aqi,
-#            color = ~state_name, 
+#            color = ~state, 
 #            #colors = 'viridis',
 #            type = 'scatter', 
 #            mode = 'lines+markers')) %>%
@@ -327,7 +327,7 @@ p9 =
 
 ```
 
-```{r, subplots_2}
+```{r, subplots_2, echo =  FALSE}
 
 plot = 
   subplot(p1, p2, p3, p4, p5, p6, p7, p8, p9,
