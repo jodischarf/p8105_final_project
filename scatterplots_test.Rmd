@@ -252,7 +252,7 @@ merged_summary_df = merged_df %>%
   group_by(state) %>%
   summarize(
     median_aqi = median(median_aqi)
-  ) %>%
+    ) %>%
   arrange(desc(median_aqi))
 
 
@@ -266,12 +266,12 @@ knitr::kable(min_max_aqi,
 
 Since Washington, D.C. is not officially a state, I will proceed with the two-sample test of proportions comparing California and Wyoming. 
 
-# Two-Sample Test of Proportions: AZ vs WV
+# Two-Sample Test of Proportions: CA vs WY
 
 ```{r prop_test}
 
-az_wv_df = merged_df %>%
-  filter(state %in% c("AZ", "WV")) %>%
+ca_wy_df = merged_df %>%
+  filter(state %in% c("CA", "WY")) %>%
   group_by(state) %>%
   mutate(
     asthma_current = as.factor(asthma_current)
@@ -281,8 +281,8 @@ az_wv_df = merged_df %>%
     n = sum(asthma_current == "yes") + sum(asthma_current == "no")
   )
 
-prop_results = prop.test(x = az_wv_df$current_asthma, 
-          n = az_wv_df$n, 
+prop_results = prop.test(x = ca_wy_df$current_asthma, 
+          n = ca_wy_df$n, 
           alternative = "two.sided") %>%
           broom::tidy() %>%
           janitor::clean_names() %>%
@@ -290,9 +290,10 @@ prop_results = prop.test(x = az_wv_df$current_asthma,
 
 knitr::kable(prop_results, 
              digits = 2,
-             caption = "*Two-Sample Test of Proportions: AZ vs WV*")
+             caption = "*Two-Sample Test of Proportions: CA vs WY*")
 
 ```
+
 
 
 
