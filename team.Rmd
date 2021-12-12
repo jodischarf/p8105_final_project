@@ -3,8 +3,6 @@ title: "The Team"
 output: html_document
 ---
 
-<br></br>
-
 We are an interdisciplinary team formed during our second-year as candidates of the MPH program at Columbia University Mailman School of Public Health. This project was developed through Professor Jeff Goldsmith's P8105 data science class.
 
 <br></br>
@@ -13,7 +11,7 @@ We are an interdisciplinary team formed during our second-year as candidates of 
 
 I'm Tara Ahi, a second-year MPH student at Columbia's Mailman School of Public Health studying Epidemiology and Outcomes Research. I have a background in clinical research for hospital systems and drug development and am interested in leveraging data analytics to advance healthcare policy and delivery. Outside of school I enjoy playing tennis, wine tasting with friends and exploring new places. 
 
-You can learn more about me [here](https://taraahi.github.io/)
+You can learn more about me [here](https://taraahi.github.io/).
 
 <br></br>
 
@@ -21,7 +19,7 @@ You can learn more about me [here](https://taraahi.github.io/)
 
 My name Gunnar Colleen and I am a second year MPH student at the Mailman School of Public Health. I am interested in children's health, violence prevention, and research methodology. Outside of work, I like making music and walking my dog.
 
-You can learn more about me [here](https://gcolleen.github.io/)
+You can learn more about me [here](https://gcolleen.github.io/).
 
 <br></br>
 
@@ -29,7 +27,7 @@ You can learn more about me [here](https://gcolleen.github.io/)
 
 I’m Amanda, I’m a second year MPH in Epidemiology student at Columbia’s Mailman School of Public Health and am concentrating in Applied Biostatistics. My research interests are primarily focused on infectious disease and immune-mediated post-viral syndromes, such as Long COVID and ME/CFS. Some fun facts about me are that I love plants and I used to be an equestrian!
 
-You can learn more about me [here](https://acm2268.github.io/)
+You can learn more about me [here](https://acm2268.github.io/).
 
 <br></br>
 
@@ -37,7 +35,7 @@ You can learn more about me [here](https://acm2268.github.io/)
 
 I'm Jodi Scharf, a 2nd year MPH candidate in the Population and Family Health department with a certificate in Public Health Research Methods. I am deeply interested in (1) mixed-methods research around mental & psychosocial health, (2) design, implementation and evaluation of school- and community-based interventions, and (3) interdisciplinary collaboration. Outside of troubleshooting github commits, I am a [taiko drummer](https://www.youtube.com/watch?v=6h6rxmpigLY&ab_channel=JoshuaYoon), trombonist, and keyboardist!
 
-You can learn more about me [here](https://jodischarf.github.io/)
+You can learn more about me [here](https://jodischarf.github.io/).
 
 <br></br>
 
@@ -45,6 +43,6 @@ You can learn more about me [here](https://jodischarf.github.io/)
 
 My name's Jocelyn and I'm a 2nd year Biostatistics MPH candidate with a certificate in Advanced Epidemiology. My research interests include oncology, maternal & child health, and global inequity in women's health care. When I am not chained to my desk, you'll find me on the hunt for the perfect soup dumplings and petting every dog I pass by in NYC (yes. I am _that_ person).
 
-You can learn more about me [here](https://jocelyynsun.github.io/)
+You can learn more about me [here](https://jocelyynsun.github.io/).
 
 <br></br>
