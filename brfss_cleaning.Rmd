@@ -21,8 +21,9 @@ library(tidyverse)
 library(janitor)
 library(haven)
 
-state2020 <- read_xpt("LLCP2020.XPT ") %>%
+state2020 <- read_xpt("./brfss_data/state_level_data/LLCP2020.XPT ") %>%
   clean_names()
+
 
 state2020 <- state2020 %>%
   select(iyear, imonth, iday, ageg5yr, sexvar, race, state, casthm1, ltasth1, chccopd2, llcpwt, ststr, psu) %>%
@@ -37,7 +38,7 @@ library(tidyverse)
 library(janitor)
 library(haven)
 
-state2019 <- read_xpt("LLCP2019.XPT ") %>%
+state2019 <- read_xpt("./brfss_data/state_level_data/LLCP2019.XPT ") %>%
   clean_names()
 
 state2019 <- state2019 %>%
@@ -52,7 +53,7 @@ library(tidyverse)
 library(janitor)
 library(haven)
 
-state2018 <- read_xpt("LLCP2018.XPT ") %>%
+state2018 <- read_xpt("./brfss_data/state_level_data/LLCP2018.XPT ") %>%
   clean_names()
 
 state2018 <- state2018 %>%
@@ -67,7 +68,7 @@ library(tidyverse)
 library(janitor)
 library(haven)
 
-state2017 <- read_xpt("LLCP2017.XPT ") %>%
+state2017 <- read_xpt("./brfss_data/state_level_data/LLCP2017.XPT ") %>%
   clean_names()
 
 state2017 <- state2017 %>%
@@ -82,7 +83,7 @@ library(tidyverse)
 library(janitor)
 library(haven)
 
-state2016 <- read_xpt("LLCP2016.XPT ") %>%
+state2016 <- read_xpt("./brfss_data/state_level_data/LLCP2016.XPT ") %>%
   clean_names()
 
 state2016 <- state2016 %>%
@@ -97,7 +98,7 @@ library(tidyverse)
 library(janitor)
 library(haven)
 
-state2015 <- read_xpt("LLCP2015.XPT ") %>%
+state2015 <- read_xpt("./brfss_data/state_level_data/LLCP2015.XPT ") %>%
   clean_names()
 
 state2015 <- state2015 %>%
@@ -112,7 +113,7 @@ library(tidyverse)
 library(janitor)
 library(haven)
 
-state2014 <- read_xpt("LLCP2014.XPT ") %>%
+state2014 <- read_xpt("./brfss_data/state_level_data/LLCP2014.XPT ") %>%
   clean_names()
 
 state2014 <- state2014 %>%
@@ -127,7 +128,7 @@ library(tidyverse)
 library(janitor)
 library(haven)
 
-state2013 <- read_xpt("LLCP2013.XPT") %>%
+state2013 <- read_xpt("./brfss_data/state_level_data/LLCP2013.XPT") %>%
   clean_names()
 
 state2013 <- state2013 %>%

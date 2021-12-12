@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Gunnar" />
+
+<meta name="date" content="2021-11-14" />
+
+<title>brfss cleaning</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="simplex2-modded.min.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><div><img src="images/breath_icon.jpeg" height="22px"><span style="padding-left:10px">A Breath of Fresh Air</div></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    About
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="background.html">What We Are Looking At</a>
+    </li>
+    <li>
+      <a href="team.html">Who We Are</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="report.html">
+    <span class="fa fa-file-text-o"></span>
+     
+    Project Report
+  </a>
+</li>
+<li>
+  <a href="viz.html">
+    <span class="fas fa-image"></span>
+     
+    Summary Visualizations
+  </a>
+</li>
+<li>
+  <a href="stats.html">
+    <span class="fas fa-chart-line"></span>
+     
+    Statistical Analysis
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-telegram"></span>
+     
+    Contact Us
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mailto:&lt;ta2645@cumc.columbia.edu&gt;">Tara Ahi</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;jgc2157@cumc.columbia.edu&gt;">Gunnar Colleen</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;acm2268@cumc.columbia.edu&gt;">Mandy Miles</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;jys2137@cumc.columbia.edu&gt;">Jodi Scharf</a>
+    </li>
+    <li>
+      <a href="mailto:&lt;jys2136@cumc.columbia.edu&gt;">Jocelyn Sun</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="https://github.com/jodischarf/P8105_final_project.github.io">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">brfss cleaning</h1>
+<h4 class="author">Gunnar</h4>
+<h4 class="date">11/14/2021</h4>
+
+</div>
+
+
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+## ✓ tibble  3.1.6     ✓ dplyr   1.0.7
+## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
+## ✓ readr   2.1.1     ✓ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(janitor)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;janitor&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     chisq.test, fisher.test</code></pre>
+<pre class="r"><code>library(haven)</code></pre>
+<p>loading dataset state 2020</p>
+<pre class="r"><code>library(tidyverse)
+library(janitor)
+library(haven)
+
+state2020 &lt;- read_xpt(&quot;./brfss_data/state_level_data/LLCP2020.XPT &quot;) %&gt;%
+  clean_names()
+
+
+state2020 &lt;- state2020 %&gt;%
+  select(iyear, imonth, iday, ageg5yr, sexvar, race, state, casthm1, ltasth1, chccopd2, llcpwt, ststr, psu) %&gt;%
+  mutate(ageg5yr = na_if(ageg5yr, 14), ageg5yr = factor(ageg5yr, labels = c(&quot;18-24&quot;, &quot;25-29&quot;, &quot;30-34&quot;, &quot;35-39&quot;, &quot;40-44&quot;, &quot;45-49&quot;, &quot;50-54&quot;, &quot;55-59&quot;, &quot;60-64&quot;, &quot;65-69&quot;, &quot;70-74&quot;, &quot;75-79&quot;, &quot;80+&quot;)), sexvar = factor(sexvar, labels = c(&quot;male&quot;, &quot;female&quot;)), race = na_if(race, 9), race = factor(race, labels = c(&quot;white&quot;, &quot;black&quot;, &quot;aian&quot;, &quot;asian&quot;, &quot;pacific islander&quot;, &quot;other&quot;, &quot;multiracial&quot;, &quot;hispanic&quot;)), state = as_factor(state), casthm1 = na_if(casthm1, 9), casthm1 = factor(casthm1, labels = c(&quot;no&quot;, &quot;yes&quot;)), ltasth1 = na_if(ltasth1, 9), ltasth1 = factor(ltasth1, labels = c(&quot;no&quot;, &quot;yes&quot;)), chccopd2 = na_if(chccopd2, 9), chccopd2 = na_if(chccopd2, 7), chccopd2 = factor(chccopd2, labels = c(&quot;yes&quot;, &quot;no&quot;))) %&gt;%
+  rename(asthma_ever = ltasth1, asthma_current = casthm1, copd = chccopd2)</code></pre>
+<p>loading dataset state 2019</p>
+<pre class="r"><code>library(tidyverse)
+library(janitor)
+library(haven)
+
+state2019 &lt;- read_xpt(&quot;./brfss_data/state_level_data/LLCP2019.XPT &quot;) %&gt;%
+  clean_names()
+
+state2019 &lt;- state2019 %&gt;%
+  select(iyear, imonth, iday, ageg5yr, sexvar, race, state, casthm1, ltasth1, chccopd2, llcpwt, ststr, psu) %&gt;%
+  mutate(ageg5yr = na_if(ageg5yr, 14), ageg5yr = factor(ageg5yr, labels = c(&quot;18-24&quot;, &quot;25-29&quot;, &quot;30-34&quot;, &quot;35-39&quot;, &quot;40-44&quot;, &quot;45-49&quot;, &quot;50-54&quot;, &quot;55-59&quot;, &quot;60-64&quot;, &quot;65-69&quot;, &quot;70-74&quot;, &quot;75-79&quot;, &quot;80+&quot;)), sexvar = factor(sexvar, labels = c(&quot;male&quot;, &quot;female&quot;)), race = na_if(race, 9), race = factor(race, labels = c(&quot;white&quot;, &quot;black&quot;, &quot;aian&quot;, &quot;asian&quot;, &quot;pacific islander&quot;, &quot;other&quot;, &quot;multiracial&quot;, &quot;hispanic&quot;)), state = as_factor(state), casthm1 = na_if(casthm1, 9), casthm1 = factor(casthm1, labels = c(&quot;no&quot;, &quot;yes&quot;)), ltasth1 = na_if(ltasth1, 9), ltasth1 = factor(ltasth1, labels = c(&quot;no&quot;, &quot;yes&quot;)), chccopd2 = na_if(chccopd2, 9), chccopd2 = na_if(chccopd2, 7), chccopd2 = factor(chccopd2, labels = c(&quot;yes&quot;, &quot;no&quot;))) %&gt;%
+  rename(asthma_ever = ltasth1, asthma_current = casthm1, copd = chccopd2)</code></pre>
+<p>loading dataset state 2018</p>
+<pre class="r"><code>library(tidyverse)
+library(janitor)
+library(haven)
+
+state2018 &lt;- read_xpt(&quot;./brfss_data/state_level_data/LLCP2018.XPT &quot;) %&gt;%
+  clean_names()
+
+state2018 &lt;- state2018 %&gt;%
+  select(iyear, imonth, iday, ageg5yr, sex1, race, state, casthm1, ltasth1, chccopd1, llcpwt, ststr, psu) %&gt;%
+  mutate(ageg5yr = na_if(ageg5yr, 14), ageg5yr = factor(ageg5yr, labels = c(&quot;18-24&quot;, &quot;25-29&quot;, &quot;30-34&quot;, &quot;35-39&quot;, &quot;40-44&quot;, &quot;45-49&quot;, &quot;50-54&quot;, &quot;55-59&quot;, &quot;60-64&quot;, &quot;65-69&quot;, &quot;70-74&quot;, &quot;75-79&quot;, &quot;80+&quot;)), sex1 = na_if(sex1, 9), sex1 = na_if(sex1, 7), sex1 = factor(sex1, labels = c(&quot;male&quot;, &quot;female&quot;)), race = na_if(race, 9), race = factor(race, labels = c(&quot;white&quot;, &quot;black&quot;, &quot;aian&quot;, &quot;asian&quot;, &quot;pacific islander&quot;, &quot;other&quot;, &quot;multiracial&quot;, &quot;hispanic&quot;)), state = as_factor(state), casthm1 = na_if(casthm1, 9), casthm1 = factor(casthm1, labels = c(&quot;no&quot;, &quot;yes&quot;)), ltasth1 = na_if(ltasth1, 9), ltasth1 = factor(ltasth1, labels = c(&quot;no&quot;, &quot;yes&quot;)), chccopd1 = na_if(chccopd1, 9), chccopd1 = na_if(chccopd1, 7), chccopd1 = factor(chccopd1, labels = c(&quot;yes&quot;, &quot;no&quot;))) %&gt;%
+  rename(asthma_ever = ltasth1, asthma_current = casthm1, copd = chccopd1, sexvar = sex1)</code></pre>
+<p>loading dataset state 2017</p>
+<pre class="r"><code>library(tidyverse)
+library(janitor)
+library(haven)
+
+state2017 &lt;- read_xpt(&quot;./brfss_data/state_level_data/LLCP2017.XPT &quot;) %&gt;%
+  clean_names()
+
+state2017 &lt;- state2017 %&gt;%
+  select(iyear, imonth, iday, ageg5yr, sex, race, state, casthm1, ltasth1, chccopd1, llcpwt, ststr, psu) %&gt;%
+  mutate(ageg5yr = na_if(ageg5yr, 14), ageg5yr = factor(ageg5yr, labels = c(&quot;18-24&quot;, &quot;25-29&quot;, &quot;30-34&quot;, &quot;35-39&quot;, &quot;40-44&quot;, &quot;45-49&quot;, &quot;50-54&quot;, &quot;55-59&quot;, &quot;60-64&quot;, &quot;65-69&quot;, &quot;70-74&quot;, &quot;75-79&quot;, &quot;80+&quot;)), sex = na_if(sex, 9), sex = factor(sex, labels = c(&quot;male&quot;, &quot;female&quot;)), race = na_if(race, 9), race = factor(race, labels = c(&quot;white&quot;, &quot;black&quot;, &quot;aian&quot;, &quot;asian&quot;, &quot;pacific islander&quot;, &quot;other&quot;, &quot;multiracial&quot;, &quot;hispanic&quot;)), state = as_factor(state), casthm1 = na_if(casthm1, 9), casthm1 = factor(casthm1, labels = c(&quot;no&quot;, &quot;yes&quot;)), ltasth1 = na_if(ltasth1, 9), ltasth1 = factor(ltasth1, labels = c(&quot;no&quot;, &quot;yes&quot;)), chccopd1 = na_if(chccopd1, 9), chccopd1 = na_if(chccopd1, 7), chccopd1 = factor(chccopd1, labels = c(&quot;yes&quot;, &quot;no&quot;))) %&gt;%
+  rename(asthma_ever = ltasth1, asthma_current = casthm1, copd = chccopd1, sexvar = sex)</code></pre>
+<p>loading dataset state 2016</p>
+<pre class="r"><code>library(tidyverse)
+library(janitor)
+library(haven)
+
+state2016 &lt;- read_xpt(&quot;./brfss_data/state_level_data/LLCP2016.XPT &quot;) %&gt;%
+  clean_names()
+
+state2016 &lt;- state2016 %&gt;%
+  select(iyear, imonth, iday, ageg5yr, sex, race, state, casthm1, ltasth1, chccopd1, llcpwt, ststr, psu) %&gt;%
+  mutate(ageg5yr = na_if(ageg5yr, 14), ageg5yr = factor(ageg5yr, labels = c(&quot;18-24&quot;, &quot;25-29&quot;, &quot;30-34&quot;, &quot;35-39&quot;, &quot;40-44&quot;, &quot;45-49&quot;, &quot;50-54&quot;, &quot;55-59&quot;, &quot;60-64&quot;, &quot;65-69&quot;, &quot;70-74&quot;, &quot;75-79&quot;, &quot;80+&quot;)), sex = na_if(sex, 9), sex = factor(sex, labels = c(&quot;male&quot;, &quot;female&quot;)), race = na_if(race, 9), race = factor(race, labels = c(&quot;white&quot;, &quot;black&quot;, &quot;aian&quot;, &quot;asian&quot;, &quot;pacific islander&quot;, &quot;other&quot;, &quot;multiracial&quot;, &quot;hispanic&quot;)), state = as_factor(state), casthm1 = na_if(casthm1, 9), casthm1 = factor(casthm1, labels = c(&quot;no&quot;, &quot;yes&quot;)), ltasth1 = na_if(ltasth1, 9), ltasth1 = factor(ltasth1, labels = c(&quot;no&quot;, &quot;yes&quot;)), chccopd1 = na_if(chccopd1, 9), chccopd1 = na_if(chccopd1, 7), chccopd1 = factor(chccopd1, labels = c(&quot;yes&quot;, &quot;no&quot;))) %&gt;%
+  rename(asthma_ever = ltasth1, asthma_current = casthm1, copd = chccopd1, sexvar = sex)</code></pre>
+<p>loading dataset state 2015</p>
+<pre class="r"><code>library(tidyverse)
+library(janitor)
+library(haven)
+
+state2015 &lt;- read_xpt(&quot;./brfss_data/state_level_data/LLCP2015.XPT &quot;) %&gt;%
+  clean_names()
+
+state2015 &lt;- state2015 %&gt;%
+  select(iyear, imonth, iday, ageg5yr, sex, race, state, casthm1, ltasth1, chccopd1, llcpwt, ststr, psu) %&gt;%
+  mutate(ageg5yr = na_if(ageg5yr, 14), ageg5yr = factor(ageg5yr, labels = c(&quot;18-24&quot;, &quot;25-29&quot;, &quot;30-34&quot;, &quot;35-39&quot;, &quot;40-44&quot;, &quot;45-49&quot;, &quot;50-54&quot;, &quot;55-59&quot;, &quot;60-64&quot;, &quot;65-69&quot;, &quot;70-74&quot;, &quot;75-79&quot;, &quot;80+&quot;)), sex = na_if(sex, 9), sex = factor(sex, labels = c(&quot;male&quot;, &quot;female&quot;)), race = na_if(race, 9), race = factor(race, labels = c(&quot;white&quot;, &quot;black&quot;, &quot;aian&quot;, &quot;asian&quot;, &quot;pacific islander&quot;, &quot;other&quot;, &quot;multiracial&quot;, &quot;hispanic&quot;)), state = as_factor(state), casthm1 = na_if(casthm1, 9), casthm1 = factor(casthm1, labels = c(&quot;no&quot;, &quot;yes&quot;)), ltasth1 = na_if(ltasth1, 9), ltasth1 = factor(ltasth1, labels = c(&quot;no&quot;, &quot;yes&quot;)), chccopd1 = na_if(chccopd1, 9), chccopd1 = na_if(chccopd1, 7), chccopd1 = factor(chccopd1, labels = c(&quot;yes&quot;, &quot;no&quot;))) %&gt;%
+  rename(asthma_ever = ltasth1, asthma_current = casthm1, copd = chccopd1, sexvar = sex)</code></pre>
+<p>loading dataset state 2014</p>
+<pre class="r"><code>library(tidyverse)
+library(janitor)
+library(haven)
+
+state2014 &lt;- read_xpt(&quot;./brfss_data/state_level_data/LLCP2014.XPT &quot;) %&gt;%
+  clean_names()
+
+state2014 &lt;- state2014 %&gt;%
+  select(iyear, imonth, iday, ageg5yr, sex, race, state, casthm1, ltasth1, chccopd1, llcpwt, ststr, psu) %&gt;%
+  mutate(ageg5yr = na_if(ageg5yr, 14), ageg5yr = factor(ageg5yr, labels = c(&quot;18-24&quot;, &quot;25-29&quot;, &quot;30-34&quot;, &quot;35-39&quot;, &quot;40-44&quot;, &quot;45-49&quot;, &quot;50-54&quot;, &quot;55-59&quot;, &quot;60-64&quot;, &quot;65-69&quot;, &quot;70-74&quot;, &quot;75-79&quot;, &quot;80+&quot;)), sex = na_if(sex, 9), sex = factor(sex, labels = c(&quot;male&quot;, &quot;female&quot;)), race = na_if(race, 9), race = factor(race, labels = c(&quot;white&quot;, &quot;black&quot;, &quot;aian&quot;, &quot;asian&quot;, &quot;pacific islander&quot;, &quot;other&quot;, &quot;multiracial&quot;, &quot;hispanic&quot;)), state = as_factor(state), casthm1 = na_if(casthm1, 9), casthm1 = factor(casthm1, labels = c(&quot;no&quot;, &quot;yes&quot;)), ltasth1 = na_if(ltasth1, 9), ltasth1 = factor(ltasth1, labels = c(&quot;no&quot;, &quot;yes&quot;)), chccopd1 = na_if(chccopd1, 9), chccopd1 = na_if(chccopd1, 7), chccopd1 = factor(chccopd1, labels = c(&quot;yes&quot;, &quot;no&quot;))) %&gt;%
+  rename(asthma_ever = ltasth1, asthma_current = casthm1, copd = chccopd1, sexvar = sex)</code></pre>
+<p>loading dataset state 2013</p>
+<pre class="r"><code>library(tidyverse)
+library(janitor)
+library(haven)
+
+state2013 &lt;- read_xpt(&quot;./brfss_data/state_level_data/LLCP2013.XPT&quot;) %&gt;%
+  clean_names()
+
+state2013 &lt;- state2013 %&gt;%
+  select(iyear, imonth, iday, ageg5yr, sex, race, state, casthm1, ltasth1, chccopd1, llcpwt, ststr, psu) %&gt;%
+  mutate(ageg5yr = na_if(ageg5yr, 14), ageg5yr = factor(ageg5yr, labels = c(&quot;18-24&quot;, &quot;25-29&quot;, &quot;30-34&quot;, &quot;35-39&quot;, &quot;40-44&quot;, &quot;45-49&quot;, &quot;50-54&quot;, &quot;55-59&quot;, &quot;60-64&quot;, &quot;65-69&quot;, &quot;70-74&quot;, &quot;75-79&quot;, &quot;80+&quot;)), sex = na_if(sex, 9), sex = factor(sex, labels = c(&quot;male&quot;, &quot;female&quot;)), race = na_if(race, 9), race = factor(race, labels = c(&quot;white&quot;, &quot;black&quot;, &quot;aian&quot;, &quot;asian&quot;, &quot;pacific islander&quot;, &quot;other&quot;, &quot;multiracial&quot;, &quot;hispanic&quot;)), state = as_factor(state), casthm1 = na_if(casthm1, 9), casthm1 = factor(casthm1, labels = c(&quot;no&quot;, &quot;yes&quot;)), ltasth1 = na_if(ltasth1, 9), ltasth1 = factor(ltasth1, labels = c(&quot;no&quot;, &quot;yes&quot;)), chccopd1 = na_if(chccopd1, 9), chccopd1 = na_if(chccopd1, 7), chccopd1 = factor(chccopd1, labels = c(&quot;yes&quot;, &quot;no&quot;))) %&gt;%
+  rename(asthma_ever = ltasth1, asthma_current = casthm1, copd = chccopd1, sexvar = sex)</code></pre>
+<p>binding the data set</p>
+<pre class="r"><code>temp_df &lt;- bind_rows(&quot;2020&quot; = state2020, &quot;2019&quot; = state2019, &quot;2018&quot; = state2018, &quot;2017&quot; = state2017, &quot;2016&quot; = state2016, &quot;2015&quot; = state2015, &quot;2014&quot; = state2014, &quot;2013&quot; = state2013, .id = &quot;brfss_year&quot;)</code></pre>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+ 
+<hr />
+<p style="text-align: center;">
+A work by <a href="https://github.com/taraahi">Tara Ahi</a>, <a href="https://github.com/gcolleen">Gunnar Colleen</a>, <a href="https://github.com/acm2268">Mandy Miles</a>, <a href="https://github.com/jodischarf">Jodi Scharf</a>, and <a href="https://github.com/jocelyynsun >Jocelyn Sun</a>
+</p>
+<p style="text-align: center;">
+© Copyright 2021 The Breathing Team, All Rights Reserved | Powered by Github.io
+</p>
+
+<p> </p>
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
