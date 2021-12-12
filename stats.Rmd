@@ -40,6 +40,7 @@ Our team hypothesizes that there would be a monotonic relationship between media
 
 <center><a href=""><img src="images/stats_2.png"></a></center>
 
+<br></br>
 
 * Hypotheses: 
    H0: ⍴i = 0
@@ -62,6 +63,7 @@ Our team hypothesizes that there would be a statistically significant difference
 
 <center><a href=""><img src="images/stats_3.png"></a></center>
 
+<br></br>
 
 * Hypotheses: 
    H0: p1 = p2
@@ -69,7 +71,7 @@ Our team hypothesizes that there would be a statistically significant difference
 
 * Estimates: The estimated proportion with current asthma is approximately 8.74% in California and 10.89% in Wyoming. 
 
-* Test Statistic: The test statistic is 147.40 and follows a standard normal distribution. The p-value is less than 0.0001. .
+* Test Statistic: The test statistic is 147.40 and follows a standard normal distribution. The p-value is less than 0.0001.
 
 * 95% Confidence Interval: The 95% confidence interval ranges from -0.025 to -0.018.
 
