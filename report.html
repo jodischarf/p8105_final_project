@@ -427,8 +427,8 @@ div.tocify {
 </div>
 <div id="related-work" class="section level1">
 <h1>Related Work</h1>
-<p>Anything that inspired you, such as a paper, a web site, or something we discussed in class.</p>
-<p>The inception for this work came from: <strong>INSERT TARA’S INPUT</strong></p>
+<p>One of the most interesting aspects of this class for us was seeing the story that data can tell through visualization. R is especially ideal for this, and it inspired us to create dynamic graphics that could show the impact of air pollution on health. We hope that work like this can inform policy to protect people– especially vulnerable populations– from the consequences of climate change.</p>
+<p>When brainstorming, a driving factor to focus on this topic was Tara’s experience working with pediatric patients suffering from respiratory problems linked to air pollution. Most had come from regions where deforestation is prevalent, leading to increased pollution and debris in the air. The state and federal fines for these actions are not large enough to disincentivize the large corporations from these practices, leading to children bearing the brunt of the consequences.</p>
 <div id="epa-2020-air-trends-report" class="section level3">
 <h3>EPA 2020 Air Trends Report</h3>
 <p>Accordingly, we conducted a search for research on air quality and came across the <a href="https://gispub.epa.gov/air/trendsreport/2021/">EPA’s 2020 Trends Report</a> which summarized how air quality trends show clean air progress.</p>
@@ -503,17 +503,182 @@ div.tocify {
 <h3>Data Sources</h3>
 <div id="epa-data" class="section level4">
 <h4>EPA Data</h4>
+<p>Information on AQI was collected from the Environmental Protection Agency from 2013 - 2020. AQI data is collected on a daily basis from monitors stationed around the country and in every state. The EPA provides summarized annual data on each state and its respective counties. EPA is representative at the state level and can be compared from year to year.</p>
+<p>AQI data for each year between 2013 and 2020 were downloaded as .csv files and imported into R. We merged the .cvs files across all years and kept information pertaining to state name and information associated with the relevant air pollutants: ground level ozone, carbon monoxide, nitrogen dioxide, sulfur dioxide, PM2.5, and PM10. We summarized the median AQI for each state over every year. Therefore each state had 7 observations.</p>
+<p>In anticipation of merging this dataset with BRFSS data, we applied state codes to each state based on that which was included in the BRFSS data.</p>
+<p><strong>EPA AQI Limitations:</strong> Not all states included in the EPA dataset were also included in the BRFSS data. New Jersey, Guam, the Virgin Islands, and the City of Mexico were therefore excluded from our analysis. Additional limitations include the values of the AQI utilized in this project. The EPA provides annual median AQI data, mean AQI, and the 90th percentile of AQI per state and county.</p>
+<p>Although daily data per monitor site is also provided on the EPA website, it is based on the daily AQI on each <em>individual</em> pollutant and not the daily aggregated AQI value. We attempted to calculate the AQI values based on daily data. However, we found those values to be inaccurate when comparing to the provided values of median AQI on the EPA website. This is due to the lack of information of how states/counties were weighted in geographical size, population count, vehicular activity, and/or industrial activity.. Therefore, AQI values utilized were limited to what was provided in the annual data. This restricted the types of comparison analysis we could do or the assessment of the distribution of AQI values per state, county, and nation. The median AQI data was the most reliable option available.</p>
 </div>
 <div id="behavioral-risk-factor-surveillance-system-brfss-data" class="section level4">
 <h4>Behavioral Risk Factor Surveillance System (BRFSS) Data</h4>
-<p>Information on asthma was collected from the Behavioral Risk Factor Surveillance System (BRFSS) years 2013-2020. The BRFSS is a phone-conducted health survey of households administered by states and is available at the state level and at the level of metropolitan statistical areas through the SMART BRFSS. For data available in the SMART BRFSS addition, county-level asthma estimates reflect data aggregated at the metropolitan statistical area level. BRFSS data is representative at the state level and can be compared from year to year. As BRFSS is conducted via telephone, certain subpopulations such as American Indians and Alaska Natives are underrepresented in the data. Additionally, due to the COVID-19 pandemic, BRFSS data for 2020 was partially incomplete</p>
+<p>Information on asthma was collected from the Behavioral Risk Factor Surveillance System (BRFSS)** years 2013-2020. The BRFSS is a phone-conducted health survey of households administered by states and is available at the state level and at the level of metropolitan statistical areas (MMAs) through the Selected Metropolitan/Micropolitan Area Risk Trends of BRFSS (SMART BRFSS) addition. For data available in the SMART BRFSS addition, county-level asthma estimates reflect data aggregated at the metropolitan statistical area level. BRFSS data is representative at the state level and can be compared from year to year.</p>
+<p>BRFSS data for each year between 2013 and 2020 were downloaded as .xpt files and imported into R. We selected and cleaned demographic and asthma related variables, including transforming categorical variables into factors and setting “unknown” responses to missing. Additionally, as variable names in the BRFSS data were not consistent year-to-year, we renamed all variables to be identical. After cleaning each dataset, we binded the datasets lengthwise to make a master BRFSS dataset containing BRFSS year, interview data, demographic information, variables related to asthma, and weighting variables.</p>
 </div>
 </div>
-<div id="scraping-method" class="section level3">
-<h3>Scraping Method</h3>
+<div id="data-scraping-and-cleaning" class="section level3">
+<h3>Data Scraping and Cleaning</h3>
+<div id="code-that-merges-epa-brfss" class="section level4">
+<h4>Code that Merges EPA &amp; BRFSS</h4>
+<div id="reading-in-and-cleaning-epa-data" class="section level5">
+<h5>Reading in and Cleaning EPA Data</h5>
+<pre class="r"><code>epa_df = 
+  tibble(path = list.files(&quot;./data&quot;, full.names = TRUE)) %&gt;% 
+  mutate(data = purrr::map(.x = path, ~read_csv(.x))) %&gt;% 
+  janitor::clean_names() %&gt;%
+  unnest(data) %&gt;%
+  janitor::clean_names() %&gt;%
+  select(-c(&quot;path&quot;,
+            &quot;days_with_aqi&quot;,
+            &quot;max_aqi&quot;,
+            &quot;good_days&quot;:&quot;hazardous_days&quot;, 
+            &quot;x90th_percentile_aqi&quot;)) %&gt;%
+  rename(&quot;days_pm2.5&quot; = &quot;days_pm2_5&quot;, &quot;state_name&quot; = &quot;state&quot;) %&gt;%
+  mutate(state_code = state_name,
+         state_code = str_replace_all(state_code, &quot; &quot;, &quot;&quot;),
+         state_code = str_to_lower(state_code),
+         state_code =  
+           recode(state_code, 
+             alabama = 1, alaska = 2, arizona = 4, arkansas = 5, 
+             california = 6, colorado = 8, connecticut = 9, delaware = 10,
+             districtofcolumbia = 11, florida = 12, georgia = 13, hawaii = 15, 
+             idaho = 16, illinois = 17, indiana = 18, iowa = 19, kansas = 20, 
+             kentucky = 21, louisiana = 22, maine = 23, maryland = 24, massachusetts = 25, 
+             michigan = 26, minnesota = 27,mississippi = 28, missouri = 29, montana = 30, 
+             nebraska = 31, nevada = 32, newhampshire = 33, newmexico = 35,
+             newyork = 36, northcarolina = 37, northdakota = 38, ohio = 39, oklahoma = 40, 
+             oregon = 41, pennsylvania = 42 , rhodeisland = 44, southcarolina = 45, 
+             southdakota = 46, tennessee = 47, texas = 48, utah = 49, vermont = 50,
+             virginia = 51, washington = 53, westvirginia = 54, wisconsin = 55, 
+             wyoming = 56, puertorico = 72
+             ),
+         state_code = as.factor(state_code)) %&gt;%
+  na.omit(state_code) %&gt;%
+  relocate(state_code, state_name, everything())</code></pre>
 </div>
-<div id="data-cleaning" class="section level3">
-<h3>Data Cleaning</h3>
+</div>
+<div id="creating-an-epa-state-level-aqi-df" class="section level4">
+<h4>Creating an EPA State-Level AQI DF</h4>
+<pre class="r"><code>state_epa_df = epa_df %&gt;%
+  group_by(state_code, state_name, year) %&gt;%
+  summarize(median = median(median_aqi)) %&gt;%
+  rename(&quot;median_aqi&quot; = &quot;median&quot;) </code></pre>
+</div>
+<div id="adding-column-combining-state-code-and-year-for-the-merge" class="section level4">
+<h4>Adding Column Combining State Code and Year for the Merge</h4>
+<pre class="r"><code>state_epa_df = state_epa_df %&gt;%
+  mutate(
+    state_code_year = paste0(state_code, &quot;_&quot;, year)
+  ) %&gt;%
+  relocate(state_code_year, everything())</code></pre>
+</div>
+<div id="merging-epa-and-brfss-state-level-data" class="section level4">
+<h4>Merging EPA and BRFSS State-Level Data</h4>
+<ul>
+<li>Read in the BRFSS data</li>
+<li>Made state a factor in the BRFSS DF</li>
+<li>Created a new column in BRFSS which concatenates state and year for the merge</li>
+<li>Merged EPA state-level data with BRFSS individual-level data</li>
+</ul>
+<pre class="r"><code>brfss_df = read_csv(file = &quot;./brfss_data/brfss_12072021.csv&quot;)
+
+brfss_factor_df = brfss_df %&gt;%
+  mutate(
+    state = as.factor(as.character(state)),
+    state_year = paste0(state, &quot;_&quot;, iyear)
+  ) %&gt;%
+  relocate(state_year, state, iyear, everything())
+
+brfss_epa_df = 
+  left_join(brfss_factor_df, state_epa_df, by = c(&quot;state_year&quot; = &quot;state_code_year&quot;))
+
+brfss_epa_df = brfss_epa_df %&gt;%
+  rename(epa_year = year) %&gt;%
+  relocate(state_year, state, state_name, iyear, everything())</code></pre>
+<p>Code Calculating Asthma Prevalence by State &amp; Year</p>
+</div>
+<div id="import-clean-merged-df" class="section level4">
+<h4>Import &amp; Clean Merged DF</h4>
+<pre class="r"><code>merged_df &lt;- read_csv(&quot;brfss_data/brfss_epa.csv&quot;)
+
+merged_df &lt;- merged_df %&gt;%
+  mutate(state = ifelse(state == 66, NA, state)) %&gt;%
+  drop_na() %&gt;%
+  mutate(state = factor(state, labels = c(&quot;AL&quot;, &#39;AK&#39;, &quot;AZ&quot;, &quot;AR&quot;, &quot;CA&quot;, &quot;CO&quot;, &quot;CT&quot;, &quot;DE&quot;, &quot;DC&quot;, &quot;FL&quot;, &quot;GA&quot;, &quot;HI&quot;, &quot;ID&quot;, &quot;IL&quot;, &quot;IN&quot;, &quot;IA&quot;, &quot;KS&quot;, &quot;KY&quot;, &quot;LA&quot;, &quot;ME&quot;, &quot;MD&quot;, &quot;MA&quot;, &quot;MI&quot;, &quot;MN&quot;, &quot;MS&quot;, &quot;MO&quot;, &quot;MT&quot;, &quot;NE&quot;, &quot;NV&quot;, &quot;NH&quot;, &quot;NJ&quot;, &quot;NM&quot;, &quot;NY&quot;, &quot;NC&quot;, &quot;ND&quot;, &quot;OH&quot;, &quot;OK&quot;, &quot;OR&quot;, &quot;PA&quot;, &quot;RI&quot;, &quot;SC&quot;, &#39;SD&#39;, &#39;TN&#39;, &#39;TX&#39;, &#39;UT&#39;, &#39;VT&#39;, &#39;VA&#39;, &#39;WA&#39;, &#39;WV&#39;, &#39;WI&#39;, &#39;WY&#39;)))</code></pre>
+</div>
+<div id="calculate-asthma-prevalence" class="section level4">
+<h4>Calculate Asthma Prevalence</h4>
+<pre class="r"><code>asthma_prev_df = merged_df %&gt;%
+  group_by(state_year, state, state_name, iyear, median_aqi) %&gt;%
+  count(asthma_current) %&gt;%
+  mutate(asthma_perc = (n/sum(n) * 100), asthma_perc = round(asthma_perc, 2)) %&gt;%
+  filter(asthma_current == &quot;yes&quot;)</code></pre>
+</div>
+<div id="example-brfss-data-cleaning" class="section level4">
+<h4>Example BRFSS Data Cleaning</h4>
+<pre class="r"><code>library(tidyverse)
+library(janitor)
+library(haven)
+
+#Loading 2020 BRFSS Data
+state2020 &lt;- read_xpt(&quot;LLCP2020.XPT &quot;) %&gt;%
+  clean_names()
+
+state2020 &lt;- state2020 %&gt;%
+  select(iyear, imonth, iday, ageg5yr, sexvar, race, state, casthm1, ltasth1, chccopd2, llcpwt, ststr, psu) %&gt;%
+  mutate(ageg5yr = na_if(ageg5yr, 14), ageg5yr = factor(ageg5yr, labels = c(&quot;18-24&quot;, &quot;25-29&quot;, &quot;30-34&quot;, &quot;35-39&quot;, &quot;40-44&quot;, &quot;45-49&quot;, &quot;50-54&quot;, &quot;55-59&quot;, &quot;60-64&quot;, &quot;65-69&quot;, &quot;70-74&quot;, &quot;75-79&quot;, &quot;80+&quot;)), sexvar = factor(sexvar, labels = c(&quot;male&quot;, &quot;female&quot;)), race = na_if(race, 9), race = factor(race, labels = c(&quot;white&quot;, &quot;black&quot;, &quot;aian&quot;, &quot;asian&quot;, &quot;pacific islander&quot;, &quot;other&quot;, &quot;multiracial&quot;, &quot;hispanic&quot;)), state = as_factor(state), casthm1 = na_if(casthm1, 9), casthm1 = factor(casthm1, labels = c(&quot;no&quot;, &quot;yes&quot;)), ltasth1 = na_if(ltasth1, 9), ltasth1 = factor(ltasth1, labels = c(&quot;no&quot;, &quot;yes&quot;)), chccopd2 = na_if(chccopd2, 9), chccopd2 = na_if(chccopd2, 7), chccopd2 = factor(chccopd2, labels = c(&quot;yes&quot;, &quot;no&quot;))) %&gt;%
+  rename(asthma_ever = ltasth1, asthma_current = casthm1, copd = chccopd2)
+
+#Binding BRFSS annual sets
+temp_df &lt;- bind_rows(&quot;2020&quot; = state2020, &quot;2019&quot; = state2019, &quot;2018&quot; = state2018, &quot;2017&quot; = state2017, &quot;2016&quot; = state2016, &quot;2015&quot; = state2015, &quot;2014&quot; = state2014, &quot;2013&quot; = state2013, .id = &quot;brfss_year&quot;)</code></pre>
+<p>Similarly, SMART BRFSS data for each year between 2013 and 2019 were downloaded as .xpt files and imported into R and cleaned following the same approach described above for the BRFSS datasets. Counties and states corresponding to each MMA were identified by merging the SMART BRFSS dataset with a list of urban counties and states by FIPS code. MMA-level data for Guam, the Virgin Islands, and Puerto Rico were excluded due to incomplete data. It is important to note that county level data produced through this data reflect aggregated MMA-level estimates.</p>
+<p>###Example SMART BRFSS Data Cleaning</p>
+<pre class="r"><code>library(tidyverse)
+library(janitor)
+library(haven)
+
+#Loading 2019 SMART data
+
+city2019 &lt;- read_xpt(&quot;mmsa/MMSA2019.XPT&quot;) %&gt;%
+  clean_names()
+
+city2019 &lt;- city2019 %&gt;%
+  select(mmsa, mmsaname, mmsawt, ageg5yr, sexvar, race, casthm1, ltasth1, chccopd2, ststr) %&gt;%
+  mutate(sexvar = factor(sexvar, labels = c(&quot;male&quot;, &quot;female&quot;)), ageg5yr = na_if(ageg5yr, 14), ageg5yr = factor(ageg5yr, labels = c(&quot;18-24&quot;, &quot;25-29&quot;, &quot;30-34&quot;, &quot;35-39&quot;, &quot;40-44&quot;, &quot;45-49&quot;, &quot;50-54&quot;, &quot;55-59&quot;, &quot;60-64&quot;, &quot;65-69&quot;, &quot;70-74&quot;, &quot;75-79&quot;, &quot;80+&quot;)), race = na_if(race, 9), race = factor(race, labels = c(&quot;white&quot;, &quot;black&quot;, &quot;aian&quot;, &quot;asian&quot;, &quot;pacific islander&quot;, &quot;other&quot;, &quot;multiracial&quot;, &quot;hispanic&quot;)), casthm1 = na_if(casthm1, 9), casthm1 = factor(casthm1, labels = c(&quot;no&quot;, &quot;yes&quot;)), ltasth1 = na_if(ltasth1, 9), ltasth1 = factor(ltasth1, labels = c(&quot;no&quot;, &quot;yes&quot;)), chccopd2 = na_if(chccopd2, 9), chccopd2 = na_if(chccopd2, 7), chccopd2 = factor(chccopd2, labels = c(&quot;yes&quot;, &quot;no&quot;))) %&gt;%
+  rename(asthma_ever = ltasth1, asthma_current = casthm1, copd = chccopd2)
+
+#Matching MMA code to counties
+metrolist &lt;- read_csv(&quot;metrolist.csv&quot;) %&gt;%
+  select(mmsa, fips, county_name) %&gt;%
+  separate(county_name, c(&quot;county&quot;, &quot;state&quot;), &quot;, &quot;)
+
+microlist &lt;- read_csv(&quot;microlist.csv&quot;) %&gt;%
+  select(mmsa, fips, county_name) %&gt;%
+  separate(county_name, c(&quot;county&quot;, &quot;state&quot;), &quot;, &quot;)
+
+metrodiv &lt;- read_csv(&quot;metrodiv.csv&quot;) %&gt;%
+  select(mmsa, fips, county_name) %&gt;%
+  separate(county_name, c(&quot;county&quot;, &quot;state&quot;), &quot;, &quot;)
+
+mmsa_list &lt;- rbind(metrolist, microlist)
+mmsa_list &lt;- rbind(mmsa_list, metrodiv)
+
+#Binding annual datasets
+temp_df &lt;- bind_rows(&quot;2019&quot; = city2019, &quot;2018&quot; = city2018, &quot;2017&quot; = city2017, &quot;2016&quot; = city2016, &quot;2015&quot; = city2015, &quot;2014&quot; = city2014, &quot;2013&quot; = city2013, .id = &quot;brfss_year&quot;)
+
+#fixing the mmsas where the code changed in the time period
+temp_df &lt;- temp_df %&gt;%
+  mutate(mmsa = as.character(mmsa)) %&gt;%
+  mutate(mmsa = ifelse(mmsa == &quot;19380&quot;, &quot;19430&quot;,
+                    ifelse(mmsa == &quot;43524&quot;, &quot;47900&quot;,
+                            ifelse(mmsa == &quot;20524&quot;, &quot;39100&quot;,
+                                    ifelse(mmsa == &quot;17200&quot;, &quot;30100&quot;, mmsa)))))</code></pre>
+<p>A data challenge we encountered with the BRFSS data is that multiple variables including the sex variable changed names between 2013 and 2020. In order to combine the annual datasets, we had to read the codebooks for each iteration of the BRFSS. Similarly, for the SMART BRFSS data, multiple metropolitan statistical areas changed their FIPS code between 2013 and 2019, requiring us to identify where the changes occurred and to combine specific FIPS codes using ifelse commands.</p>
+<p><strong>BRFSS Limitations:</strong> As BRFSS is conducted via telephone, certain subpopulations such as American Indians and Alaska Natives are underrepresented in the data. Additionally, due to the COVID-19 pandemic, BRFSS data for 2020 was partially incomplete. Non-urban county data is suppressed in the SMART BRFSS datasets. As asthma prevalence data is aggregated to either the state or MMA-level in our analyses, within state and within MMA differences are not reflected in the data.</p>
+</div>
+</div>
+<div id="final-dataset" class="section level3">
+<h3>Final Dataset</h3>
+<p>State level BRFSS and AQI data were merged by adding a state FIPS code column to the EPA dataset and then inner joining the two data sets by year and FIPS code. The resulting data set contains 3,591,874 observations with 19 variables. Key variables in the final data include: <strong>Asthma Prevalence:</strong> Percent of individuals who reported currently having asthma in a calendar year on the BRFSS survey. <strong>Median AQI:</strong> Median Air Quality Index across a state in a calendar year. Measures five specific pollutants: ground-level ozone, particulate matter, carbon monoxide, sulfur dioxide, and nitrogen dioxide. <strong>Demographic and Other Variables:</strong> 5-year age categories, race, sex, state, year <strong>Additional Outcome Variables:</strong> COPD Prevalence, Self report of ever having asthma</p>
 <p><br></br></p>
 <p><br></br></p>
 <p><br></br></p>
@@ -521,40 +686,235 @@ div.tocify {
 </div>
 <div id="exploratory-analysis" class="section level1">
 <h1>Exploratory analysis</h1>
-<div id="visualization-1" class="section level2">
-<h2>Visualization 1</h2>
+<div id="visualization-1---state-level-maps-of-asthma-prevalence-and-median-aqi" class="section level3">
+<h3>Visualization 1 - State Level Maps of Asthma Prevalence and Median AQI</h3>
+<p>The interactive state level maps show state-level estimates for Asthma Prevalence and Median AQI between 2013 and 2020 in order to demonstrate how both variables differ throughout the United States and how they have changed over time.</p>
+<p>These visualizations were created through plot_ly and grouping asthma prevalence by state and year. For the color scale for both maps in this section, minimum values were selected as the minimum value in the data set. This same process was applied to the maximum AQI level by state while maximum asthma level was selected as 15% in order to exclude potential outliers from the scale.</p>
+<p>A data challenge we encountered here was that the geojson file of FIPS codes which is utilized by plot_ly to construct a map of US states did not match FIPS codes from the BRFSS data set for FIPS codes starting with 0. This issue was resolved by re-adding a 0 to any FIPS code starting with 0 as the initial 0 in these codes were removed when downloading the data files.</p>
+<p><strong>State Level Asthma Map Code Chunk</strong></p>
+<pre class="r"><code>#Creating the state level asthma prevalence map in plotly
+geo_properties = list(
+  scope = &quot;usa&quot;,
+  projection = list(
+    type = &quot;albers usa&quot;),
+  showland = TRUE,
+  landcolor = toRGB(&#39;white&#39;))
+
+asthma_graph &lt;- state_df %&gt;%
+  plot_geo(
+    locationmode = &#39;USA-states&#39;,
+    frame = ~iyear) %&gt;%
+  add_trace(locations = ~state,
+            z = ~asthma_perc,
+            zmin = min(state_df$asthma_perc),
+            zmax = 15,
+            text = ~hover,
+            hoverinfo = &#39;text&#39;,
+            color = ~asthma_perc,
+            colorscale = &quot;Cividis&quot;) %&gt;%
+  layout(geo = geo_properties,
+        font = &quot;DM Sans&quot;,
+        title = &quot;Asthma Prevalence in the United State, 2013-2021&quot;) %&gt;%
+  colorbar(title = &quot;Asthma Prevalence&quot;) %&gt;%
+  animation_slider(
+    currentvalue = list(prefix = &quot;YEAR &quot;))</code></pre>
+</div>
+<div id="visualization-2---urban-county-level-maps-of-asthma-prevalence-and-median-aqi" class="section level3">
+<h3>Visualization 2 - Urban County Level Maps of Asthma Prevalence and Median AQI</h3>
+<p>The interactive county level maps show metropolitan statistical area-level estimates for Asthma Prevalence and Median AQI between 2013 and 2019 by county in order to demonstrate how urban areas may differ from states by asthma and air quality.</p>
+<p>As with the state-level maps, these visualizations were created through plot_ly and grouping asthma data at the metropolitan statistical level area as this was the lowest level of data available. MMA-level asthma prevalence was then applied to component counties in each area. Counties not represented in the SMART BRFSS datasets were excluded from these maps. The same data color scale processes were utilized on the county-level maps as well.</p>
+</div>
+<div id="visualization-3" class="section level3">
+<h3>Visualization 3</h3>
+<p><strong>County Level AQI Map Code Chunk</strong></p>
+<pre class="r"><code>#creating urban county-level AQI map reusing urban_data df
+#Load county level map from the below link
+url &lt;- &#39;https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json&#39;
+
+counties &lt;- rjson::fromJSON(file=url)
+
+
+#Creating the map
+g &lt;- list(
+  scope = &#39;usa&#39;,
+  projection = list(type = &#39;albers usa&#39;),
+  showlakes = TRUE,
+  lakecolor = toRGB(&#39;white&#39;))
+
+urban_aqi_map &lt;- county_data %&gt;%
+  plot_ly(
+    frame = ~brfss_year
+  ) %&gt;%
+  add_trace(
+    type=&quot;choropleth&quot;,
+    geojson=counties,
+    locations = county_data$nfips,
+    z = county_data$median_aqi,
+    colorscale=&quot;Cividis&quot;,
+    zmin=min(county_data$median_aqi),
+    zmax=max(county_data$median_aqi),
+    text = ~hover,
+    hoverinfo = &quot;text&quot;,
+    marker=list(line=list(
+    width=0))) %&gt;%
+  layout(geo = g,
+        font = &quot;DM Sans&quot;,
+        title = &quot;Median AQI in US Urban Counties, 2013-2019&quot;) %&gt;%
+  colorbar(title = &quot;Median AQI&quot;) %&gt;%
+    animation_slider(
+    currentvalue = list(prefix = &quot;YEAR &quot;))</code></pre>
+</div>
+<div id="visualization-3---interactive-scatter-plots-of-state-median-aqi-and-asthma-prevalence-by-year" class="section level3">
+<h3>Visualization 3 - Interactive Scatter Plots of State Median AQI and Asthma Prevalence by Year</h3>
+<p>The interactive scatter plot shows the relationship between state median AQI and asthma prevalence by year to demonstrate how the relationship may have changed over time. For each year from 2013 to 2020, the data points were fairly dispersed and did not exhibit a monotonic relationship. There were also several outliers observed for each of the years examined.</p>
+<p>Initially, the visualization was only going to showcase the relationship between state median AQI and asthma prevalence during one year. However, after consideration, the team decided to showcase the relationship by year to examine whether the relationship between asthma prevalence and state median AQI changed over time. Additionally, the team decided to make the scatterplots by year interactive to improve engagement with potential website viewers.</p>
+<p><strong>Interactive Scatterplot Code (Note: asthma_prev_df file must be calculated off of the merged_df file for the state factor labels to work correctly):</strong></p>
+<pre class="r"><code>asthma_prev_df %&gt;%
+  mutate(
+    text_label = str_c(&quot;Year&quot;, iyear),
+    state = fct_reorder(state, asthma_perc)) %&gt;% 
+  plot_ly(
+  frame = ~iyear) %&gt;%
+  add_trace(
+    type = &quot;scatter&quot;,
+    x = ~median_aqi,
+    y = ~asthma_perc, 
+    mode = &quot;markers&quot;, 
+    color = ~state, 
+    colors = &quot;viridis&quot;,
+    text = ~text_label,
+    alpha = 2
+    ) %&gt;%
+  layout(
+    xaxis = list(title = &#39;Median AQI&#39;),
+    yaxis = list(title = &#39;Asthma Prevalence (%)&#39;),
+    title = &quot;Asthma Prevalence vs State Median AQI by Year&quot;
+  )</code></pre>
+</div>
+<div id="visualization-4--the-change-in-median-aqi-over-time-by-state-and-region-of-the-united-states-from-census" class="section level3">
+<h3>Visualization 4 -The change in Median AQI over time by State and Region of the United States from Census</h3>
 <ul>
-<li>Summary</li>
-<li>Justify the steps you took, and show any major changes to your ideas.</li>
+<li>The interactive spaghetti plots depict the trend in median AQI over time by each state, and further stratified by <a href="https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf">regions of the United States</a>. The trends in median AQI over time per region in the United States decreased from 2013 to 2020, with the exception of Puerto Rico. The state that had the largest decrease in median AQI was Pennsylvania, with a median AQI of 44 in 2013 and a median AQI of 37 in 2020. The state with the highest median AQI over time was California, with relatively little change in median AQI over time.</li>
 </ul>
 </div>
-<div id="visualization-2" class="section level2">
-<h2>Visualization 2</h2>
+<div id="exploratory-statistical-analysis-1-spearman-correlation-between-median-aqi-and-asthma-prevalence-overall-2013-2020" class="section level2">
+<h2>Exploratory statistical analysis 1: Spearman Correlation between Median AQI and Asthma Prevalence Overall, 2013-2020</h2>
 <ul>
-<li>Summary</li>
-<li>Justify the steps you took, and show any major changes to your ideas.</li>
+<li><p>The team calculated the estimated Spearman correlation between median AQI and asthma prevalence overall for the period from 2013 to 2020 in order to further assess the relationship between the two variables. The team used Spearman correlation rather than Pearson due to the non-linear relationship between the variables.</p></li>
+<li><p>The Spearman correlation between median AQI and asthma prevalence for the period from 2013 to 2020 was -0.02.</p></li>
+<li><p>The Spearman correlation estimate for the period from 2013 to 2020 indicates no almost monotonic relationship between median AQI and asthma prevalence.</p></li>
 </ul>
+<p><strong>Spearman Correlation Overall Code <strong>(Note: asthma_prev_df file must be calculated off of the merged_df file for the state factor labels to work correctly):</strong></strong></p>
+<pre class="r"><code># partial code chunk for statistical analysis
+corr_results = cor.test(spearman_df$median_aqi, spearman_df$asthma_perc, method = &quot;spearman&quot;)
+
+corr_results = corr_results %&gt;%
+  broom::tidy() %&gt;%
+  janitor::clean_names() %&gt;%
+  mutate(
+    estimate = round(estimate, digits = 3),
+    statistic = round(statistic, digits = 3),
+    p_value = round(p_value, digits = 3)
+  ) %&gt;%
+  select(-method, -alternative) %&gt;%
+  rename(test_statistic = statistic)
+
+knitr::kable(corr_results, 
+             digits = 2,
+             caption = &quot;*Spearman Correlation Estimates: Asthma Prevalence and State Median AQI, 2013-2020*&quot;)</code></pre>
 </div>
-<div id="visualization-3" class="section level2">
-<h2>Visualization 3</h2>
+<div id="exploratory-statistical-analysis-2-spearman-correlation-between-median-aqi-and-asthma-prevalence-by-year" class="section level2">
+<h2>Exploratory statistical analysis 2: Spearman Correlation between Median AQI and Asthma Prevalence by Year</h2>
 <ul>
-<li>Summary</li>
-<li>Justify the steps you took, and show any major changes to your ideas.</li>
+<li><p>Since the overall Spearman correlation estimate for the period from 2013 to 2020 indicated almost no monotonic relationship between median AQI and asthma prevalence, the team decided to calculate the Spearman correlation estimate for the variables by year in case evaluating correlation over the 2013 to 2020 period overall was masking annual trends. As with the prior correlation analysis, the team used Spearman correlation rather than Pearson due to the non-linear relationship between the variables.</p></li>
+<li><p>The Spearman correlation estimates ranged from -0.09 to 0.09 for the years from 2013 to 2019 and the Spearman correlation estimate was 0.17 in 2020.</p></li>
+<li><p>The Spearman correlation estimates from 2013 to 2019 indicate almost no monotonic relationship between median AQI and asthma prevalence and the direction of the relationship varies depending on the year. However, the Spearman correlation estimate of 0.17 in 2020 indicates a weak positive monotonic relationship between median AQI and asthma prevalence.</p></li>
 </ul>
+<p><strong>Spearman Correlation by Year Code <strong>(Note: asthma_prev_df file must be calculated off of the merged_df file for the state factor labels to work correctly):</strong></strong></p>
+<pre class="r"><code># Partial code chunk for statistical analysis
+spearman_df = asthma_prev_df %&gt;%
+  relocate(iyear, everything())
+
+spearman_nest = 
+  nest(spearman_df, data = state_year:asthma_perc)
+
+spearman_nest = 
+  spearman_nest %&gt;% 
+  mutate(
+    correlation = map(.x = data, ~cor.test(.x$median_aqi, .x$asthma_perc, method = &quot;spearman&quot;)),
+    results = map(correlation, broom::tidy)) %&gt;% 
+  select(-data, -correlation) %&gt;%
+  unnest(results) %&gt;%
+  janitor::clean_names() %&gt;%
+  mutate(
+    estimate = round(estimate, digits = 3),
+    statistic = round(statistic, digits = 3),
+    p_value = round(p_value, digits = 3)
+  ) %&gt;%
+  select(-method, -alternative) %&gt;%
+  rename(year = iyear, test_statistic = statistic)
+
+knitr::kable(spearman_nest, 
+             digits = 2,
+             caption = &quot;*Spearman Correlation Estimates: Asthma Prevalence and State Median AQI by Year*&quot;)</code></pre>
 </div>
-<div id="exploratory-statistical-analysis" class="section level2">
-<h2>Exploratory statistical analysis</h2>
+<div id="exploratory-statistical-analysis-3-two-sample-test-of-proportions-arizona-vs.-west-virginia-2013-2020" class="section level2">
+<h2>Exploratory statistical analysis 3: Two Sample Test of Proportions: Arizona vs. West Virginia, 2013-2020</h2>
 <ul>
-<li>Summary</li>
-<li>Justify the steps you took, and show any major changes to your ideas.</li>
+<li>The median of state AQI from 2013 to 2020 ranged from 20 to 47, which is a relatively limited range and is classified as having good air quality. Statistical tests have limited power to detect a statistically significant effect if there is insufficient difference between the exposure groups. To maximize our ability to detect a significant difference in the proportion with current asthma, the team compared Wyoming, the state with the lowest median AQI, and California, the state with the highest median AQI. Although Washington, D.C. is categorized as having the highest median AQI, the team chose to use California, the state with the second highest median AQI, since Washington, D.C. is not officially considered a state.</li>
 </ul>
+<p>The team conducted a two-sided test in order to explore whether the proportions are significantly different in either direction.</p>
+<ul>
+<li><p>Hypotheses: H0: p1 = p2 H1: p1 ≠ p2</p></li>
+<li><p>Estimates: The estimated proportion with current asthma is approximately 8.74% in California and 10.89% in Wyoming.</p></li>
+<li><p>Test Statistic: The test statistic is 147.40 and follows a standard normal distribution. The p-value is less than 0.0001. .</p></li>
+<li><p>95% Confidence Interval: The 95% confidence interval ranges from -0.025 to -0.018.</p></li>
+<li><p>Conclusion: Our p-value is less than our alpha of 0.05. As such, we reject the null hypothesis and conclude that the proportion of individuals with current asthma in California compared to Wyoming is significantly different at the 5% level of significance.</p></li>
+</ul>
+<p>Two Sample Test of Proportions Code (Note: asthma_prev_df file must be calculated off of the merged_df file for the state factor labels to work correctly):</p>
+<div id="identifying-states-with-the-highest-and-lowest-median-aqi-2013-2020" class="section level4">
+<h4>Identifying States with the Highest and Lowest Median AQI, 2013-2020</h4>
+<pre class="r"><code># Partial code chunk for statistical analysis
+merged_summary_df = merged_df %&gt;%
+  group_by(state) %&gt;%
+  summarize(
+    median_aqi = median(median_aqi)
+    ) %&gt;%
+  arrange(desc(median_aqi))
+
+min_max_aqi = merged_summary_df[c(1, 2, 51), ]
+  
+knitr::kable(min_max_aqi,
+             digits = 2,
+             caption = &quot;*States with the Maximum and Minimum AQI, 2013-2020*&quot;)</code></pre>
+</div>
+<div id="two-sample-test-of-proportions-ca-vs-wy" class="section level4">
+<h4>Two-Sample Test of Proportions: CA vs WY</h4>
+<pre class="r"><code># Partial code chunk for statistical analysis
+ca_wy_df = merged_df %&gt;%
+  filter(state %in% c(&quot;CA&quot;, &quot;WY&quot;)) %&gt;%
+  group_by(state) %&gt;%
+  mutate(
+    asthma_current = as.factor(asthma_current)
+  ) %&gt;%
+  summarize(
+    current_asthma = sum(asthma_current == &quot;yes&quot;),
+    n = sum(asthma_current == &quot;yes&quot;) + sum(asthma_current == &quot;no&quot;)
+  )
+
+prop_results = prop.test(x = ca_wy_df$current_asthma, 
+          n = ca_wy_df$n, 
+          alternative = &quot;two.sided&quot;) %&gt;%
+          broom::tidy() %&gt;%
+          janitor::clean_names() %&gt;%
+          select(-parameter, -method, -alternative)
+
+knitr::kable(prop_results, 
+             digits = 2,
+             caption = &quot;*Two-Sample Test of Proportions: CA vs WY*&quot;)</code></pre>
 <p><br></br></p>
 </div>
 </div>
-<div id="additional-analysis" class="section level1">
-<h1>Additional analysis:</h1>
-<p>If you undertake formal statistical analyses, describe these in detail</p>
-<p><br></br></p>
 </div>
 <div id="discussion" class="section level1">
 <h1>Discussion</h1>

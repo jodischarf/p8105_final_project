@@ -29,7 +29,11 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -218,7 +222,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -228,6 +298,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -321,6 +401,14 @@ $(document).ready(function () {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore"><center>
@@ -334,24 +422,58 @@ Statistical Analysis</h1>
 <a href=""><img src= "https://media.giphy.com/media/3o7bufkPz3LRof205G/giphy.gif" width="240" height="155" /> </a>
 </center>
 <p><br></br></p>
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
+<div id="statistical-analysis-1-spearman-correlation-of-asthma-prevalence-and-median-aqi-2013-2020" class="section level1">
+<h1>Statistical Analysis 1: Spearman Correlation of Asthma Prevalence and Median AQI, 2013-2020</h1>
+<div id="hypothesis" class="section level2">
+<h2>Hypothesis</h2>
+<p>Our team hypothesizes that there would be a monotonic relationship between median AQI and asthma prevalence. We estimated the Spearman correlation of the two variables to assess whether there was a monotonic relationship.</p>
+<center>
+<a href=""><img src="images/stats_1.png"></a>
+</center>
+<ul>
+<li><p>Hypotheses: H0: ⍴ = 0 H1: ⍴ ≠ 0</p></li>
+<li><p>Estimates, Test Statistic, and P-Value: The Spearman correlation between median AQI and asthma prevalence for the period from 2013 to 2020 was -0.02, with a test statistic of 11,522,694 and a p-value of 0.72.</p></li>
+<li><p>Conclusion: Our p-value is greater than our alpha of 0.05. As such, we fail to reject the null hypothesis of no monotonic relationship at the 5% level of significance.</p></li>
+<li><p>The Spearman correlation estimate for the period from 2013 to 2020 indicates no almost monotonic relationship between median AQI and asthma prevalence. This result is contrary to what the team expected. These results may be due to annual changes in the relationship between the variables, which are masked when assessed for the overall period from 2013 to 2020. Additionally, the result may be due to the limitations we have in our data. We are primarily limited to analyzing asthma prevalence at the state level since BRFSS does not disclose asthma prevalence for non-metropolitan counties. Looking at the relationship grouped at the state level may mask the relationship between median AQI and asthma prevalence at the sub-state or county level. Additionally, the team’s ability to detect a relationship between the two variables may also be due to our data only containing information on annual median AQI rather than daily AQI.</p></li>
+</ul>
+<p><br></br></p>
 </div>
-<div id="including-plots" class="section level2">
-<h2>Including Plots</h2>
-<p>You can also embed plots, for example:</p>
-<p><img src="stats_files/figure-html/pressure-1.png" width="672" /></p>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
+</div>
+<div id="statistical-analysis-2-spearman-correlation-of-asthma-prevalence-and-median-aqi-by-year-2013-2020" class="section level1">
+<h1>Statistical Analysis 2: Spearman Correlation of Asthma Prevalence and Median AQI by Year, 2013-2020</h1>
+<div id="hypothesis-1" class="section level2">
+<h2>Hypothesis</h2>
+<p>Our team hypothesizes that there would be a monotonic relationship between median AQI and asthma prevalence, but that the strength of the relationship may vary by year. We estimated the Spearman correlation of the two variables by year to assess whether there was a monotonic relationship and if the relationship varies by year.</p>
+<center>
+<a href=""><img src="images/stats_2.png"></a>
+</center>
+<ul>
+<li><p>Hypotheses: H0: ⍴i = 0 H1: ⍴i ≠ 0</p></li>
+<li><p>Where, i = 2013 through 2020</p></li>
+<li><p>Estimates, Test Statistic, and P-Value: The Spearman correlation between median AQI and asthma prevalence ranged from -0.09 to 0.09 for the years from 2013 to 2019, with test statistics ranging from 20,193.57 to 23,974.60, and p-values ranging from 0.55 to 0.87. For the year 2020, the Spearman correlation estimate was 0.17, with a test statistic of 18,350.35 and a p-value of 0.23.</p></li>
+<li><p>The Spearman correlation estimates from 2013 to 2019 indicate almost no monotonic relationship between median AQI and asthma prevalence and the direction of the relationship varies depending on the year. The Spearman correlation estimate of 0.17 in 2020 indicates a weak positive monotonic relationship between median AQI and asthma prevalence. However, p-values in each year were less than our alpha of 0.05. As such, we fail to the reject the null hypothesis of no monotonic association between median AQI and asthma prevalence for each year from 2013 to 2020, at the 5% level of significance.</p></li>
+<li><p>The Spearman correlation estimate for each year from 2013 to 2020 did vary per year, but each indicated no almost monotonic relationship between median AQI and asthma prevalence. This result is contrary to what the team expected. These results may be due to annual changes in the relationship between the variables, which are masked when assessed for the overall period from 2013 to 2020. Additionally, the result may be due to the limitations we have in our data. We are primarily limited to analyzing asthma prevalence at the state level since BRFSS does not disclose asthma prevalence for non-metropolitan counties. Looking at the relationship grouped at the state level may mask the relationship between median AQI and asthma prevalence at the sub-state or county level. Additionally, the team’s ability to detect a relationship between the two variables may also be due to our data only containing information on annual median AQI rather than daily AQI.</p></li>
+</ul>
+<p><br></br></p>
+</div>
+</div>
+<div id="statistical-analysis-3-two-sample-test-of-current-asthma-proportions-for-california-and-wyoming-2013-2020" class="section level1">
+<h1>Statistical Analysis 3: Two Sample Test of Current Asthma Proportions for California and Wyoming, 2013-2020</h1>
+<div id="hypothesis-2" class="section level2">
+<h2>Hypothesis</h2>
+<p>Our team hypothesizes that there would be a statistically significant difference in the proportion of individuals with current asthma in the states of California and Wyoming. We tested this hypothesis by using a two-sided two-sample test of proportions.</p>
+<center>
+<a href=""><img src="images/stats_3.png"></a>
+</center>
+<ul>
+<li><p>Hypotheses: H0: p1 = p2 H1: p1 ≠ p2</p></li>
+<li><p>Estimates: The estimated proportion with current asthma is approximately 8.74% in California and 10.89% in Wyoming.</p></li>
+<li><p>Test Statistic: The test statistic is 147.40 and follows a standard normal distribution. The p-value is less than 0.0001. .</p></li>
+<li><p>95% Confidence Interval: The 95% confidence interval ranges from -0.025 to -0.018.</p></li>
+<li><p>Conclusion: Our p-value is less than our alpha of 0.05. As such, we reject the null hypothesis and conclude that the proportion of individuals with current asthma in California compared to Wyoming is significantly different at the 5% level of significance.</p></li>
+<li><p>The median of state AQI from 2013 to 2020 ranged from 20 to 47, which is a relatively limited range and is classified as having good air quality. Statistical tests have limited power to detect a statistically significant effect if there is insufficient difference between the exposure groups. To maximize our ability to detect a significant difference in the proportion with current asthma, the team compared Wyoming, the state with the lowest median AQI, and California, the state with the highest median AQI. Although Washington, D.C. is categorized as having the highest median AQI, the team chose to use California, the state with the second highest median AQI, since Washington, D.C. is not officially considered a state.</p></li>
+</ul>
+</div>
 </div>
 
 <!DOCTYPE html>
@@ -376,6 +498,8 @@ A work by <a href="https://github.com/taraahi">Tara Ahi</a>, <a href="https://gi
 </div>
 
 
+</div>
+</div>
 
 </div>
 
@@ -407,7 +531,41 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

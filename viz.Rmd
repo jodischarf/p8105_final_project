@@ -2,7 +2,10 @@
 title: <center>Summary Visualizations
 
 output:   
-  html_document
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
 ---
 <br></br>
 
@@ -11,22 +14,32 @@ output:
 
 <br></br>
 
-## R Markdown
+# Asthma Prevalence and Air Quality Across the United States
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## State Level Maps of Asthma Prevalence and AQI
+```{r, eval=FALSE}
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+aqi_graph
 
-```{r cars}
-summary(cars)
+asthma_graph
 ```
+These maps show state-level asthma prevalence and median AQI across the United States between 2013 and 2020. State-level median AQI appears to be the highest in the west coast, southwest, and northeast regions  through 2013 and 2020. Similarly, state-level asthma prevalence appears to be highest in the pacific northwest and the northeast regions between 2013 and 2020.
 
-## Including Plots
+## County Level Maps of Asthma Prevalence and AQI
 
-You can also embed plots, for example:
+```{r eval=FALSE}
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+urban_aqi_map
+
+urban_asthma_map
 ```
+These maps show metropolitan statistical area-level asthma prevalence and median AQI across the United States between 2013 and 2019. Counties represented on these maps reflect the asthma and AQI estimates for the MMA they belong to. These maps reveal that several areas have asthma and AQI levels much higher than the average of their state. For example, the median AQI in San Bernardino county, CA was 80 in 2020 while the state median was 43. Similarly, the asthma prevalence in Worcester county, MA in 2020 was 13.96% while the state prevalence was 10.83%.
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+# Asthma Prevalence vs. State Median AQI by Year
+(graph would be here)
+
+* This scatterplot showed the relationship between median AQI and asthma prevalence by state and year. 
+* For each year from 2013 to 2020, the data points were fairly dispersed and did not exhibit a monotonic relationship. There were also several outliers observed for each of the years examined. 
+* These results differ from what was expected, since the team expected to see a monotonic relationship between median AQI and asthma prevalence. This may be due to the limitations we have in our data. We are primarily limited to analyzing asthma prevalence at the state level since BRFSS does not disclose asthma prevalence for non-metropolitan counties. Looking at the relationship grouped at the state level may mask the relationship between median AQI and asthma prevalence at the sub-state or county level. Additionally, the team’s ability to detect a relationship between the two variables may also be due to our data only containing information on annual median AQI rather than daily AQI. 
+

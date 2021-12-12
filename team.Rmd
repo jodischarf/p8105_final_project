@@ -11,7 +11,7 @@ We are an interdisciplinary team formed during our second-year as candidates of 
 
 # <a href=""><img class="cat_circle" src="images/tara.jpeg"></a><span style="padding-left:25px">Tara Ahi
 
-I'm Tara Ahi.
+I'm Tara Ahi, a second-year MPH student at Columbia's Mailman School of Public Health studying Epidemiology and Outcomes Research. I have a background in clinical research for hospital systems and drug development and am interested in leveraging data analytics to advance healthcare policy and delivery. Outside of school I enjoy playing tennis, wine tasting with friends and exploring new places. 
 
 You can learn more about me [here](https://taraahi.github.io/)
 
@@ -27,7 +27,7 @@ You can learn more about me [here](https://gcolleen.github.io/)
 
 # <a href=""><img class="cat_circle" src="images/mandy.png"></a><span style="padding-left:25px">Amanda Miles
 
-I'm Mandy Miles.
+I’m Amanda, I’m a second year MPH in Epidemiology student at Columbia’s Mailman School of Public Health and am concentrating in Applied Biostatistics. My research interests are primarily focused on infectious disease and immune-mediated post-viral syndromes, such as Long COVID and ME/CFS. Some fun facts about me are that I love plants and I used to be an equestrian!
 
 You can learn more about me [here](https://acm2268.github.io/)
 

@@ -28,24 +28,28 @@ More details regarding our motivation can be found [here](report.html#ourmotivat
 
 The data used for the project was obtained from the EPA and the CDC, ranging from the years 2013 - 2020.
 
-Data from the EPA:  
-Air quality data is publicly available on the EPA website. We utilized the annual data sets that provided aggregated AQI information based on state. 
+**Data from the EPA:**  
+Air quality data is publicly available on the [EPA website](https://aqs.epa.gov/aqsweb/airdata/download_files.html). We utilized the annual data sets that provided aggregated AQI information based on state and county levels. 
 
 **Data from the CDC:**  
-Asthma information was collected from BRFFS, the CDC's Behavioral Risk Factor Surveillance System.   
-**Please provide more info here**
+**BRFSS:** Asthma information was collected from [BRFSS](https://www.cdc.gov/brfss/), the CDC's Behavioral Risk Factor Surveillance System. We collected state and metropolitan area-level data from the BRFSS for years 2013-2020  
 
+**Our Final Dataset**
 We merged the data from these two sources to provide potential for analysis and depiction of the relationship of asthma and AQI.
 
-More details regarding our use of the datasets can be found [here](report.html#data).
+More details regarding the data sources and our use of the datasets can be found [here](report.html#data).
+
 
 <br></br>
 
 # A Quick Summary of Our Findings
 
-1.
-2.
-3.
+1. State-level median AQI and asthma prevalence differ by state with noticeable regional patterns when viewed geographically. Comparing state-level and county-level maps reveal large differences in both asthma prevalence and air quality within states.
+2. Overall, the trends in median AQI (mAQI) over time per region in the United States decreased per year, from 2013 to 2020, with the exception of Puerto Rico. The state that had the largest decrease in median AQI was Pennsylvania, with a mAQI of 44 in 2013 and a mAQI of 37 in 2020. 
+3. The scatter plots indicate that there is no significant monotonic relationship between state median AQI and asthma prevalence by year.
+4. Based on the Spearman correlation estimates by year from 2013 to 2019, there does not appear to be a monotonic relationship between median AQI and asthma prevalence. Based on the Spearman correlation estimates for 2020, there appears to be a weak positive monotonic relationship between the two variables. However, the correlation test results were not statistically significant in any year at the 5% level of significance. 
+5. Based on the Spearman correlation estimates overall for the period from 2013 to 2020, there does not appear to be a monotonic relationship between median AQI and asthma prevalence. The correlation test results were not statistically significant at the 5% level of significance. 
+6. Wyoming is the state with the lowest median AQI and California is the state with the highest median AQI from 2013-2020. The two sample test of proportions for the asthma prevalence in each state was statistically significant (p < 0.0001), suggesting that the proportion of individuals with asthma between the two states is statistically different at the 5% level of significance.  
 
 For detailed results, analysis and output, please refer to our [report](report.html).
 
@@ -53,9 +57,10 @@ For detailed results, analysis and output, please refer to our [report](report.h
 
 # Fun Facts About Our Project
 
-1.
-2.
-3.
+1. Tara reached out to a representative from the Asthma and Allergy Foundation of America in the process of researching and seeking data for this topic. While the foundation could not share all its data sets, the representative was enthusiastic about our project and we got to learn more about the methodology for their annual report. 
+2. We are quite an interdisciplinary team with members from the Epidemiology, Population & Family Health, and Biostatistics Departments!
+3. Multiple members of our group either have asthma themselves or have a family member with asthma, making this topic of particular interest for us. 
+
 
 <br></br>
 
