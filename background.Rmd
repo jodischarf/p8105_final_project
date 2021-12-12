@@ -19,7 +19,7 @@ AQI values can range from 0 to 500, with lower numbers representing better air q
 
 <br></br>
 
-<center><a href=""><img src= "images/aqi_chart.png" width="500"/>
+<center><a href=""><img src= "images/aqi_chart.png" width="600"/>
 </a></center>
 
 <br></br>
