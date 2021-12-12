@@ -5,9 +5,9 @@ date: "12/10/2021"
 output: html_document
 ---
 
-```{r setup}
+```{r, setup, echo = FALSE, message = FALSE, warning = FALSE}
 
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 
 library(tidyverse)
 library(dplyr)
@@ -33,7 +33,7 @@ scale_fill_discrete = scale_fill_viridis_d
 
 ```
 
-```{r, can_merge, echo = FALSE}
+```{r, epa_df, message = FALSE, warning = FALSE}
 
 epa_df = 
   tibble(path = list.files("./data", full.names = TRUE)) %>% 
@@ -76,7 +76,9 @@ state_aqi_df = epa_df %>%
 
 ```
 
-```{r, all, echo = FALSE}
+```{r, all, echo = FALSE, message = FALSE}
+
+#Utilizing cleaned EPA data (v2) to create plots showing all states and median AQI over time:
 
 state_aqi_df %>%
   group_by(state) %>%
@@ -92,9 +94,9 @@ state_aqi_df %>%
          title = "Change in median AQI over time by state (2013 - 2020)")
   
 
-```
 
-```{r, regions, echo = FALSE}
+
+#Preparing for subplot by region
 
 region_df = 
   state_aqi_df %>%
@@ -136,14 +138,14 @@ region_df =
                          "Pacific", region)
          )
   
-# checking missing values
-sapply(region_df, function(x) sum(is.na(x)))
+# To check missing values:
+# sapply(region_df, function(x) sum(is.na(x)))
 
 write.csv(region_df, "region.csv", row.names = TRUE)
 
-```
 
-```{r, new_england, echo = FALSE}
+
+#Plot for New England only
 
 p1 = 
   region_df %>%
@@ -159,9 +161,9 @@ p1 =
   layout(xaxis = list(title = "Year"),
          yaxis = list(title = "Median AQI"))
 
-```
 
-```{r, middle_atlantic, echo = FALSE}
+
+#Plot for Middle Atlantic only
 
 p2 =
   region_df %>%
@@ -178,9 +180,9 @@ p2 =
          yaxis = list(title = "Median AQI"))
 
 
-```
 
-```{r, east_north_central, echo = FALSE}
+
+#Plot for East North Central only
 
 p3 =
   region_df %>%
@@ -197,9 +199,9 @@ p3 =
          yaxis = list(title = "Median AQI"))
 
 
-```
 
-```{r, west_north_central, echo = FALSE}
+
+#Plot for West North Central only
 
 p4 = 
   region_df %>%
@@ -215,9 +217,9 @@ p4 =
   layout(xaxis = list(title = "Year"),
          yaxis = list(title = "Median AQI"))
 
-```
 
-```{r, south_atlantic_puerto, echo = FALSE}
+
+#Plot for South Atlantic & Puerto Rico
 
 p5 = 
   region_df %>%
@@ -233,9 +235,9 @@ p5 =
   layout(xaxis = list(title = "Year"),
          yaxis = list(title = "Median AQI"))
 
-```
 
-```{r, east_south_central, echo = FALSE}
+
+#Plot for East South Central only
 
 p6 = 
   region_df %>%
@@ -251,9 +253,9 @@ p6 =
   layout(xaxis = list(title = "Year"),
          yaxis = list(title = "Median AQI"))
 
-```
 
-```{r, west_south_central, echo = FALSE}
+
+#Plot for West South Central only
 
 p7 = 
   region_df %>%
@@ -269,9 +271,9 @@ p7 =
   layout(xaxis = list(title = "Year"),
          yaxis = list(title = "Median AQI"))
 
-```
 
-```{r, mountain, echo = FALSE}
+
+#Plot for Mountain only
 
 p8 =
   region_df %>%
@@ -287,9 +289,9 @@ p8 =
   layout(xaxis = list(title = "Year"),
          yaxis = list(title = "Median AQI"))
 
-```
 
-```{r, pacific, echo = FALSE}
+
+#Plot for Pacific only
 
 p9 = 
   region_df %>%
@@ -306,9 +308,8 @@ p9 =
          yaxis = list(title = "Median AQI"))
 
 
-```
 
-```{r, subplots_1, echo = FALSE}
+#Another subplot method. However, using this method we are not able to provide titles for each subplot as we can in ggplot2 facet grid
 
 #region_df %>%
 #  group_by(region) %>%
@@ -324,9 +325,9 @@ p9 =
 #         yaxis = list(type = "Median AQI"),
 #         title = "Change in median AQI over time by region (2013 - 2020)")
 
-```
 
-```{r, subplots_2, echo =  FALSE}
+
+#Putting together plots by region & formatting subplot titles
 
 plot = 
   subplot(p1, p2, p3, p4, p5, p6, p7, p8, p9,
