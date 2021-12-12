@@ -78,12 +78,12 @@ For detailed results, analysis and output, please refer to our [report](report.h
 
 [Statistical Analysis](stats.html): Statistical analyses on the association between API and asthma 
 
-[Screencast](background.html): Want a quick 2-minute summary of our website? Check it out!
+[Screencast](https://youtu.be/QlB-vMrHgMs): Want a quick 2-minute summary of our website? Check it out!
 
 <br></br>
 
 <center>
-<iframe width="420" height="236" src="https://www.youtube.com/embed/" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="420" height="236" src="https://www.youtube.com/embed/QlB-vMrHgMs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </center>
 
 <br></br>
