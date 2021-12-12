@@ -13,6 +13,8 @@ output:
 
 <br></br>
 
+# Brief Background
+
 The relationship between air quality and asthma has long been established. But it is complex. Asthma triggers can vary based on pollutants, how long an individual has been exposed to these pollutants, and lifestyle. Air quality is unique to geographical location down to the local level, which adds to the difficulty of asthma management.
 
 More details regarding our motivation can be found [here](report.html#ourmotivation).
@@ -48,7 +50,7 @@ For our final dataset, we merged the data from these two sources to provide pote
 <br></br>
 5. Based on the Spearman correlation estimates for the **overall period of 2013 to 2020**, there **does not appear to be a monotonic relationship between median AQI and asthma prevalence**. The correlation test results were not statistically significant at the 5% level of significance. 
 <br></br>
-6. **Wyoming** is the state with the lowest median AQI and **California* is the state with the highest median AQI from 2013-2020. The two sample test of proportions for the asthma prevalence in each state was statistically significant (p < 0.0001), suggesting that the **proportion of individuals with asthma between the two states is statistically different** at the 5% level of significance.  
+6. **Wyoming** is the state with the lowest median AQI and **California** is the state with the highest median AQI from 2013-2020. The two sample test of proportions for the asthma prevalence in each state was statistically significant (p < 0.0001), suggesting that the **proportion of individuals with asthma between the two states is statistically different** at the 5% level of significance.  
 
 For detailed results, analysis and output, please refer to our [report](report.html).
 
@@ -78,3 +80,5 @@ For detailed results, analysis and output, please refer to our [report](report.h
 
 [Screencast](background.html): Want a quick 2-minute summary of our website? Check it out!
 
+
+You can find the code for this entire project in our [GitHub Repo](https://github.com/jodischarf/P8105_final_project.github.io).

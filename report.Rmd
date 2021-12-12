@@ -2,7 +2,7 @@
 title: "<div><img src=\"images/city_image.jpeg\" style=\"max-width:64px; max-height:64px;\"><span style=\"padding-left:20px\">Project Report</div>"
 output:   
   html_document:
-    code_folding: hide
+    code_folding: show
     toc: true
     toc_float: true
 ---
@@ -11,7 +11,7 @@ output:
 
 # Our Motivation
 
-Out motivation was linked with the recurring episodes and increased frequency of wildfire outbreaks in the United States, specifically Pacific Northwest, caused by the rise in global temperature. The air quality resulting in these fires are not only concentrated in the Pacific Northwest, but also travel across the country by wind patterns.  
+Our motivation was linked with the recurring episodes and increased frequency of wildfire outbreaks in the United States, specifically Pacific Northwest, caused by the rise in global temperature. The air quality resulting in these fires are not only concentrated in the Pacific Northwest, but also travel across the country by wind patterns.  
 
 This interest grew to embody a curiosity of air quality across the nation that is not restricted to the events of wildfires. The complex nature of air quality cannot be subject to one type of event only. Air quality is highly linked with the incidence of asthma, especially young children. It is a major noncommunicable disease that can be self-managed given the proper tools and information. This includes information on air quality. 
 
@@ -39,7 +39,7 @@ From there, we were intrigued to see whether there have been decreases in air po
 
 We found that since 1990, emissions of key air pollutants (primarily from stationary fuel combustion, industrial processes, highway vehicles, and non-road mobile vehicles) have continued to decline. These reductions have been driven by federal and state implementation of stationary and mobile source regulations. 
 
-<center><a href=""><img src= "images/pollutants_decreasing.png" width="500"/></a></center>
+<center><a href=""><img src= "images/pollutants_decreasing.png" width="600"/></a></center>
 _**Source:** U.S. Environmental Protection Agency_
 
 According to the EPA, it was actually the implementation of the Clean Air Act in 1970 and subsequent technological advances from American innovators that dramatically improved emissions in the U.S.  
@@ -48,13 +48,14 @@ According to the EPA, it was actually the implementation of the Clean Air Act in
 
 Furthermore, the [EPA](hhttps://gispub.epa.gov/air/trendsreport/2021) has reported that air quality has improved in the past decade. 
 
-<center><a href=""><img src="images/naaqs_averages.png"></a></center>
+<center><a href=""><img src="images/naaqs_averages.png" width="500"></a></center>
 _Source: U.S. EPA Air Quality System_
 
 <center><a href=""><img src= "images/epa_airdays.png" width="500"/></a></center>
  
 _Source: U.S. Environmental Protection Agency_
-_**Note:** Sensitive groups for ozone and PM2.5 include people with heart or lung disease, older adults, children and teenagers, and people who are active outdoors._
+
+_Note: Sensitive groups for ozone and PM2.5 include people with heart or lung disease, older adults, children and teenagers, and people who are active outdoors._
 
 While some pollutants continue to pose serious air quality problems in areas of the U.S., the EPA's 2020 report claims that nationally, concentrations of air pollutants have dropped significantly since 1990:
 
@@ -84,7 +85,7 @@ Consequently, our main question of interest is as follows:
 
 Specifically, we want to test the changes in air quality index (AQI) and self-reported asthma from 2013-2020.
 
-### Correlation between AQI and Asthma
+**Correlation between AQI and Asthma**
 
 We hypothesize that as the AQI increases in value, indicating a greater level of air pollution, the prevalence of asthma will increase. So, between the air quality index (AQI) and  We believe this to be true for two main reasons:
 
@@ -96,9 +97,8 @@ We will conduct exploratory analyses to assess state-by-state and county-by-coun
 <br></br>
 
 # Data
-Data: Source, scraping method, cleaning, etc.
 
-### Data Sources
+### Our Data Sources
 
 #### EPA Data
 Information on AQI was collected from the Environmental Protection Agency from 2013 - 2020. AQI data is collected on a daily basis from monitors stationed around the country and in every state. The EPA provides summarized annual data on each state and its respective counties. EPA is representative at the state level and can be compared from year to year.
@@ -108,16 +108,18 @@ AQI data for each year between 2013 and 2020 were downloaded as .csv files and i
 In anticipation of merging this dataset with BRFSS data, we applied state codes to each state based on that which was included in the BRFSS data. 
 
 **EPA AQI Limitations:**
+
 Not all states included in the EPA dataset were also included in the BRFSS data. New Jersey, Guam, the Virgin Islands, and the City of Mexico were therefore excluded from our analysis. Additional limitations include the values of the AQI utilized in this project. The EPA provides annual median AQI data, mean AQI, and the 90th percentile of AQI per state and county. 
 
 Although daily data per monitor site is also provided on the EPA website, it is based on the daily AQI on each _individual_ pollutant and not the daily aggregated AQI value. We attempted to calculate the AQI values based on daily data. However, we found those values to be inaccurate when comparing to the provided values of median AQI on the EPA website. This is due to the lack of information of how states/counties were weighted in geographical size, population count, vehicular activity, and/or industrial activity.. Therefore, AQI values utilized were limited to what was provided in the annual data. This restricted the types of comparison analysis we could do or the assessment of the distribution of AQI values per state, county, and nation. The median AQI data was the most reliable option available. 
 
-
 #### Behavioral Risk Factor Surveillance System (BRFSS) Data
 
-Information on asthma was collected from the Behavioral Risk Factor Surveillance System (BRFSS)**  years 2013-2020. The BRFSS is a phone-conducted health survey of households administered by states and is available at the state level and at the level of metropolitan statistical areas (MMAs) through the Selected Metropolitan/Micropolitan Area Risk Trends of BRFSS (SMART BRFSS) addition. For data available in the SMART BRFSS addition, county-level asthma estimates reflect data aggregated at the metropolitan statistical area level. BRFSS data is representative at the state level and can be compared from year to year. 
+Information on asthma was collected from the Behavioral Risk Factor Surveillance System (BRFSS) years 2013-2020. The BRFSS is a phone-conducted health survey of households administered by states and is available at the state level and at the level of metropolitan statistical areas (MMAs) through the Selected Metropolitan/Micropolitan Area Risk Trends of BRFSS (SMART BRFSS) addition. For data available in the SMART BRFSS addition, county-level asthma estimates reflect data aggregated at the metropolitan statistical area level. BRFSS data is representative at the state level and can be compared from year to year. 
 
 BRFSS data for each year between 2013 and 2020 were downloaded as .xpt files and imported into R. We selected and cleaned demographic and asthma related variables, including transforming categorical variables into factors and setting "unknown" responses to missing. Additionally, as variable names in the BRFSS data were not consistent year-to-year, we renamed all variables to be identical. After cleaning each dataset, we binded the datasets lengthwise to make a master BRFSS dataset containing BRFSS year, interview data, demographic information, variables related to asthma, and weighting variables.
+
+<br></br>
 
 ### Data Scraping and Cleaning
 
@@ -129,6 +131,7 @@ library(plotly)
 library(flexdashboard)
 library(viridis)
 ```
+
 #### Code that Merges EPA & BRFSS
 ##### Reading in and Cleaning EPA Data
 
@@ -305,6 +308,8 @@ A data challenge we encountered with the BRFSS data is that multiple variables i
 __BRFSS Limitations:__
 As BRFSS is conducted via telephone, certain subpopulations such as American Indians and Alaska Natives are underrepresented in the data. Additionally, due to the COVID-19 pandemic, BRFSS data for 2020 was partially incomplete. Non-urban county data is suppressed in the SMART BRFSS datasets. As asthma prevalence data is aggregated to either the state or MMA-level in our analyses, within state and within MMA differences are not reflected in the data.
 
+<br></br>
+
 ### Final Dataset
 State level BRFSS and AQI data were merged by adding a state FIPS code column to the EPA dataset and then inner joining the two data sets by year and FIPS code. The resulting data set contains 3,591,874 observations with 19 variables. Key variables in the final data include:
 __Asthma Prevalence:__ Percent of individuals who reported currently having asthma in a calendar year on the BRFSS survey.
@@ -312,14 +317,7 @@ __Median AQI:__ Median Air Quality Index across a state in a calendar year. Meas
 __Demographic and Other Variables:__ 5-year age categories, race, sex, state, year
 __Additional Outcome Variables:__ COPD Prevalence, Self report of ever having asthma
 
-
-
 <br></br>
-
-
-<br></br>
-
-
 <br></br>
 
 # Exploratory analysis
@@ -577,12 +575,13 @@ knitr::kable(prop_results,
              caption = "*Two-Sample Test of Proportions: CA vs WY*")
 ```
 
-
 <br></br>
 
-# Discussion
-* What were your findings? 
-* Are they what you expect 
-* What insights into the data can you make?
+# Future Work
 
+* Looking at AQI at a local level rather than just state level may provide better indications of the relationship between air quality, asthma, and whether location mediates the relationship between the two.
+<br></br>
+* Looking at subgroups to analyze for asthma, for instance individuals who are diabetic, smoke, or have other health conditions that contribute to asthma attacks.
+<br></br>
+* Having data on children, who are a known susceptible population. Currently BRFSS data is available and collected from individuals who are 18 and older.
 
